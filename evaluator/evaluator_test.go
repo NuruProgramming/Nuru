@@ -114,3 +114,36 @@ func testBooleanObject(t *testing.T, obj object.Object, expected bool) bool {
 
 	return true
 }
+
+func TestIfElseExpressions(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{"kama (kweli) {10}", 10},
+		{"kama (sikweli) {10}", nil},
+		{"kama (1) {10}", 10},
+		{"kama (1 < 2) {10}", 10},
+		{"kama (1 > 2) {10}", nil},
+		{"kama (1 > 2) {10} sivyo {20}", 20},
+		{"kama (1 < 2) {10} sivyo {20}", 10},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		integer, ok := tt.expected.(int)
+		if ok {
+			testIntegerObject(t, evaluated, int64(integer))
+		} else {
+			testNullObject(t, evaluated)
+		}
+	}
+}
+
+func testNullObject(t *testing.T, obj object.Object) bool {
+	if obj != NULL {
+		t.Errorf("object is not null, got=%T(+%v)", obj, obj)
+		return false
+	}
+	return true
+}
