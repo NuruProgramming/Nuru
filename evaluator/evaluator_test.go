@@ -164,3 +164,61 @@ func TestReturnStatements(t *testing.T) {
 		testIntegerObject(t, evaluated, tt.expected)
 	}
 }
+
+func TestErrorHandling(t *testing.T) {
+	tests := []struct {
+		input           string
+		expectedMessage string
+	}{
+		{
+			"5 + kweli",
+			"aina hazilingani: NAMBARI + BOOLEAN",
+		},
+		{
+			"5 + kweli; 5;",
+			"aina hazilingani: NAMBARI + BOOLEAN",
+		},
+		{
+			"-kweli",
+			"operesheni haielweki: -BOOLEAN",
+		},
+		{
+			"kweli + sikweli",
+			"operesheni haielweki: BOOLEAN + BOOLEAN",
+		},
+		{
+			"5; kweli + sikweli; 5",
+			"operesheni haielweki: BOOLEAN + BOOLEAN",
+		},
+		{
+			"kama (10 > 1) { kweli + sikweli;}",
+			"operesheni haielweki: BOOLEAN + BOOLEAN",
+		},
+		{
+			`
+kama (10 > 1) {
+	kama (10 > 1) {
+		rudisha kweli + kweli;
+	}
+
+	rudisha 1;
+}
+			`,
+			"operesheni haielweki: BOOLEAN + BOOLEAN",
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+
+		errObj, ok := evaluated.(*object.Error)
+		if !ok {
+			t.Errorf("no error object return, got=%T(%+v)", evaluated, evaluated)
+			continue
+		}
+
+		if errObj.Message != tt.expectedMessage {
+			t.Errorf("wrong error message, expected=%q, got=%q", tt.expectedMessage, errObj.Message)
+		}
+	}
+}

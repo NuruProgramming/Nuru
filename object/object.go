@@ -5,10 +5,11 @@ import "fmt"
 type ObjectType string
 
 const (
-	INTEGER_OBJ      = "INTEGER"
+	INTEGER_OBJ      = "NAMBARI"
 	BOOLEAN_OBJ      = "BOOLEAN"
 	NULL_OBJ         = "NULL" // Not sure if the language should have null lol
 	RETURN_VALUE_OBJ = "RETURN_VALUE"
+	ERROR_OBJ        = "ERROR"
 )
 
 type Object interface {
@@ -47,3 +48,10 @@ type ReturnValue struct {
 
 func (rv *ReturnValue) Inspect() string  { return rv.Value.Inspect() }
 func (rv *ReturnValue) Type() ObjectType { return RETURN_VALUE_OBJ }
+
+type Error struct {
+	Message string
+}
+
+func (e *Error) Inspect() string  { return "ERROR: " + e.Message }
+func (e *Error) Type() ObjectType { return ERROR_OBJ }
