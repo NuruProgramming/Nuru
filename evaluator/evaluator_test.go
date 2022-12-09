@@ -80,8 +80,9 @@ func testEval(input string) object.Object {
 	l := lexer.New(input)
 	p := parser.New(l)
 	program := p.ParseProgram()
+	env := object.NewEnvironment()
 
-	return Eval(program)
+	return Eval(program, env)
 }
 
 func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
@@ -206,6 +207,10 @@ kama (10 > 1) {
 			`,
 			"operesheni haielweki: BOOLEAN + BOOLEAN",
 		},
+		{
+			"bangi",
+			"neno halifahamiki: bangi",
+		},
 	}
 
 	for _, tt := range tests {
@@ -220,5 +225,21 @@ kama (10 > 1) {
 		if errObj.Message != tt.expectedMessage {
 			t.Errorf("wrong error message, expected=%q, got=%q", tt.expectedMessage, errObj.Message)
 		}
+	}
+}
+
+func TestLetStatement(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected int64
+	}{
+		{"acha a = 5; a;", 5},
+		{"acha a = 5 * 5; a;", 25},
+		{"acha a = 5; acha b = a; b;", 5},
+		{"acha a = 5; acha b = a; acha c = a + b + 5; c;", 15},
+	}
+
+	for _, tt := range tests {
+		testIntegerObject(t, testEval(tt.input), tt.expected)
 	}
 }
