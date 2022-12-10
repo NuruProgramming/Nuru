@@ -1,6 +1,7 @@
 package evaluator
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/AvicennaJr/Nuru/lexer"
@@ -154,7 +155,7 @@ func TestReturnStatements(t *testing.T) {
 		input    string
 		expected int64
 	}{
-		{"rudisha 10;", 10},
+		{"rudisha 10", 10},
 		{"rudisha 10; 9;", 10},
 		{"rudisha 2 * 5; 9;", 10},
 		{"9; rudisha 2 * 5; 9;", 10},
@@ -173,27 +174,27 @@ func TestErrorHandling(t *testing.T) {
 	}{
 		{
 			"5 + kweli",
-			"aina hazilingani: NAMBARI + BOOLEAN",
+			"Aina Hazilingani: NAMBARI + BOOLEAN",
 		},
 		{
 			"5 + kweli; 5;",
-			"aina hazilingani: NAMBARI + BOOLEAN",
+			"Aina Hazilingani: NAMBARI + BOOLEAN",
 		},
 		{
 			"-kweli",
-			"operesheni haielweki: -BOOLEAN",
+			"Operesheni Haielweki: -BOOLEAN",
 		},
 		{
 			"kweli + sikweli",
-			"operesheni haielweki: BOOLEAN + BOOLEAN",
+			"Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			"5; kweli + sikweli; 5",
-			"operesheni haielweki: BOOLEAN + BOOLEAN",
+			"Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			"kama (10 > 1) { kweli + sikweli;}",
-			"operesheni haielweki: BOOLEAN + BOOLEAN",
+			"Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			`
@@ -205,11 +206,11 @@ kama (10 > 1) {
 	rudisha 1;
 }
 			`,
-			"operesheni haielweki: BOOLEAN + BOOLEAN",
+			"Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			"bangi",
-			"neno halifahamiki: bangi",
+			"Neno Halifahamiki: bangi",
 		},
 	}
 
@@ -222,7 +223,7 @@ kama (10 > 1) {
 			continue
 		}
 
-		if errObj.Message != tt.expectedMessage {
+		if errObj.Message != fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, tt.expectedMessage) {
 			t.Errorf("wrong error message, expected=%q, got=%q", tt.expectedMessage, errObj.Message)
 		}
 	}

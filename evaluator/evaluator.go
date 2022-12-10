@@ -140,7 +140,7 @@ func evalBangOperatorExpression(right object.Object) object.Object {
 
 func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
 	if right.Type() != object.INTEGER_OBJ {
-		return newError("operesheni haielweki: -%s", right.Type())
+		return newError("Operesheni Haielweki: -%s", right.Type())
 	}
 
 	value := right.(*object.Integer).Value
@@ -159,10 +159,10 @@ func evalInfixExpression(
 	case operator == "!=":
 		return nativeBoolToBooleanObject(left != right)
 	case left.Type() != right.Type():
-		return newError("aina hazilingani: %s %s %s",
+		return newError("Aina Hazilingani: %s %s %s",
 			left.Type(), operator, right.Type())
 	default:
-		return newError("operesheni haielweki: %s %s %s",
+		return newError("Operesheni Haielweki: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
 }
@@ -192,7 +192,7 @@ func evalIntegerInfixExpression(
 	case "!=":
 		return nativeBoolToBooleanObject(leftVal != rightVal)
 	default:
-		return newError("operesheni haielweki: %s %s %s",
+		return newError("Operesheni Haielweki: %s %s %s",
 			left.Type(), operator, right.Type())
 	}
 }
@@ -244,6 +244,7 @@ func evalBlockStatement(block *ast.BlockStatement, env *object.Environment) obje
 }
 
 func newError(format string, a ...interface{}) *object.Error {
+	format = fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, format)
 	return &object.Error{Message: fmt.Sprintf(format, a...)}
 }
 
@@ -258,7 +259,7 @@ func isError(obj object.Object) bool {
 func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object {
 	val, ok := env.Get(node.Value)
 	if !ok {
-		return newError("neno halifahamiki: " + node.Value)
+		return newError("Neno Halifahamiki: " + node.Value)
 	}
 
 	return val
@@ -294,7 +295,9 @@ func extendedFunctionEnv(fn *object.Function, args []object.Object) *object.Envi
 	env := object.NewEnclosedEnvironment(fn.Env)
 
 	for paramIdx, param := range fn.Parameters {
-		env.Set(param.Value, args[paramIdx])
+		if paramIdx < len(args) {
+			env.Set(param.Value, args[paramIdx])
+		}
 	}
 	return env
 }

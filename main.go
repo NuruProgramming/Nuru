@@ -3,18 +3,25 @@ package main
 import (
 	"fmt"
 	"os"
-	"os/user"
 
 	"github.com/AvicennaJr/Nuru/repl"
 )
 
+const (
+	LOGO = `
+
+█░░ █░█ █▀▀ █░█ ▄▀█   █▄█ ▄▀█   █▄░█ █░█ █▀█ █░█
+█▄▄ █▄█ █▄█ █▀█ █▀█   ░█░ █▀█   █░▀█ █▄█ █▀▄ █▄█                                        
+
+            | Authored by Avicenna |                    
+`
+)
+
 func main() {
 
-	user, err := user.Current()
-	if err != nil {
-		panic(err)
-	}
+	coloredLogo := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 34, LOGO)
+	fmt.Println(coloredLogo)
+	fmt.Println("𝑯𝒂𝒃𝒂𝒓𝒊, 𝒌𝒂𝒓𝒊𝒃𝒖 𝒖𝒕𝒖𝒎𝒊𝒆 𝒍𝒖𝒈𝒉𝒂 𝒚𝒂 𝑵𝒖𝒓𝒖 ✨")
 
-	fmt.Printf("Habari %s!, Karibu utumie lugha ya Nuru!\n", user.Username)
 	repl.Start(os.Stdin, os.Stdout)
 }

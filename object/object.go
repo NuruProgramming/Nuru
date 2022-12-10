@@ -36,7 +36,7 @@ type Boolean struct {
 }
 
 func (b *Boolean) Inspect() string {
-	if b.Value == true {
+	if b.Value {
 		return "kweli"
 	} else {
 		return "sikweli"
@@ -60,7 +60,10 @@ type Error struct {
 	Message string
 }
 
-func (e *Error) Inspect() string  { return "ERROR: " + e.Message }
+func (e *Error) Inspect() string {
+	msg := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, "ERROR: ")
+	return msg + e.Message
+}
 func (e *Error) Type() ObjectType { return ERROR_OBJ }
 
 type Function struct {
