@@ -212,6 +212,10 @@ kama (10 > 1) {
 			"bangi",
 			"Neno Halifahamiki: bangi",
 		},
+		{
+			`"Habari" - "Habari"`,
+			"Operesheni Haielweki: NENO - NENO",
+		},
 	}
 
 	for _, tt := range tests {
@@ -297,4 +301,33 @@ acha addTwo = newAdder(2);
 addTwo(2);
 `
 	testIntegerObject(t, testEval(input), 4)
+}
+
+func TestStringLiteral(t *testing.T) {
+	input := `"Habari yako!"`
+
+	evaluated := testEval(input)
+	str, ok := evaluated.(*object.String)
+	if !ok {
+		t.Fatalf("Object is not string, got=%T(%+v)", evaluated, evaluated)
+	}
+
+	if str.Value != "Habari yako!" {
+		t.Errorf("String has wrong value, got=%q", str.Value)
+	}
+}
+
+func TestStringconcatenation(t *testing.T) {
+	input := `"Mambo" + " " + "Vipi" + "?"`
+
+	evaluated := testEval(input)
+
+	str, ok := evaluated.(*object.String)
+	if !ok {
+		t.Fatalf("object is not a string, got=%T(%+v)", evaluated, evaluated)
+	}
+
+	if str.Value != "Mambo Vipi?" {
+		t.Errorf("String has wrong value, got=%q", str.Value)
+	}
 }
