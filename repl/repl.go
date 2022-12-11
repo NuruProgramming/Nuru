@@ -40,6 +40,30 @@ const ERROR_FACE = `
 
 `
 
+func Read(contents string) {
+	env := object.NewEnvironment()
+
+	l := lexer.New(contents)
+	p := parser.New(l)
+
+	program := p.ParseProgram()
+
+	if len(p.Errors()) != 0 {
+		fmt.Println(colorfy(ERROR_FACE, 31))
+		fmt.Println("Kuna Errors Zifuatazo:")
+
+		for _, msg := range p.Errors() {
+			fmt.Println("\t" + colorfy(msg, 31))
+		}
+
+	}
+	evaluated := evaluator.Eval(program, env)
+	if evaluated != nil {
+		fmt.Println(colorfy(evaluated.Inspect(), 32))
+	}
+
+}
+
 func Start(in io.Reader, out io.Writer) {
 
 	scanner := bufio.NewScanner(in)
@@ -77,7 +101,7 @@ func Start(in io.Reader, out io.Writer) {
 func printParseErrors(out io.Writer, errors []string) {
 	io.WriteString(out, colorfy(ERROR_FACE, 31))
 	io.WriteString(out, "Oi! Umeleta shida gani??\n\n")
-	io.WriteString(out, "Parser Errors:\n")
+	io.WriteString(out, "Kuna Errors Zifuatazo:\n")
 
 	for _, msg := range errors {
 		io.WriteString(out, "\t"+colorfy(msg, 31)+"\n")
