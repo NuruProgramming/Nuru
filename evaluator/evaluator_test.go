@@ -331,3 +331,34 @@ func TestStringconcatenation(t *testing.T) {
 		t.Errorf("String has wrong value, got=%q", str.Value)
 	}
 }
+
+func TestBuiltinFunctions(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{`len("")`, 0},
+		{`len("four")`, 4},
+		{`len("hello world")`, 11},
+		{`len(1)`, "Samahani, hii function haitumiki na NAMBARI"},
+		{`len("one", "two")`, "Hoja hazilingani, tunahitaji=1, tumepewa=2"},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+
+		switch expected := tt.expected.(type) {
+		case int:
+			testIntegerObject(t, evaluated, int64(expected))
+		case string:
+			errObj, ok := evaluated.(*object.Error)
+			if !ok {
+				t.Errorf("Object is not Error, got=%T(%+v)", evaluated, evaluated)
+				continue
+			}
+			if errObj.Message != fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, expected) {
+				t.Errorf("Wrong eror message, expected=%q, got=%q", expected, errObj.Message)
+			}
+		}
+	}
+}
