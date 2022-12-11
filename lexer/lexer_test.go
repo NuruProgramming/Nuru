@@ -38,7 +38,8 @@ func TestNextToken(t *testing.T) {
 	/* multiline comment number twooooooooooo */
 	5
 	"bangi"
-	"ba ngi"`
+	"ba ngi"
+	[1, 2];`
 
 	tests := []struct {
 		expectedType    token.TokenType
@@ -119,6 +120,12 @@ func TestNextToken(t *testing.T) {
 		{token.INT, "5"},
 		{token.STRING, "bangi"},
 		{token.STRING, "ba ngi"},
+		{token.LBRACKET, "["},
+		{token.INT, "1"},
+		{token.COMMA, ","},
+		{token.INT, "2"},
+		{token.RBRACKET, "]"},
+		{token.SEMICOLON, ";"},
 		{token.EOF, ""},
 	}
 
