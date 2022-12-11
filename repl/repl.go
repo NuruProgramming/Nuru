@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/AvicennaJr/Nuru/evaluator"
 	"github.com/AvicennaJr/Nuru/lexer"
@@ -52,7 +53,7 @@ func Start(in io.Reader, out io.Writer) {
 		}
 
 		line := scanner.Text()
-		if line == "exit()" {
+		if strings.TrimSpace(line) == "exit()" {
 			fmt.Println("✨🅺🅰🆁🅸🅱🆄 🆃🅴🅽🅰✨")
 			os.Exit(0)
 		}
