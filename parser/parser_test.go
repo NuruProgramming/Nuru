@@ -798,3 +798,173 @@ func TestParsingIndexExpressions(t *testing.T) {
 		return
 	}
 }
+
+func TestParsingDictLiteralsStringKeys(t *testing.T) {
+	input := `{"one": 1, "two": 2, "three": 3}`
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
+	dict, ok := stmt.Expression.(*ast.DictLiteral)
+	if !ok {
+		t.Fatalf("Expression is not a Dict, got=%T", stmt.Expression)
+	}
+
+	if len(dict.Pairs) != 3 {
+		t.Errorf("dict.Pairs wrong, got=%d", len(dict.Pairs))
+	}
+
+	expected := map[string]int64{
+		"one":   1,
+		"two":   2,
+		"three": 3,
+	}
+
+	for key, value := range dict.Pairs {
+		literal, ok := key.(*ast.StringLiteral)
+		if !ok {
+			t.Errorf("Key is not a string, got=%T", key)
+		}
+
+		expectedValue := expected[literal.String()]
+		testIntegerLiteral(t, value, expectedValue)
+	}
+}
+
+func TestParsingDictLiteralsIntegerKeys(t *testing.T) {
+	input := `{1: 1, 2: 2, 3: 3}`
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
+	dict, ok := stmt.Expression.(*ast.DictLiteral)
+	if !ok {
+		t.Fatalf("Expression is not a Dict, got=%T", stmt.Expression)
+	}
+
+	if len(dict.Pairs) != 3 {
+		t.Errorf("dict.Pairs wrong, got=%d", len(dict.Pairs))
+	}
+
+	expected := map[int64]int64{
+		1: 1,
+		2: 2,
+		3: 3,
+	}
+
+	for key, value := range dict.Pairs {
+		literal, ok := key.(*ast.IntegerLiteral)
+		if !ok {
+			t.Errorf("Key is not a string, got=%T", key)
+		}
+
+		expectedValue := expected[literal.Value]
+		testIntegerLiteral(t, value, expectedValue)
+	}
+}
+
+func TestParsingDictLiteralsBoolKeys(t *testing.T) {
+	input := `{kweli: 1, sikweli: 2}`
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
+	dict, ok := stmt.Expression.(*ast.DictLiteral)
+	if !ok {
+		t.Fatalf("Expression is not a Dict, got=%T", stmt.Expression)
+	}
+
+	if len(dict.Pairs) != 2 {
+		t.Errorf("dict.Pairs wrong, got=%d", len(dict.Pairs))
+	}
+
+	expected := map[bool]int64{
+		true:  1,
+		false: 2,
+	}
+
+	for key, value := range dict.Pairs {
+		literal, ok := key.(*ast.Boolean)
+		if !ok {
+			t.Errorf("Key is not a string, got=%T", key)
+		}
+
+		expectedValue := expected[literal.Value]
+		testIntegerLiteral(t, value, expectedValue)
+	}
+}
+
+func TestParsingDictLiteralWithExpressions(t *testing.T) {
+	input := `{"one": 0+1, "two": 100-98, "three": 15/5}`
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
+	dict, ok := stmt.Expression.(*ast.DictLiteral)
+	if !ok {
+		t.Fatalf("Expression is not a dict, got=%T", stmt.Expression)
+	}
+
+	if len(dict.Pairs) != 3 {
+		t.Errorf("Dict has wrong length, got=%d", len(dict.Pairs))
+	}
+
+	tests := map[string]func(ast.Expression){
+		"one": func(e ast.Expression) {
+			testInfixExpression(t, e, 0, "+", 1)
+		},
+		"two": func(e ast.Expression) {
+			testInfixExpression(t, e, 100, "-", 98)
+		},
+		"three": func(e ast.Expression) {
+			testInfixExpression(t, e, 15, "/", 5)
+		},
+	}
+
+	for key, value := range dict.Pairs {
+		literal, ok := key.(*ast.StringLiteral)
+		if !ok {
+			t.Errorf("key is not a string, got=%T", key)
+			continue
+		}
+
+		testFunc, ok := tests[literal.String()]
+		if !ok {
+			t.Errorf("No test function for key %q found", literal.String())
+			continue
+		}
+
+		testFunc(value)
+	}
+}
+
+func TestParsingEmptyDict(t *testing.T) {
+	input := "{}"
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
+	dict, ok := stmt.Expression.(*ast.DictLiteral)
+	if !ok {
+		t.Fatalf("Expression not a dict, got=%T", stmt.Expression)
+	}
+
+	if len(dict.Pairs) != 0 {
+		t.Errorf("Dict pairs has wrong length, got=%d", len(dict.Pairs))
+	}
+}
