@@ -77,7 +77,7 @@ func Start(in io.Reader, out io.Writer) {
 		}
 
 		line := scanner.Text()
-		if strings.TrimSpace(line) == "exit()" {
+		if strings.TrimSpace(line) == "exit()" || strings.TrimSpace(line) == "toka()" {
 			fmt.Println("✨🅺🅰🆁🅸🅱🆄 🆃🅴🅽🅰✨")
 			os.Exit(0)
 		}

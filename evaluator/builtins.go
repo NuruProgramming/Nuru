@@ -1,6 +1,13 @@
 package evaluator
 
-import "github.com/AvicennaJr/Nuru/object"
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+
+	"github.com/AvicennaJr/Nuru/object"
+)
 
 var builtins = map[string]*object.Builtin{
 	"idadi": &object.Builtin{
@@ -54,6 +61,48 @@ var builtins = map[string]*object.Builtin{
 			newElements[length] = args[1]
 
 			return &object.Array{Elements: newElements}
+		},
+	},
+	"jaza": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+
+			if len(args) > 1 || len(args) < 0 {
+				return newError("Samahani, hii function inapokea hoja 0 au 1, wewe umeweka %d", len(args))
+			}
+
+			if len(args) > 0 && args[0].Type() != object.STRING_OBJ {
+				return newError(fmt.Sprintf(`Tafadhali tumia alama ya nukuu: "%s"`, args[0].Inspect()))
+			}
+			//if err := object.Check(
+			//	"jaza", args, object.RangeOfArgs(0, 1), object.WithTypes(object.STRING_OBJ)); err != nil {
+			//	return newError("Kuna kitu umebolonga aisee")
+			//}
+			if len(args) == 1 {
+				prompt := args[0].(*object.String).Value
+				fmt.Fprintf(os.Stdout, prompt)
+			}
+
+			buffer := bufio.NewReader(os.Stdin)
+
+			line, _, err := buffer.ReadLine()
+			if err != nil && err != io.EOF {
+				return newError("Nimeshindwa kusoma uliyo yajaza")
+			}
+
+			return &object.String{Value: string(line)}
+		},
+	},
+	"chapa": &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) == 0 {
+				fmt.Println("")
+			} else {
+				for _, arg := range args {
+
+					fmt.Println(arg.Inspect())
+				}
+			}
+			return nil
 		},
 	},
 }
