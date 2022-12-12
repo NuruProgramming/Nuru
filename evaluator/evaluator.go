@@ -2,6 +2,7 @@ package evaluator
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/AvicennaJr/Nuru/ast"
 	"github.com/AvicennaJr/Nuru/object"
@@ -105,6 +106,57 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalIndexExpression(left, index)
 	case *ast.DictLiteral:
 		return evalDictLiteral(node, env)
+	case *ast.WhileExpression:
+		return evalWhileExpression(node, env)
+	case *ast.AssignmentExpression:
+		left := Eval(node.Left, env)
+		if isError(left) {
+			return left
+		}
+
+		value := Eval(node.Value, env)
+		if isError(value) {
+			return value
+		}
+
+		if ident, ok := node.Left.(*ast.Identifier); ok {
+			env.Set(ident.Value, value)
+		} else if ie, ok := node.Left.(*ast.IndexExpression); ok {
+			obj := Eval(ie.Left, env)
+			if isError(obj) {
+				return obj
+			}
+
+			if array, ok := obj.(*object.Array); ok {
+				index := Eval(ie.Index, env)
+				if isError(index) {
+					return index
+				}
+				if idx, ok := index.(*object.Integer); ok {
+					if int(idx.Value) > len(array.Elements) {
+						return newError("Index imezidi idadi ya elements")
+					}
+					array.Elements[idx.Value] = value
+				} else {
+					return newError("Hauwezi kufanya opereshen hii na %#v", index)
+				}
+			} else if hash, ok := obj.(*object.Dict); ok {
+				key := Eval(ie.Index, env)
+				if isError(key) {
+					return key
+				}
+				if hashKey, ok := key.(object.Hashable); ok {
+					hashed := hashKey.HashKey()
+					hash.Pairs[hashed] = object.DictPair{Key: key, Value: value}
+				} else {
+					return newError("Hauwezi kufanya opereshen hii na %T", key)
+				}
+			} else {
+				return newError("%T haifanyi operation hii", obj)
+			}
+		} else {
+			return newError("Tumia neno kama variable, sio %T", left)
+		}
 
 	}
 
@@ -173,17 +225,70 @@ func evalInfixExpression(
 	left, right object.Object,
 ) object.Object {
 	switch {
+
+	case operator == "+" && left.Type() == object.DICT_OBJ && right.Type() == object.DICT_OBJ:
+		leftVal := left.(*object.Dict).Pairs
+		rightVal := right.(*object.Dict).Pairs
+		pairs := make(map[object.HashKey]object.DictPair)
+		for k, v := range leftVal {
+			pairs[k] = v
+		}
+		for k, v := range rightVal {
+			pairs[k] = v
+		}
+		return &object.Dict{Pairs: pairs}
+
+	case operator == "+" && left.Type() == object.ARRAY_OBJ && right.Type() == object.ARRAY_OBJ:
+		leftVal := left.(*object.Array).Elements
+		rightVal := right.(*object.Array).Elements
+		elements := make([]object.Object, len(leftVal)+len(rightVal))
+		elements = append(leftVal, rightVal...)
+		return &object.Array{Elements: elements}
+
+	case operator == "*" && left.Type() == object.ARRAY_OBJ && right.Type() == object.INTEGER_OBJ:
+		leftVal := left.(*object.Array).Elements
+		rightVal := int(right.(*object.Integer).Value)
+		elements := leftVal
+		for i := rightVal; i > 1; i-- {
+			elements = append(elements, leftVal...)
+		}
+		return &object.Array{Elements: elements}
+
+	case operator == "*" && left.Type() == object.INTEGER_OBJ && right.Type() == object.ARRAY_OBJ:
+		leftVal := int(left.(*object.Integer).Value)
+		rightVal := right.(*object.Array).Elements
+		elements := rightVal
+		for i := leftVal; i > 1; i-- {
+			elements = append(elements, rightVal...)
+		}
+		return &object.Array{Elements: elements}
+
+	case operator == "*" && left.Type() == object.STRING_OBJ && right.Type() == object.INTEGER_OBJ:
+		leftVal := left.(*object.String).Value
+		rightVal := right.(*object.Integer).Value
+		return &object.String{Value: strings.Repeat(leftVal, int(rightVal))}
+
+	case operator == "*" && left.Type() == object.INTEGER_OBJ && right.Type() == object.STRING_OBJ:
+		leftVal := left.(*object.Integer).Value
+		rightVal := right.(*object.String).Value
+		return &object.String{Value: strings.Repeat(rightVal, int(leftVal))}
+
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ:
 		return evalIntegerInfixExpression(operator, left, right)
+
 	case operator == "==":
 		return nativeBoolToBooleanObject(left == right)
+
 	case operator == "!=":
 		return nativeBoolToBooleanObject(left != right)
+
 	case left.Type() != right.Type():
 		return newError("Aina Hazilingani: %s %s %s",
 			left.Type(), operator, right.Type())
+
 	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ:
 		return evalStringInfixExpression(operator, left, right)
+
 	default:
 		return newError("Operesheni Haielweki: %s %s %s",
 			left.Type(), operator, right.Type())
@@ -353,6 +458,8 @@ func evalIndexExpression(left, index object.Object) object.Object {
 	switch {
 	case left.Type() == object.ARRAY_OBJ && index.Type() == object.INTEGER_OBJ:
 		return evalArrayIndexExpression(left, index)
+	case left.Type() == object.ARRAY_OBJ && index.Type() != object.INTEGER_OBJ:
+		return newError("Tafadhali tumia number, sio: %s", index.Type())
 	case left.Type() == object.DICT_OBJ:
 		return evalDictIndexExpression(left, index)
 	default:
@@ -412,4 +519,26 @@ func evalDictIndexExpression(dict, index object.Object) object.Object {
 	}
 
 	return pair.Value
+}
+
+func evalWhileExpression(we *ast.WhileExpression, env *object.Environment) object.Object {
+	var result object.Object
+
+	for {
+		condition := Eval(we.Condition, env)
+		if isError(condition) {
+			return condition
+		}
+
+		if isTruthy(condition) {
+			result = Eval(we.Consequence, env)
+		} else {
+			break
+		}
+	}
+
+	if result != nil {
+		return result
+	}
+	return nil
 }

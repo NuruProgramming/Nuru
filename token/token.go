@@ -8,13 +8,13 @@ type Token struct {
 }
 
 const (
-	ILLEGAL = "ILLEGAL"
-	EOF     = "EOF"
+	ILLEGAL = "HARAMU"
+	EOF     = "MWISHO"
 
 	// Identifiers + literals
-	IDENT  = "IDENT"
-	INT    = "INT"
-	STRING = "STRING"
+	IDENT  = "KITAMBULISHI"
+	INT    = "NAMBA"
+	STRING = "NENO"
 
 	// Operators
 	ASSIGN   = "="
@@ -41,12 +41,13 @@ const (
 
 	// Keywords
 	FUNCTION = "FUNCTION"
-	LET      = "LET"
-	TRUE     = "TRUE"
-	FALSE    = "FALSE"
-	IF       = "IF"
-	ELSE     = "ELSE"
-	RETURN   = "RETURN"
+	LET      = "ACHA"
+	TRUE     = "KWELI"
+	FALSE    = "SIKWELI"
+	IF       = "KAMA"
+	ELSE     = "SIVYO"
+	RETURN   = "RUDISHA"
+	WHILE    = "WAKATI"
 )
 
 var keywords = map[string]TokenType{
@@ -55,7 +56,9 @@ var keywords = map[string]TokenType{
 	"kweli":   TRUE,
 	"sikweli": FALSE,
 	"kama":    IF,
+	"au":      ELSE,
 	"sivyo":   ELSE,
+	"wakati":  WHILE,
 	"rudisha": RETURN,
 }
 

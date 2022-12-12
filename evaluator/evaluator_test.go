@@ -174,11 +174,11 @@ func TestErrorHandling(t *testing.T) {
 	}{
 		{
 			"5 + kweli",
-			"Aina Hazilingani: NAMBARI + BOOLEAN",
+			"Aina Hazilingani: NAMBA + BOOLEAN",
 		},
 		{
 			"5 + kweli; 5;",
-			"Aina Hazilingani: NAMBARI + BOOLEAN",
+			"Aina Hazilingani: NAMBA + BOOLEAN",
 		},
 		{
 			"-kweli",
@@ -344,7 +344,7 @@ func TestBuiltinFunctions(t *testing.T) {
 		{`idadi("")`, 0},
 		{`idadi("four")`, 4},
 		{`idadi("hello world")`, 11},
-		{`idadi(1)`, "Samahani, hii function haitumiki na NAMBARI"},
+		{`idadi(1)`, "Samahani, hii function haitumiki na NAMBA"},
 		{`idadi("one", "two")`, "Hoja hazilingani, tunahitaji=1, tumepewa=2"},
 	}
 

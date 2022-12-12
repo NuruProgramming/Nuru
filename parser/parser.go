@@ -13,6 +13,7 @@ const (
 	// Think of BODMAS
 	_ int = iota
 	LOWEST
+	ASSIGN      // =
 	EQUALS      // ==
 	LESSGREATER // > OR <
 	SUM         // +
@@ -23,7 +24,8 @@ const (
 )
 
 var precedences = map[token.TokenType]int{
-	token.EQ:       EQUALS, // Lowest priority
+	token.ASSIGN:   ASSIGN, // Lowest priority
+	token.EQ:       EQUALS,
 	token.NOT_EQ:   EQUALS,
 	token.LT:       LESSGREATER,
 	token.GT:       LESSGREATER,
@@ -72,6 +74,8 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.FUNCTION, p.parseFunctionLiteral)
 	p.registerPrefix(token.LBRACKET, p.parseArrayLiteral)
 	p.registerPrefix(token.LBRACE, p.parseDictLiteral)
+	p.registerPrefix(token.WHILE, p.parseWhileExpression)
+
 	p.infixParseFns = make(map[token.TokenType]infixParseFn)
 	p.registerInfix(token.PLUS, p.parseInfixExpression)
 	p.registerInfix(token.MINUS, p.parseInfixExpression)
@@ -83,6 +87,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.GT, p.parseInfixExpression)
 	p.registerInfix(token.LPAREN, p.parseCallExpression)
 	p.registerInfix(token.LBRACKET, p.parseIndexExpression)
+	p.registerInfix(token.ASSIGN, p.parseAssignmentExpression)
 	return p
 }
 
@@ -98,9 +103,8 @@ func (p *Parser) ParseProgram() *ast.Program {
 
 	for !p.curTokenIs(token.EOF) {
 		stmt := p.parseStatement()
-		if stmt != nil {
-			program.Statements = append(program.Statements, stmt)
-		}
+		program.Statements = append(program.Statements, stmt)
+
 		p.nextToken()
 	}
 	return program
@@ -142,6 +146,24 @@ func (p *Parser) parseLetStatment() *ast.LetStatement {
 	return stmt
 }
 
+func (p *Parser) parseAssignmentExpression(exp ast.Expression) ast.Expression {
+	switch node := exp.(type) {
+	case *ast.Identifier, *ast.IndexExpression:
+	default:
+		msg := fmt.Sprintf("Tulitegemea kupata kitambulishi au array, badala yake tumepata: %T %#v", node, exp)
+		p.errors = append(p.errors, msg)
+		return nil
+	}
+
+	ae := &ast.AssignmentExpression{Token: p.curToken, Left: exp}
+
+	p.nextToken()
+
+	ae.Value = p.parseExpression(LOWEST)
+
+	return ae
+}
+
 func (p *Parser) curTokenIs(t token.TokenType) bool {
 	return p.curToken.Type == t
 }
@@ -165,7 +187,7 @@ func (p *Parser) Errors() []string {
 }
 
 func (p *Parser) peekError(t token.TokenType) {
-	msg := fmt.Sprintf("Expected next token to be %s, got %s instead", t, p.peekToken.Type)
+	msg := fmt.Sprintf("Tulitegemea kupata %s, badala yake tumepata %s", t, p.peekToken.Type)
 	p.errors = append(p.errors, msg)
 }
 
@@ -203,7 +225,7 @@ func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 }
 
 func (p *Parser) noPrefixParseFnError(t token.TokenType) {
-	msg := fmt.Sprintf("no prefix parse function for %s found", t)
+	msg := fmt.Sprintf("Tumeshindwa kuparse %s", t)
 	p.errors = append(p.errors, msg)
 }
 
@@ -237,7 +259,7 @@ func (p *Parser) parseIntegerLiteral() ast.Expression {
 
 	value, err := strconv.ParseInt(p.curToken.Literal, 0, 64)
 	if err != nil {
-		msg := fmt.Sprintf("could not parse %q as integer", p.curToken.Literal)
+		msg := fmt.Sprintf("Hatuwezi kuparse %q kama namba", p.curToken.Literal)
 		p.errors = append(p.errors, msg)
 		return nil
 	}
@@ -325,6 +347,17 @@ func (p *Parser) parseIfExpression() ast.Expression {
 
 	if p.peekTokenIs(token.ELSE) {
 		p.nextToken()
+		if p.peekTokenIs(token.IF) {
+			p.nextToken()
+			expression.Alternative = &ast.BlockStatement{
+				Statements: []ast.Statement{
+					&ast.ExpressionStatement{
+						Expression: p.parseIfExpression(),
+					},
+				},
+			}
+			return expression
+		}
 
 		if !p.expectPeek(token.LBRACE) {
 			return nil
@@ -344,9 +377,7 @@ func (p *Parser) parseBlockStatement() *ast.BlockStatement {
 
 	for !p.curTokenIs(token.RBRACE) && !p.curTokenIs(token.EOF) {
 		stmt := p.parseStatement()
-		if stmt != nil {
-			block.Statements = append(block.Statements, stmt)
-		}
+		block.Statements = append(block.Statements, stmt)
 		p.nextToken()
 	}
 
@@ -478,4 +509,27 @@ func (p *Parser) parseDictLiteral() ast.Expression {
 	}
 
 	return dict
+}
+
+func (p *Parser) parseWhileExpression() ast.Expression {
+	expression := &ast.WhileExpression{Token: p.curToken}
+
+	if !p.expectPeek(token.LPAREN) {
+		return nil
+	}
+
+	p.nextToken()
+	expression.Condition = p.parseExpression(LOWEST)
+
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+
+	if !p.expectPeek(token.LBRACE) {
+		return nil
+	}
+
+	expression.Consequence = p.parseBlockStatement()
+
+	return expression
 }

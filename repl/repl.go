@@ -99,8 +99,7 @@ func Start(in io.Reader, out io.Writer) {
 }
 
 func printParseErrors(out io.Writer, errors []string) {
-	io.WriteString(out, colorfy(ERROR_FACE, 31))
-	io.WriteString(out, "Oi! Umeleta shida gani??\n\n")
+	//io.WriteString(out, colorfy(ERROR_FACE, 31))
 	io.WriteString(out, "Kuna Errors Zifuatazo:\n")
 
 	for _, msg := range errors {

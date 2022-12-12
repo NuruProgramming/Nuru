@@ -38,6 +38,9 @@ chapa(list[2]);
 chapa(list[-100]); // prints null
 chapa(idadi(list));
 chapa(yamwisho(list));
+chapa([1,2,3] + [4,5,6]);
+list[0] = 1000
+chapa(list[0])
 
 // if statements
 chapa("Testing if statements...");
@@ -88,3 +91,18 @@ chapa("Testing dictionaries...")
 acha watu = [{"jina": "Mojo", "kabila": "Mnyakusa"}, {"jina": "Avi", "kabila": "Mwarabu wa dubai"}]
 
 chapa(watu, watu[0], watu[0]["jina"], watu[0]["kabila"])
+
+watu[0]["jina"] = "MJ";
+chapa(watu[0]["jina"]);
+
+chapa({"a":1} + {"b": 2})
+// testing while loop
+
+chapa("Testing while loop...");
+
+acha i = 10;
+
+wakati (i > 0) {
+	chapa(i);
+	i = i - 1;
+}

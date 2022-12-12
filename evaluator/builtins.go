@@ -10,7 +10,7 @@ import (
 )
 
 var builtins = map[string]*object.Builtin{
-	"idadi": &object.Builtin{
+	"idadi": {
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("Hoja hazilingani, tunahitaji=1, tumepewa=%d", len(args))
@@ -26,7 +26,7 @@ var builtins = map[string]*object.Builtin{
 			}
 		},
 	},
-	"yamwisho": &object.Builtin{
+	"yamwisho": {
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 1 {
 				return newError("Samahani, tunahitaji Hoja moja tu, wewe umeweka %d", len(args))
@@ -44,7 +44,7 @@ var builtins = map[string]*object.Builtin{
 			return NULL
 		},
 	},
-	"sukuma": &object.Builtin{
+	"sukuma": {
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) != 2 {
 				return newError("Samahani, tunahitaji Hoja 2, wewe umeweka %d", len(args))
@@ -56,30 +56,26 @@ var builtins = map[string]*object.Builtin{
 			arr := args[0].(*object.Array)
 			length := len(arr.Elements)
 
-			newElements := make([]object.Object, length+1, length+1)
+			newElements := make([]object.Object, length+1)
 			copy(newElements, arr.Elements)
 			newElements[length] = args[1]
 
 			return &object.Array{Elements: newElements}
 		},
 	},
-	"jaza": &object.Builtin{
+	"jaza": {
 		Fn: func(args ...object.Object) object.Object {
 
-			if len(args) > 1 || len(args) < 0 {
+			if len(args) > 1 {
 				return newError("Samahani, hii function inapokea hoja 0 au 1, wewe umeweka %d", len(args))
 			}
 
 			if len(args) > 0 && args[0].Type() != object.STRING_OBJ {
 				return newError(fmt.Sprintf(`Tafadhali tumia alama ya nukuu: "%s"`, args[0].Inspect()))
 			}
-			//if err := object.Check(
-			//	"jaza", args, object.RangeOfArgs(0, 1), object.WithTypes(object.STRING_OBJ)); err != nil {
-			//	return newError("Kuna kitu umebolonga aisee")
-			//}
 			if len(args) == 1 {
 				prompt := args[0].(*object.String).Value
-				fmt.Fprintf(os.Stdout, prompt)
+				fmt.Fprint(os.Stdout, prompt)
 			}
 
 			buffer := bufio.NewReader(os.Stdin)
@@ -92,7 +88,7 @@ var builtins = map[string]*object.Builtin{
 			return &object.String{Value: string(line)}
 		},
 	},
-	"chapa": &object.Builtin{
+	"chapa": {
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) == 0 {
 				fmt.Println("")

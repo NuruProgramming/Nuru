@@ -765,7 +765,7 @@ func TestParsingArrayLiterals(t *testing.T) {
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
-	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
 	array, ok := stmt.Expression.(*ast.ArrayLiteral)
 	if !ok {
 		t.Fatalf("Expression not ast.ArrayLiteral, got=%T", len(array.Elements))
@@ -784,7 +784,7 @@ func TestParsingIndexExpressions(t *testing.T) {
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
-	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	stmt := program.Statements[0].(*ast.ExpressionStatement)
 	indexExp, ok := stmt.Expression.(*ast.IndexExpression)
 	if !ok {
 		t.Fatalf("Expression not *ast.IndexExpression, got=%T", stmt.Expression)

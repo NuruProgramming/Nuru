@@ -45,7 +45,7 @@ func (p *Program) String() string {
 }
 
 type LetStatement struct {
-	Token token.Token // only placed to print errors
+	Token token.Token
 	Name  *Identifier
 	Value Expression
 }
@@ -96,7 +96,7 @@ func (rs *ReturnStatement) String() string {
 }
 
 type ExpressionStatement struct {
-	Token      token.Token // the first token of the expression
+	Token      token.Token
 	Expression Expression
 }
 
@@ -193,7 +193,7 @@ func (ie *IfExpression) String() string {
 }
 
 type BlockStatement struct {
-	Token      token.Token // the {
+	Token      token.Token
 	Statements []Statement
 }
 
@@ -327,6 +327,43 @@ func (dl *DictLiteral) String() string {
 	out.WriteString("(")
 	out.WriteString(strings.Join(pairs, ", "))
 	out.WriteString("}")
+
+	return out.String()
+}
+
+type AssignmentExpression struct {
+	Token token.Token
+	Left  Expression
+	Value Expression
+}
+
+func (ae *AssignmentExpression) expressionNode()      {}
+func (ae *AssignmentExpression) TokenLiteral() string { return ae.Token.Literal }
+func (ae *AssignmentExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(ae.Left.String())
+	out.WriteString(ae.TokenLiteral())
+	out.WriteString(ae.Value.String())
+
+	return out.String()
+}
+
+type WhileExpression struct {
+	Token       token.Token
+	Condition   Expression
+	Consequence *BlockStatement
+}
+
+func (we *WhileExpression) expressionNode()      {}
+func (we *WhileExpression) TokenLiteral() string { return we.Token.Literal }
+func (we *WhileExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("while")
+	out.WriteString(we.Condition.String())
+	out.WriteString(" ")
+	out.WriteString(we.Consequence.String())
 
 	return out.String()
 }

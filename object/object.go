@@ -12,16 +12,16 @@ import (
 type ObjectType string
 
 const (
-	INTEGER_OBJ      = "NAMBARI"
+	INTEGER_OBJ      = "NAMBA"
 	BOOLEAN_OBJ      = "BOOLEAN"
-	NULL_OBJ         = "NULL" // Not sure if the language should have null lol
-	RETURN_VALUE_OBJ = "RETURN_VALUE"
-	ERROR_OBJ        = "ERROR"
+	NULL_OBJ         = "NULL"
+	RETURN_VALUE_OBJ = "RUDISHA"
+	ERROR_OBJ        = "KOSA"
 	FUNCTION_OBJ     = "FUNCTION"
 	STRING_OBJ       = "NENO"
-	BUILTIN_OBJ      = "BUILTIN"
+	BUILTIN_OBJ      = "YA_NDANI"
 	ARRAY_OBJ        = "ARRAY"
-	DICT_OBJ         = "DICT"
+	DICT_OBJ         = "KAMUSI"
 )
 
 type Object interface {
