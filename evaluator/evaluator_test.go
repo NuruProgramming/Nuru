@@ -216,6 +216,10 @@ kama (10 > 1) {
 			`"Habari" - "Habari"`,
 			"Operesheni Haielweki: NENO - NENO",
 		},
+		{
+			`{"jina": "Avi"}[fn(x) {x}];`,
+			"Samahani, FUNCTION haitumiki kama key",
+		},
 	}
 
 	for _, tt := range tests {
@@ -337,11 +341,11 @@ func TestBuiltinFunctions(t *testing.T) {
 		input    string
 		expected interface{}
 	}{
-		{`len("")`, 0},
-		{`len("four")`, 4},
-		{`len("hello world")`, 11},
-		{`len(1)`, "Samahani, hii function haitumiki na NAMBARI"},
-		{`len("one", "two")`, "Hoja hazilingani, tunahitaji=1, tumepewa=2"},
+		{`idadi("")`, 0},
+		{`idadi("four")`, 4},
+		{`idadi("hello world")`, 11},
+		{`idadi(1)`, "Samahani, hii function haitumiki na NAMBARI"},
+		{`idadi("one", "two")`, "Hoja hazilingani, tunahitaji=1, tumepewa=2"},
 	}
 
 	for _, tt := range tests {
@@ -413,6 +417,92 @@ func TestArrayIndexExpressions(t *testing.T) {
 		{
 			"[1, 2, 3][-1]",
 			nil,
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		integer, ok := tt.expected.(int)
+		if ok {
+			testIntegerObject(t, evaluated, int64(integer))
+		} else {
+			testNullObject(t, evaluated)
+		}
+	}
+}
+
+func TestDictLiterals(t *testing.T) {
+	input := `acha two = "two";
+{
+	"one": 10 - 9,
+	two: 1 +1,
+	"thr" + "ee": 6 / 2,
+	4: 4,
+	kweli: 5,
+	sikweli: 6
+}`
+
+	evaluated := testEval(input)
+	result, ok := evaluated.(*object.Dict)
+	if !ok {
+		t.Fatalf("Eval didn't return a dict, got=%T(%+v)", evaluated, evaluated)
+	}
+
+	expected := map[object.HashKey]int64{
+		(&object.String{Value: "one"}).HashKey():   1,
+		(&object.String{Value: "two"}).HashKey():   2,
+		(&object.String{Value: "three"}).HashKey(): 3,
+		(&object.Integer{Value: 4}).HashKey():      4,
+		TRUE.HashKey():                             5,
+		FALSE.HashKey():                            6,
+	}
+
+	if len(result.Pairs) != len(expected) {
+		t.Fatalf("Dict has wrong number of pairs, got=%d", len(result.Pairs))
+	}
+
+	for expectedKey, expectedValue := range expected {
+		pair, ok := result.Pairs[expectedKey]
+		if !ok {
+			t.Errorf("No pair for give key")
+		}
+
+		testIntegerObject(t, pair.Value, expectedValue)
+	}
+}
+
+func TestDictIndexExpression(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{
+			`{"foo": 5}["foo"]`,
+			5,
+		},
+		{
+			`{"foo": 5}["bar"]`,
+			nil,
+		},
+		{
+			`acha key = "foo"; {"foo": 5}[key]`,
+			5,
+		},
+		{
+			`{}["foo"]`,
+			nil,
+		},
+		{
+			`{5: 5}[5]`,
+			5,
+		},
+		{
+			`{kweli: 5}[kweli]`,
+			5,
+		},
+		{
+			`{sikweli: 5}[sikweli]`,
+			5,
 		},
 	}
 

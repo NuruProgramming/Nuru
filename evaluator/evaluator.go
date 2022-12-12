@@ -103,6 +103,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return index
 		}
 		return evalIndexExpression(left, index)
+	case *ast.DictLiteral:
+		return evalDictLiteral(node, env)
 
 	}
 
@@ -351,6 +353,8 @@ func evalIndexExpression(left, index object.Object) object.Object {
 	switch {
 	case left.Type() == object.ARRAY_OBJ && index.Type() == object.INTEGER_OBJ:
 		return evalArrayIndexExpression(left, index)
+	case left.Type() == object.DICT_OBJ:
+		return evalDictIndexExpression(left, index)
 	default:
 		return newError("Operesheni hii haiwezekani kwa: %s", left.Type())
 	}
@@ -366,4 +370,46 @@ func evalArrayIndexExpression(array, index object.Object) object.Object {
 	}
 
 	return arrayObject.Elements[idx]
+}
+
+func evalDictLiteral(node *ast.DictLiteral, env *object.Environment) object.Object {
+	pairs := make(map[object.HashKey]object.DictPair)
+
+	for keyNode, valueNode := range node.Pairs {
+		key := Eval(keyNode, env)
+		if isError(key) {
+			return key
+		}
+
+		hashKey, ok := key.(object.Hashable)
+		if !ok {
+			return newError("Hashing imeshindikana: %s", key.Type())
+		}
+
+		value := Eval(valueNode, env)
+		if isError(value) {
+			return value
+		}
+
+		hashed := hashKey.HashKey()
+		pairs[hashed] = object.DictPair{Key: key, Value: value}
+	}
+
+	return &object.Dict{Pairs: pairs}
+}
+
+func evalDictIndexExpression(dict, index object.Object) object.Object {
+	dictObject := dict.(*object.Dict)
+
+	key, ok := index.(object.Hashable)
+	if !ok {
+		return newError("Samahani, %s haitumiki kama key", index.Type())
+	}
+
+	pair, ok := dictObject.Pairs[key.HashKey()]
+	if !ok {
+		return NULL
+	}
+
+	return pair.Value
 }

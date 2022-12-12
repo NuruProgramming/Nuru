@@ -76,3 +76,15 @@ acha salamu = fn() {
     }
 
 chapa(salamu());
+
+/*
+Multiline comment
+*/
+
+// test dictionaries
+
+chapa("Testing dictionaries...")
+
+acha watu = [{"jina": "Mojo", "kabila": "Mnyakusa"}, {"jina": "Avi", "kabila": "Mwarabu wa dubai"}]
+
+chapa(watu, watu[0], watu[0]["jina"], watu[0]["kabila"])
