@@ -1,4 +1,4 @@
-# NURU✨PROGRAMMING✨LANGUAGE
+<h1 align="center"> NURU✨PROGRAMMING✨LANGUAGE</h1>
 <p align="center">
     <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/badge/Nuru-Programming%20Language-yellow"></a>
     <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/badge/platform-Linux | Windows | Android-green.svg"></a>
@@ -17,14 +17,23 @@ instructions for your device below:
 ### Linux
 
  - Download the binary:
+
 ```
-curl //download URL
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.1.0/nuru_linux_amd64_v0.1.0.tar.gz
 ```
- - Add it to your $PATH
+
+ - Extract the file:
+
+```
+tar -xzvf nuru_linux_amd64_v0.1.0.tar.gz
+```
+ - Add it to your $PATH:
+
 ```
 cp nuru $HOME/bin
 ```
  - Confirm installation with:
+
 ```
 nuru -v
 ```
@@ -35,7 +44,12 @@ nuru -v
  - Download the binary with this command:
 
 ```
-curl //download link
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.1.0/nuru_android_arm64_v0.1.0.tar.gz
+```
+ - Extract the file:
+
+```
+tar -xzvf nuru_android_arm64_v0.1.0.tar.gz
 ```
  - Add it to path:
 
@@ -279,8 +293,10 @@ karibu
 >>> 2 + 2
 4
 ```
-**Kindly Note that everything should be placed in a single line, separated by a semicolon.**
-
+Kindly Note that everything should be placed in a single line. Here's an example:
+```
+>>> kama (x > y) {andika("X ni kubwa")} sivyo {andika("Y ni kubwa")}
+```
 ### Running From File
 
 To run a Nuru script, write the `nuru` command followed by the name of the file with a `.nr` extension:
