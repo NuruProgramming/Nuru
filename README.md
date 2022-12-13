@@ -305,6 +305,10 @@ To run a Nuru script, write the `nuru` command followed by the name of the file 
 nuru myFile.nr
 ```
 
+## Issues
+
+Kindly open an [Issue](https://github.com/AvicennaJr/Nuru/issues) to make suggestions and anything else.
+
 ## Contributions
 
 All contributions are welcomed. Clone the repo, hack it, make sure all tests are passing then submit a pull request.
