@@ -155,7 +155,7 @@ Nuru has the following types:
 Type      | Syntax                                    | Comments
 --------- | ----------------------------------------- | -----------------------
 BOOL      | `kweli sikweli`                           | kweli == true, sikweli false
-INT       | `1, 100, 342, -4                          | These are signed 64 bit integers
+INT       | `1, 100, 342, -4`                         | These are signed 64 bit integers
 STRING    | `"" "mambo" "habari yako"`                | They MUST be in DOUBLE QUOTES `"`
 ARRAY     | `[] [1, 2, 3] [1, "moja", kweli, ]`       | Arrays can hold any types
 DICT      | `{} {"a": 3, 1: "moja", kweli: 2}`        | Keys can be int, string or bool
