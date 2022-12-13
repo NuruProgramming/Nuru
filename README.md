@@ -69,7 +69,9 @@ nuru -v
 ```
 mkdir C:\bin
 ```
- - Move the downloaded binary `nuru.exe` to the folder `C:\bin`
+ - Download the Nuru Program [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.1.0/nuru_windows_amd64_v0.1.0.exe)
+ - Rename the downloaded program from `nuru_windows_amd64_v0.1.0.exe` to `nuru.exe`
+ - Move the file `nuru.exe` to the folder `C:\bin`
  - Add the bin folder to Path with this command:
 
 ```
