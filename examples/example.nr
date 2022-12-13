@@ -1,84 +1,83 @@
-chapa("Testing basic types...");
-chapa(2 + 2);
-chapa(4 * 4);
+andika("Testing basic types...");
+andika(2 + 2);
+andika(4 * 4);
 acha a = 10;
 acha b = 20;
 
-chapa(a + b);
+andika(a + b);
 
-chapa(kweli == sikweli);
-chapa("Testing empty lines...")
-chapa();
-chapa();
-chapa();
-chapa("Mambo vipi");
+andika(kweli == sikweli);
+andika("Testing empty lines...")
+andika();
+andika();
+andika();
+andika("Mambo vipi");
 
-chapa("Testing Functions... ");
+andika("Testing Functions... ");
 
 acha jumlisha = fn(x, y) {x + y};
 
-chapa(jumlisha(20,30));
-chapa(jumlisha(100,1000));
+andika(jumlisha(20,30));
+andika(jumlisha(100,1000));
 
 acha zidisha = fn(x, y) {x * y};
 
-chapa(zidisha(100,1000));
-chapa(zidisha(200, 20));
+andika(zidisha(100,1000));
+andika(zidisha(200, 20));
 
 // lists can hold any value
-chapa("Testing lists...");
+andika("Testing lists...");
 acha list = [1, "a", kweli, sikweli];
 
 // a few builtins
 
 acha list = sukuma(list, jumlisha(4,5));
 
-chapa(list);
-chapa(list[2]);
-chapa(list[-100]); // prints null
-chapa(idadi(list));
-chapa(yamwisho(list));
-chapa([1,2,3] + [4,5,6]);
+andika(list);
+andika(list[2]);
+andika(list[-100]); // prints null
+andika(idadi(list));
+andika(yamwisho(list));
+andika([1,2,3] + [4,5,6]);
 list[0] = 1000
-chapa(list[0])
+andika(list[0])
 
 // if statements
-chapa("Testing if statements...");
+andika("Testing if statements...");
 kama (1 > 2) {
-	chapa("Moja ni zaidi ya mbili");
+	andika("Moja ni zaidi ya mbili");
 } sivyo {
-	chapa("Moja si zaidi ya mbili");
+	andika("Moja si zaidi ya mbili");
 }
 
 kama (idadi("Habari") == 6) {
-	chapa("Habari yako ndugu");
+	andika("Habari yako ndugu");
 }
 
 // fibonacci example
-chapa("Testing fibonacci...");
+andika("Testing fibonacci...");
 
 acha fibo = fn(x) {
 	kama (x == 0) {
 		rudisha 0;
-	} sivyo {
-		kama (x == 1) {
+	} au kama (x == 1) {
 			rudisha 1;
-		} sivyo {
+	} sivyo {
 			rudisha fibo(x - 1) + fibo(x - 2);
-		}
 	}
 }
 
-chapa(fibo(10));
+
+andika(fibo(10));
 
 // testing input
-chapa("Testing input from user...");
+andika("Testing input from user...");
 acha salamu = fn() {
         acha jina = jaza("Unaitwa nani rafiki? ");
         rudisha "Mambo vipi " + jina;
     }
 
-chapa(salamu());
+andika(salamu());
 
 /*
 Multiline comment
@@ -86,23 +85,23 @@ Multiline comment
 
 // test dictionaries
 
-chapa("Testing dictionaries...")
+andika("Testing dictionaries...")
 
 acha watu = [{"jina": "Mojo", "kabila": "Mnyakusa"}, {"jina": "Avi", "kabila": "Mwarabu wa dubai"}]
 
-chapa(watu, watu[0], watu[0]["jina"], watu[0]["kabila"])
+andika(watu, watu[0], watu[0]["jina"], watu[0]["kabila"])
 
 watu[0]["jina"] = "MJ";
-chapa(watu[0]["jina"]);
+andika(watu[0]["jina"]);
 
-chapa({"a":1} + {"b": 2})
+andika({"a":1} + {"b": 2})
 // testing while loop
 
-chapa("Testing while loop...");
+andika("Testing while loop...");
 
 acha i = 10;
 
 wakati (i > 0) {
-	chapa(i);
+	andika(i);
 	i = i - 1;
 }

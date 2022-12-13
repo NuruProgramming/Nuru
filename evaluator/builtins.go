@@ -88,7 +88,7 @@ var builtins = map[string]*object.Builtin{
 			return &object.String{Value: string(line)}
 		},
 	},
-	"chapa": {
+	"andika": {
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) == 0 {
 				fmt.Println("")
