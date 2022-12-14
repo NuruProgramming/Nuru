@@ -29,7 +29,7 @@ sudo tar -C $HOME/bin -xzvf nuru_linux_amd64_v0.1.0.tar.gz
 ```
  - Add $HOME/bin to path:
 ```
-export PATH="${HOME}/bin:${PATH}"
+echo 'export PATH="${HOME}/bin:${PATH}"' >> ~/.bashrc
 ```
 
  - Confirm installation with:
