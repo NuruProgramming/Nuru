@@ -22,16 +22,12 @@ instructions for your device below:
 curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.1.0/nuru_linux_amd64_v0.1.0.tar.gz
 ```
 
- - Extract the file:
+ - Extract the file to make global available:
 
 ```
-tar -xzvf nuru_linux_amd64_v0.1.0.tar.gz
+sudo tar -C /usr/local/bin -xzvf nuru_linux_amd64_v0.1.0.tar.gz
 ```
- - Add it to your $PATH:
 
-```
-cp nuru $HOME/bin
-```
  - Confirm installation with:
 
 ```
