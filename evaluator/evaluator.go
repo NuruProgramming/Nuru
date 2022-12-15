@@ -108,6 +108,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalDictLiteral(node, env)
 	case *ast.WhileExpression:
 		return evalWhileExpression(node, env)
+	case *ast.Null:
+		return NULL
 	case *ast.AssignmentExpression:
 		left := Eval(node.Left, env)
 		if isError(left) {
@@ -417,9 +419,12 @@ func applyFunction(fn object.Object, args []object.Object) object.Object {
 		evaluated := Eval(fn.Body, extendedEnv)
 		return unwrapReturnValue(evaluated)
 	case *object.Builtin:
-		return fn.Fn(args...)
+		if result := fn.Fn(args...); result != nil {
+			return result
+		}
+		return NULL
 	default:
-		return newError("sio function: %s", fn.Type())
+		return newError("Hii sio function: %s", fn.Type())
 	}
 
 }

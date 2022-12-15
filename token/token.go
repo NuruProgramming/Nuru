@@ -48,6 +48,7 @@ const (
 	ELSE     = "SIVYO"
 	RETURN   = "RUDISHA"
 	WHILE    = "WAKATI"
+	NULL     = "TUPU"
 )
 
 var keywords = map[string]TokenType{
@@ -60,6 +61,7 @@ var keywords = map[string]TokenType{
 	"sivyo":   ELSE,
 	"wakati":  WHILE,
 	"rudisha": RETURN,
+	"tupu":    NULL,
 }
 
 func LookupIdent(ident string) TokenType {

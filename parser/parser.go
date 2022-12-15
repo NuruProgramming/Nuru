@@ -75,6 +75,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.LBRACKET, p.parseArrayLiteral)
 	p.registerPrefix(token.LBRACE, p.parseDictLiteral)
 	p.registerPrefix(token.WHILE, p.parseWhileExpression)
+	p.registerPrefix(token.NULL, p.parseNull)
 
 	p.infixParseFns = make(map[token.TokenType]infixParseFn)
 	p.registerInfix(token.PLUS, p.parseInfixExpression)
@@ -144,6 +145,10 @@ func (p *Parser) parseLetStatment() *ast.LetStatement {
 	}
 
 	return stmt
+}
+
+func (p *Parser) parseNull() ast.Expression {
+	return &ast.Null{Token: p.curToken}
 }
 
 func (p *Parser) parseAssignmentExpression(exp ast.Expression) ast.Expression {
@@ -229,6 +234,11 @@ func (p *Parser) noPrefixParseFnError(t token.TokenType) {
 	p.errors = append(p.errors, msg)
 }
 
+func (p *Parser) noInfixParseFnError(t token.TokenType) {
+	msg := fmt.Sprintf("Tumeshindwa kuparse %s", t)
+	p.errors = append(p.errors, msg)
+}
+
 func (p *Parser) parseExpression(precedence int) ast.Expression {
 	prefix := p.prefixParseFns[p.curToken.Type]
 	if prefix == nil {
@@ -240,7 +250,8 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 	for !p.peekTokenIs(token.SEMICOLON) && precedence < p.peekPrecedence() {
 		infix := p.infixParseFns[p.peekToken.Type]
 		if infix == nil {
-			return leftExp
+			p.noInfixParseFnError(p.peekToken.Type)
+			return nil
 		}
 
 		p.nextToken()
