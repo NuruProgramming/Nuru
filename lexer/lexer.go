@@ -84,6 +84,8 @@ func (l *Lexer) NextToken() token.Token {
 	case '"':
 		tok.Type = token.STRING
 		tok.Literal = l.readString()
+	case '\'':
+		tok = token.Token{Type: token.STRING, Literal: l.readSingleQuoteString()}
 	case '[':
 		tok = newToken(token.LBRACKET, l.ch)
 	case ']':
@@ -190,4 +192,18 @@ func (l *Lexer) readString() string {
 	}
 
 	return l.input[position:l.position]
+}
+
+func (l *Lexer) readSingleQuoteString() string {
+	var str string
+	for {
+		l.readChar()
+		if l.ch == '\'' || l.ch == 0 {
+			break
+		} else if l.ch == '\\' && l.peekChar() == '\'' {
+			l.readChar()
+		}
+		str += string(l.ch)
+	}
+	return str
 }
