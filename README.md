@@ -19,13 +19,13 @@ instructions for your device below:
  - Download the binary:
 
 ```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.1.0/nuru_linux_amd64_v0.1.0.tar.gz
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.1.5/nuru_linux_amd64_v0.1.5.tar.gz
 ```
 
   - Extract the file to make global available:
 
 ```
-sudo tar -C /usr/local/bin -xzvf nuru_linux_amd64_v0.1.0.tar.gz
+sudo tar -C /usr/local/bin -xzvf nuru_linux_amd64_v0.1.5.tar.gz
 ```
 
  - Confirm installation with:
@@ -40,12 +40,12 @@ nuru -v
  - Download the binary with this command:
 
 ```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.1.0/nuru_android_arm64_v0.1.0.tar.gz
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.1.5/nuru_android_arm64_v0.1.5.tar.gz
 ```
  - Extract the file:
 
 ```
-tar -xzvf nuru_android_arm64_v0.1.0.tar.gz
+tar -xzvf nuru_android_arm64_v0.1.5.tar.gz
 ```
  - Add it to path:
 
@@ -65,8 +65,8 @@ nuru -v
 ```
 mkdir C:\bin
 ```
- - Download the Nuru Program [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.1.0/nuru_windows_amd64_v0.1.0.exe)
- - Rename the downloaded program from `nuru_windows_amd64_v0.1.0.exe` to `nuru.exe`
+ - Download the Nuru Program [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.1.5/nuru_windows_amd64_v0.1.5.exe)
+ - Rename the downloaded program from `nuru_windows_amd64_v0.1.5.exe` to `nuru.exe`
  - Move the file `nuru.exe` to the folder `C:\bin`
  - Add the bin folder to Path with this command:
 
