@@ -224,6 +224,8 @@ func evalMinusPrefixOperatorExpression(right object.Object, line int) object.Obj
 
 func evalInfixExpression(operator string, left, right object.Object, line int) object.Object {
 	switch {
+	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ:
+		return evalStringInfixExpression(operator, left, right, line)
 
 	case operator == "+" && left.Type() == object.DICT_OBJ && right.Type() == object.DICT_OBJ:
 		leftVal := left.(*object.Dict).Pairs
@@ -284,9 +286,6 @@ func evalInfixExpression(operator string, left, right object.Object, line int) o
 	case left.Type() != right.Type():
 		return newError("Mstari %d: Aina Hazilingani: %s %s %s",
 			line, left.Type(), operator, right.Type())
-
-	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ:
-		return evalStringInfixExpression(operator, left, right, line)
 
 	default:
 		return newError("Mstari %d: Operesheni Haielweki: %s %s %s",
@@ -450,11 +449,10 @@ func evalStringInfixExpression(operator string, left, right object.Object, line 
 	switch operator {
 	case "+":
 		return &object.String{Value: leftVal + rightVal}
-	// doesn't work for some reason, maybe cause its cause its 4am
-	// case "==":
-	// 	return nativeBoolToBooleanObject(leftVal == rightVal)
-	// case "!=":
-	// 	return nativeBoolToBooleanObject(leftVal != rightVal)
+	case "==":
+		return nativeBoolToBooleanObject(leftVal == rightVal)
+	case "!=":
+		return nativeBoolToBooleanObject(leftVal != rightVal)
 	default:
 		return newError("Mstari %d: Operesheni Haielweki: %s %s %s", line, left.Type(), operator, right.Type())
 	}
