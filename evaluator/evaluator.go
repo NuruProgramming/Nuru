@@ -565,7 +565,7 @@ func evalWhileExpression(we *ast.WhileExpression, env *object.Environment) objec
 		if isError(evaluated) {
 			return evaluated
 		}
-		if evaluated.Type() == object.BREAK_OBJ {
+		if evaluated != nil && evaluated.Type() == object.BREAK_OBJ {
 			return evaluated
 		}
 		evalWhileExpression(we, env)

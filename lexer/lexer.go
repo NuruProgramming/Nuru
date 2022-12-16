@@ -223,15 +223,33 @@ func (l *Lexer) skipMultiLineComment() {
 }
 
 func (l *Lexer) readString() string {
-	position := l.position + 1
+	var str string
 	for {
 		l.readChar()
 		if l.ch == '"' || l.ch == 0 {
 			break
+		} else if l.ch == '\\' {
+			switch l.peekChar() {
+			case 'n':
+				l.readChar()
+				l.ch = '\n'
+			case 'r':
+				l.readChar()
+				l.ch = '\r'
+			case 't':
+				l.readChar()
+				l.ch = '\t'
+			case '"':
+				l.readChar()
+				l.ch = '"'
+			case '\\':
+				l.readChar()
+				l.ch = '\\'
+			}
 		}
+		str += string(l.ch)
 	}
-
-	return l.input[position:l.position]
+	return str
 }
 
 func (l *Lexer) readSingleQuoteString() string {
@@ -240,8 +258,24 @@ func (l *Lexer) readSingleQuoteString() string {
 		l.readChar()
 		if l.ch == '\'' || l.ch == 0 {
 			break
-		} else if l.ch == '\\' && l.peekChar() == '\'' {
-			l.readChar()
+		} else if l.ch == '\\' {
+			switch l.peekChar() {
+			case 'n':
+				l.readChar()
+				l.ch = '\n'
+			case 'r':
+				l.readChar()
+				l.ch = '\r'
+			case 't':
+				l.readChar()
+				l.ch = '\t'
+			case '"':
+				l.readChar()
+				l.ch = '"'
+			case '\\':
+				l.readChar()
+				l.ch = '\\'
+			}
 		}
 		str += string(l.ch)
 	}
