@@ -33,7 +33,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if isError(right) {
 			return right
 		}
-		return evalPrefixExpression(node.Operator, right)
+		return evalPrefixExpression(node.Operator, right, node.Token.Line)
 
 	case *ast.InfixExpression:
 		left := Eval(node.Left, env)
@@ -44,7 +44,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if isError(right) {
 			return right
 		}
-		return evalInfixExpression(node.Operator, left, right)
+		return evalInfixExpression(node.Operator, left, right, node.Token.Line)
 
 	case *ast.BlockStatement:
 		return evalBlockStatement(node, env)
@@ -84,7 +84,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if len(args) == 1 && isError(args[0]) {
 			return args[0]
 		}
-		return applyFunction(function, args)
+		return applyFunction(function, args, node.Token.Line)
 	case *ast.StringLiteral:
 		return &object.String{Value: node.Value}
 
@@ -103,7 +103,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if isError(index) {
 			return index
 		}
-		return evalIndexExpression(left, index)
+		return evalIndexExpression(left, index, node.Token.Line)
 	case *ast.DictLiteral:
 		return evalDictLiteral(node, env)
 	case *ast.WhileExpression:
@@ -189,14 +189,14 @@ func nativeBoolToBooleanObject(input bool) *object.Boolean {
 	return FALSE
 }
 
-func evalPrefixExpression(operator string, right object.Object) object.Object {
+func evalPrefixExpression(operator string, right object.Object, line int) object.Object {
 	switch operator {
 	case "!":
 		return evalBangOperatorExpression(right)
 	case "-":
-		return evalMinusPrefixOperatorExpression(right)
+		return evalMinusPrefixOperatorExpression(right, line)
 	default:
-		return newError("operesheni haieleweki: %s%s", operator, right.Type())
+		return newError("Mstari %d: peresheni haieleweki: %s%s", line, operator, right.Type())
 	}
 }
 
@@ -213,19 +213,16 @@ func evalBangOperatorExpression(right object.Object) object.Object {
 	}
 }
 
-func evalMinusPrefixOperatorExpression(right object.Object) object.Object {
+func evalMinusPrefixOperatorExpression(right object.Object, line int) object.Object {
 	if right.Type() != object.INTEGER_OBJ {
-		return newError("Operesheni Haielweki: -%s", right.Type())
+		return newError("Mstari %d: Operesheni Haielweki: -%s", line, right.Type())
 	}
 
 	value := right.(*object.Integer).Value
 	return &object.Integer{Value: -value}
 }
 
-func evalInfixExpression(
-	operator string,
-	left, right object.Object,
-) object.Object {
+func evalInfixExpression(operator string, left, right object.Object, line int) object.Object {
 	switch {
 
 	case operator == "+" && left.Type() == object.DICT_OBJ && right.Type() == object.DICT_OBJ:
@@ -276,7 +273,7 @@ func evalInfixExpression(
 		return &object.String{Value: strings.Repeat(rightVal, int(leftVal))}
 
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ:
-		return evalIntegerInfixExpression(operator, left, right)
+		return evalIntegerInfixExpression(operator, left, right, line)
 
 	case operator == "==":
 		return nativeBoolToBooleanObject(left == right)
@@ -285,22 +282,19 @@ func evalInfixExpression(
 		return nativeBoolToBooleanObject(left != right)
 
 	case left.Type() != right.Type():
-		return newError("Aina Hazilingani: %s %s %s",
-			left.Type(), operator, right.Type())
+		return newError("Mstari %d: Aina Hazilingani: %s %s %s",
+			line, left.Type(), operator, right.Type())
 
 	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ:
-		return evalStringInfixExpression(operator, left, right)
+		return evalStringInfixExpression(operator, left, right, line)
 
 	default:
-		return newError("Operesheni Haielweki: %s %s %s",
-			left.Type(), operator, right.Type())
+		return newError("Mstari %d: Operesheni Haielweki: %s %s %s",
+			line, left.Type(), operator, right.Type())
 	}
 }
 
-func evalIntegerInfixExpression(
-	operator string,
-	left, right object.Object,
-) object.Object {
+func evalIntegerInfixExpression(operator string, left, right object.Object, line int) object.Object {
 	leftVal := left.(*object.Integer).Value
 	rightVal := right.(*object.Integer).Value
 
@@ -322,8 +316,8 @@ func evalIntegerInfixExpression(
 	case "!=":
 		return nativeBoolToBooleanObject(leftVal != rightVal)
 	default:
-		return newError("Operesheni Haielweki: %s %s %s",
-			left.Type(), operator, right.Type())
+		return newError("Mstari %d: Operesheni Haielweki: %s %s %s",
+			line, left.Type(), operator, right.Type())
 	}
 }
 
@@ -394,7 +388,7 @@ func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object
 		return builtin
 	}
 
-	return newError("Neno Halifahamiki: " + node.Value)
+	return newError("Mstari %d: Neno Halifahamiki: %s", node.Token.Line, node.Value)
 }
 
 func evalExpressions(exps []ast.Expression, env *object.Environment) []object.Object {
@@ -412,7 +406,7 @@ func evalExpressions(exps []ast.Expression, env *object.Environment) []object.Ob
 	return result
 }
 
-func applyFunction(fn object.Object, args []object.Object) object.Object {
+func applyFunction(fn object.Object, args []object.Object, line int) object.Object {
 	switch fn := fn.(type) {
 	case *object.Function:
 		extendedEnv := extendedFunctionEnv(fn, args)
@@ -424,7 +418,7 @@ func applyFunction(fn object.Object, args []object.Object) object.Object {
 		}
 		return NULL
 	default:
-		return newError("Hii sio function: %s", fn.Type())
+		return newError("Mstari %d: Hii sio function: %s", line, fn.Type())
 	}
 
 }
@@ -448,9 +442,9 @@ func unwrapReturnValue(obj object.Object) object.Object {
 	return obj
 }
 
-func evalStringInfixExpression(operator string, left, right object.Object) object.Object {
+func evalStringInfixExpression(operator string, left, right object.Object, line int) object.Object {
 	if operator != "+" {
-		return newError("Operesheni Haielweki: %s %s %s", left.Type(), operator, right.Type())
+		return newError("Mstari %d: Operesheni Haielweki: %s %s %s", line, left.Type(), operator, right.Type())
 	}
 
 	leftVal := left.(*object.String).Value
@@ -459,16 +453,16 @@ func evalStringInfixExpression(operator string, left, right object.Object) objec
 	return &object.String{Value: leftVal + rightVal}
 }
 
-func evalIndexExpression(left, index object.Object) object.Object {
+func evalIndexExpression(left, index object.Object, line int) object.Object {
 	switch {
 	case left.Type() == object.ARRAY_OBJ && index.Type() == object.INTEGER_OBJ:
 		return evalArrayIndexExpression(left, index)
 	case left.Type() == object.ARRAY_OBJ && index.Type() != object.INTEGER_OBJ:
-		return newError("Tafadhali tumia number, sio: %s", index.Type())
+		return newError("Mstari %d: Tafadhali tumia number, sio: %s", line, index.Type())
 	case left.Type() == object.DICT_OBJ:
-		return evalDictIndexExpression(left, index)
+		return evalDictIndexExpression(left, index, line)
 	default:
-		return newError("Operesheni hii haiwezekani kwa: %s", left.Type())
+		return newError("Mstari %d: Operesheni hii haiwezekani kwa: %s", line, left.Type())
 	}
 }
 
@@ -495,7 +489,7 @@ func evalDictLiteral(node *ast.DictLiteral, env *object.Environment) object.Obje
 
 		hashKey, ok := key.(object.Hashable)
 		if !ok {
-			return newError("Hashing imeshindikana: %s", key.Type())
+			return newError("Mstari %d: Hashing imeshindikana: %s", node.Token.Line, key.Type())
 		}
 
 		value := Eval(valueNode, env)
@@ -510,12 +504,12 @@ func evalDictLiteral(node *ast.DictLiteral, env *object.Environment) object.Obje
 	return &object.Dict{Pairs: pairs}
 }
 
-func evalDictIndexExpression(dict, index object.Object) object.Object {
+func evalDictIndexExpression(dict, index object.Object, line int) object.Object {
 	dictObject := dict.(*object.Dict)
 
 	key, ok := index.(object.Hashable)
 	if !ok {
-		return newError("Samahani, %s haitumiki kama key", index.Type())
+		return newError("Mstari %d: Samahani, %s haitumiki kama key", line, index.Type())
 	}
 
 	pair, ok := dictObject.Pairs[key.HashKey()]

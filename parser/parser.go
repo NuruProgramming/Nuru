@@ -192,7 +192,7 @@ func (p *Parser) Errors() []string {
 }
 
 func (p *Parser) peekError(t token.TokenType) {
-	msg := fmt.Sprintf("Tulitegemea kupata %s, badala yake tumepata %s", t, p.peekToken.Type)
+	msg := fmt.Sprintf("Mstari %d: Tulitegemea kupata %s, badala yake tumepata %s", p.curToken.Line, t, p.peekToken.Type)
 	p.errors = append(p.errors, msg)
 }
 
@@ -230,12 +230,12 @@ func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 }
 
 func (p *Parser) noPrefixParseFnError(t token.TokenType) {
-	msg := fmt.Sprintf("Tumeshindwa kuparse %s", t)
+	msg := fmt.Sprintf("Mstari %d: Tumeshindwa kuparse %s", p.curToken.Line, t)
 	p.errors = append(p.errors, msg)
 }
 
 func (p *Parser) noInfixParseFnError(t token.TokenType) {
-	msg := fmt.Sprintf("Tumeshindwa kuparse %s", t)
+	msg := fmt.Sprintf("Mstari %d: Tumeshindwa kuparse %s", p.curToken.Line, t)
 	p.errors = append(p.errors, msg)
 }
 
@@ -270,7 +270,7 @@ func (p *Parser) parseIntegerLiteral() ast.Expression {
 
 	value, err := strconv.ParseInt(p.curToken.Literal, 0, 64)
 	if err != nil {
-		msg := fmt.Sprintf("Hatuwezi kuparse %q kama namba", p.curToken.Literal)
+		msg := fmt.Sprintf("Mstari %d: Hatuwezi kuparse %q kama namba", p.curToken.Line, p.curToken.Literal)
 		p.errors = append(p.errors, msg)
 		return nil
 	}
