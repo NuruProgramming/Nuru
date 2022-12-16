@@ -13,26 +13,36 @@ const (
 	// Think of BODMAS
 	_ int = iota
 	LOWEST
+	COND        // OR or AND
 	ASSIGN      // =
 	EQUALS      // ==
 	LESSGREATER // > OR <
 	SUM         // +
 	PRODUCT     // *
+	POWER       // ** we got the power XD
+	MODULUS     // %
 	PREFIX      //  -X OR !X
 	CALL        // myFunction(X)
 	INDEX       // Arrays
 )
 
 var precedences = map[token.TokenType]int{
-	token.ASSIGN:   ASSIGN, // Lowest priority
+	token.AND:      COND,
+	token.OR:       COND,
+	token.ASSIGN:   ASSIGN,
 	token.EQ:       EQUALS,
 	token.NOT_EQ:   EQUALS,
 	token.LT:       LESSGREATER,
+	token.LTE:      LESSGREATER,
 	token.GT:       LESSGREATER,
+	token.GTE:      LESSGREATER,
 	token.PLUS:     SUM,
 	token.MINUS:    SUM,
 	token.SLASH:    PRODUCT,
 	token.ASTERISK: PRODUCT,
+	token.POW:      POWER,
+	token.MODULUS:  MODULUS,
+	// token.BANG:     PREFIX,
 	token.LPAREN:   CALL,
 	token.LBRACKET: INDEX, // Highest priority
 }
@@ -78,14 +88,20 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.NULL, p.parseNull)
 
 	p.infixParseFns = make(map[token.TokenType]infixParseFn)
+	p.registerInfix(token.AND, p.parseInfixExpression)
+	p.registerInfix(token.OR, p.parseInfixExpression)
 	p.registerInfix(token.PLUS, p.parseInfixExpression)
 	p.registerInfix(token.MINUS, p.parseInfixExpression)
 	p.registerInfix(token.SLASH, p.parseInfixExpression)
 	p.registerInfix(token.ASTERISK, p.parseInfixExpression)
+	p.registerInfix(token.POW, p.parseInfixExpression)
+	p.registerInfix(token.MODULUS, p.parseInfixExpression)
 	p.registerInfix(token.EQ, p.parseInfixExpression)
 	p.registerInfix(token.NOT_EQ, p.parseInfixExpression)
 	p.registerInfix(token.LT, p.parseInfixExpression)
+	p.registerInfix(token.LTE, p.parseInfixExpression)
 	p.registerInfix(token.GT, p.parseInfixExpression)
+	p.registerInfix(token.GTE, p.parseInfixExpression)
 	p.registerInfix(token.LPAREN, p.parseCallExpression)
 	p.registerInfix(token.LBRACKET, p.parseIndexExpression)
 	p.registerInfix(token.ASSIGN, p.parseAssignmentExpression)

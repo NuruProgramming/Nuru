@@ -77,11 +77,29 @@ func (l *Lexer) NextToken() token.Token {
 	case '/':
 		tok = newToken(token.SLASH, l.line, l.ch)
 	case '*':
-		tok = newToken(token.ASTERISK, l.line, l.ch)
+		if l.peekChar() == '*' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.POW, Literal: string(ch) + string(l.ch), Line: l.line}
+		} else {
+			tok = newToken(token.ASTERISK, l.line, l.ch)
+		}
 	case '<':
-		tok = newToken(token.LT, l.line, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.LTE, Literal: string(ch) + string(l.ch), Line: l.line}
+		} else {
+			tok = newToken(token.LT, l.line, l.ch)
+		}
 	case '>':
-		tok = newToken(token.GT, l.line, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.GTE, Literal: string(ch) + string(l.ch), Line: l.line}
+		} else {
+			tok = newToken(token.GT, l.line, l.ch)
+		}
 	case '"':
 		tok.Type = token.STRING
 		tok.Literal = l.readString()
@@ -94,6 +112,20 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.RBRACKET, l.line, l.ch)
 	case ':':
 		tok = newToken(token.COLON, l.line, l.ch)
+	case '&':
+		if l.peekChar() == '&' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.AND, Literal: string(ch) + string(l.ch), Line: l.line}
+		}
+	case '|':
+		if l.peekChar() == '|' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.OR, Literal: string(ch) + string(l.ch), Line: l.line}
+		}
+	case '%':
+		tok = newToken(token.MODULUS, l.line, l.ch)
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF

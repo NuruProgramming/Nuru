@@ -23,11 +23,17 @@ const (
 	MINUS    = "-"
 	BANG     = "!"
 	ASTERISK = "*"
+	POW      = "**"
 	SLASH    = "/"
+	MODULUS  = "%"
 	LT       = "<"
+	LTE      = "<="
 	GT       = ">"
+	GTE      = ">="
 	EQ       = "=="
 	NOT_EQ   = "!="
+	AND      = "&&"
+	OR       = "||"
 
 	//Delimiters
 	COMMA     = ","
@@ -50,11 +56,15 @@ const (
 	RETURN   = "RUDISHA"
 	WHILE    = "WAKATI"
 	NULL     = "TUPU"
+	BREAK    = "SUSA"
+	CONTINUE = "ENDELEA"
 )
 
 var keywords = map[string]TokenType{
 	"fn":      FUNCTION,
+	"unda":    FUNCTION,
 	"acha":    LET,
+	"fanya":   LET,
 	"kweli":   TRUE,
 	"sikweli": FALSE,
 	"kama":    IF,
@@ -62,6 +72,8 @@ var keywords = map[string]TokenType{
 	"sivyo":   ELSE,
 	"wakati":  WHILE,
 	"rudisha": RETURN,
+	"susa":    BREAK,
+	"endelea": CONTINUE,
 	"tupu":    NULL,
 }
 
