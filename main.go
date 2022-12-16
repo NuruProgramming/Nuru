@@ -17,7 +17,7 @@ const (
 
             | Authored by Avicenna |                    
 `
-	VERSION = "v0.1.0"
+	VERSION = "v0.1.5"
 )
 
 func main() {
@@ -52,7 +52,7 @@ func main() {
 
 	} else {
 		fmt.Println(fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, "Error: Opereshen imeshindikana boss."))
-		fmt.Println(fmt.Sprintf("\x1b[%dm%s\x1b[0m", 32, "\nTumia Command: 'nuru' kutmia program AU\nTumia Command: 'nuru' ikifuatwa na program file.\n\n\tMfano:\tnuru fileYangu.nr\n"))
+		fmt.Println(fmt.Sprintf("\x1b[%dm%s\x1b[0m", 32, "\nTumia Command: 'nuru' kutumia program AU\nTumia Command: 'nuru' ikifuatwa na program file.\n\n\tMfano:\tnuru fileYangu.nr\n"))
 		os.Exit(0)
 	}
 }
