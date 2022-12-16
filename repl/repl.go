@@ -49,7 +49,7 @@ func Read(contents string) {
 	program := p.ParseProgram()
 
 	if len(p.Errors()) != 0 {
-		// fmt.Println(colorfy(ERROR_FACE, 31))
+		fmt.Println(colorfy(ERROR_FACE, 31))
 		fmt.Println("Kuna Errors Zifuatazo:")
 
 		for _, msg := range p.Errors() {
@@ -59,7 +59,9 @@ func Read(contents string) {
 	}
 	evaluated := evaluator.Eval(program, env)
 	if evaluated != nil {
-		fmt.Println(colorfy(evaluated.Inspect(), 32))
+		if evaluated.Type() != object.NULL_OBJ {
+			fmt.Println(colorfy(evaluated.Inspect(), 32))
+		}
 	}
 
 }

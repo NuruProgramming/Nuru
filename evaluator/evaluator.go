@@ -443,14 +443,21 @@ func unwrapReturnValue(obj object.Object) object.Object {
 }
 
 func evalStringInfixExpression(operator string, left, right object.Object, line int) object.Object {
-	if operator != "+" {
-		return newError("Mstari %d: Operesheni Haielweki: %s %s %s", line, left.Type(), operator, right.Type())
-	}
 
 	leftVal := left.(*object.String).Value
 	rightVal := right.(*object.String).Value
 
-	return &object.String{Value: leftVal + rightVal}
+	switch operator {
+	case "+":
+		return &object.String{Value: leftVal + rightVal}
+	// doesn't work for some reason, maybe cause its cause its 4am
+	// case "==":
+	// 	return nativeBoolToBooleanObject(leftVal == rightVal)
+	// case "!=":
+	// 	return nativeBoolToBooleanObject(leftVal != rightVal)
+	default:
+		return newError("Mstari %d: Operesheni Haielweki: %s %s %s", line, left.Type(), operator, right.Type())
+	}
 }
 
 func evalIndexExpression(left, index object.Object, line int) object.Object {
