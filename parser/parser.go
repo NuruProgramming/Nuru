@@ -134,6 +134,10 @@ func (p *Parser) parseStatement() ast.Statement {
 		return p.parseLetStatment()
 	case token.RETURN:
 		return p.parseReturnStatement()
+	case token.BREAK:
+		return p.parseBreak()
+	case token.CONTINUE:
+		return p.parseContinue()
 	default:
 		return p.parseExpressionStatement()
 	}
@@ -559,4 +563,20 @@ func (p *Parser) parseWhileExpression() ast.Expression {
 	expression.Consequence = p.parseBlockStatement()
 
 	return expression
+}
+
+func (p *Parser) parseBreak() *ast.Break {
+	stmt := &ast.Break{Token: p.curToken}
+	for p.curTokenIs(token.SEMICOLON) {
+		p.nextToken()
+	}
+	return stmt
+}
+
+func (p *Parser) parseContinue() *ast.Continue {
+	stmt := &ast.Continue{Token: p.curToken}
+	for p.curTokenIs(token.SEMICOLON) {
+		p.nextToken()
+	}
+	return stmt
 }

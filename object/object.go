@@ -22,6 +22,8 @@ const (
 	BUILTIN_OBJ      = "YA_NDANI"
 	ARRAY_OBJ        = "ARRAY"
 	DICT_OBJ         = "KAMUSI"
+	CONTINUE_OBJ     = "ENDELEA"
+	BREAK_OBJ        = "SUSA"
 )
 
 type Object interface {
@@ -189,3 +191,13 @@ func (d *Dict) Inspect() string {
 type Hashable interface {
 	HashKey() HashKey
 }
+
+type Continue struct{}
+
+func (c *Continue) Type() ObjectType { return CONTINUE_OBJ }
+func (c *Continue) Inspect() string  { return "continue" }
+
+type Break struct{}
+
+func (b *Break) Type() ObjectType { return BREAK_OBJ }
+func (b *Break) Inspect() string  { return "break" }

@@ -10,9 +10,11 @@ import (
 )
 
 var (
-	NULL  = &object.Null{}
-	TRUE  = &object.Boolean{Value: true}
-	FALSE = &object.Boolean{Value: false}
+	NULL     = &object.Null{}
+	TRUE     = &object.Boolean{Value: true}
+	FALSE    = &object.Boolean{Value: false}
+	BREAK    = &object.Break{}
+	CONTINUE = &object.Continue{}
 )
 
 func Eval(node ast.Node, env *object.Environment) object.Object {
@@ -109,6 +111,10 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalDictLiteral(node, env)
 	case *ast.WhileExpression:
 		return evalWhileExpression(node, env)
+	case *ast.Break:
+		return evalBreak(node)
+	case *ast.Continue:
+		return evalContinue(node)
 	case *ast.Null:
 		return NULL
 	case *ast.AssignmentExpression:
@@ -381,7 +387,7 @@ func evalBlockStatement(block *ast.BlockStatement, env *object.Environment) obje
 
 		if result != nil {
 			rt := result.Type()
-			if rt == object.RETURN_VALUE_OBJ || rt == object.ERROR_OBJ {
+			if rt == object.RETURN_VALUE_OBJ || rt == object.ERROR_OBJ || rt == object.CONTINUE_OBJ || rt == object.BREAK_OBJ {
 				return result
 			}
 		}
@@ -550,23 +556,27 @@ func evalDictIndexExpression(dict, index object.Object, line int) object.Object 
 }
 
 func evalWhileExpression(we *ast.WhileExpression, env *object.Environment) object.Object {
-	var result object.Object
-
-	for {
-		condition := Eval(we.Condition, env)
-		if isError(condition) {
-			return condition
-		}
-
-		if isTruthy(condition) {
-			result = Eval(we.Consequence, env)
-		} else {
-			break
-		}
+	condition := Eval(we.Condition, env)
+	if isError(condition) {
+		return condition
 	}
-
-	if result != nil {
-		return result
+	if isTruthy(condition) {
+		evaluated := Eval(we.Consequence, env)
+		if isError(evaluated) {
+			return evaluated
+		}
+		if evaluated.Type() == object.BREAK_OBJ {
+			return evaluated
+		}
+		evalWhileExpression(we, env)
 	}
-	return nil
+	return NULL
+}
+
+func evalBreak(node *ast.Break) object.Object {
+	return BREAK
+}
+
+func evalContinue(node *ast.Continue) object.Object {
+	return CONTINUE
 }

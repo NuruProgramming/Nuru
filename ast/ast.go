@@ -375,3 +375,21 @@ type Null struct {
 func (n *Null) expressionNode()      {}
 func (n *Null) TokenLiteral() string { return n.Token.Literal }
 func (n *Null) String() string       { return n.Token.Literal }
+
+type Break struct {
+	Statement
+	Token token.Token // the 'break' token
+}
+
+func (b *Break) expressionNode()      {}
+func (b *Break) TokenLiteral() string { return b.Token.Literal }
+func (b *Break) String() string       { return b.Token.Literal }
+
+type Continue struct {
+	Statement
+	Token token.Token // the 'continue' token
+}
+
+func (c *Continue) expressionNode()      {}
+func (c *Continue) TokenLiteral() string { return c.Token.Literal }
+func (c *Continue) String() string       { return c.Token.Literal }
