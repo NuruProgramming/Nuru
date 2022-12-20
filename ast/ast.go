@@ -393,3 +393,19 @@ type Continue struct {
 func (c *Continue) expressionNode()      {}
 func (c *Continue) TokenLiteral() string { return c.Token.Literal }
 func (c *Continue) String() string       { return c.Token.Literal }
+
+type PostfixExpression struct {
+	Token    token.Token
+	Operator string
+}
+
+func (pe *PostfixExpression) expressionNode()      {}
+func (pe *PostfixExpression) TokenLiteral() string { return pe.Token.Literal }
+func (pe *PostfixExpression) String() string {
+	var out bytes.Buffer
+	out.WriteString("(")
+	out.WriteString(pe.Token.Literal)
+	out.WriteString(pe.Operator)
+	out.WriteString(")")
+	return out.String()
+}

@@ -174,27 +174,27 @@ func TestErrorHandling(t *testing.T) {
 	}{
 		{
 			"5 + kweli",
-			"Aina Hazilingani: NAMBA + BOOLEAN",
+			"Mstari 0: Aina Hazilingani: NAMBA + BOOLEAN",
 		},
 		{
 			"5 + kweli; 5;",
-			"Aina Hazilingani: NAMBA + BOOLEAN",
+			"Mstari 0: Aina Hazilingani: NAMBA + BOOLEAN",
 		},
 		{
 			"-kweli",
-			"Operesheni Haielweki: -BOOLEAN",
+			"Mstari 0: Operesheni Haielweki: -BOOLEAN",
 		},
 		{
 			"kweli + sikweli",
-			"Operesheni Haielweki: BOOLEAN + BOOLEAN",
+			"Mstari 0: Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			"5; kweli + sikweli; 5",
-			"Operesheni Haielweki: BOOLEAN + BOOLEAN",
+			"Mstari 0: Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			"kama (10 > 1) { kweli + sikweli;}",
-			"Operesheni Haielweki: BOOLEAN + BOOLEAN",
+			"Mstari 0: Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			`
@@ -206,19 +206,19 @@ kama (10 > 1) {
 	rudisha 1;
 }
 			`,
-			"Operesheni Haielweki: BOOLEAN + BOOLEAN",
+			"Mstari 3: Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			"bangi",
-			"Neno Halifahamiki: bangi",
+			"Mstari 0: Neno Halifahamiki: bangi",
 		},
 		{
 			`"Habari" - "Habari"`,
-			"Operesheni Haielweki: NENO - NENO",
+			"Mstari 0: Operesheni Haielweki: NENO - NENO",
 		},
 		{
 			`{"jina": "Avi"}[fn(x) {x}];`,
-			"Samahani, FUNCTION haitumiki kama key",
+			"Mstari 0: Samahani, FUNCTION haitumiki kama key",
 		},
 	}
 
@@ -232,7 +232,7 @@ kama (10 > 1) {
 		}
 
 		if errObj.Message != fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, tt.expectedMessage) {
-			t.Errorf("wrong error message, expected=%q, got=%q", tt.expectedMessage, errObj.Message)
+			t.Errorf("wrong error message, expected=%q, got=%q", fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, tt.expectedMessage), errObj.Message)
 		}
 	}
 }

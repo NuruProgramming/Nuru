@@ -94,7 +94,9 @@ var builtins = map[string]*object.Builtin{
 				fmt.Println("")
 			} else {
 				for _, arg := range args {
-
+					if arg == nil {
+						return newError("Hauwezi kufanya operesheni hii")
+					}
 					fmt.Println(arg.Inspect())
 				}
 			}

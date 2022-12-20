@@ -48,6 +48,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return right
 		}
 		return evalInfixExpression(node.Operator, left, right, node.Token.Line)
+	case *ast.PostfixExpression:
+		return evalPostfixExpression(env, node.Operator, node)
 
 	case *ast.BlockStatement:
 		return evalBlockStatement(node, env)
@@ -347,9 +349,38 @@ func evalBooleanInfixExpression(operator string, left, right object.Object, line
 	case "||":
 		return nativeBoolToBooleanObject(leftVal || rightVal)
 	default:
-		return newError("Mstarid %d: Opereresheni Haielweki: %s %s %s", line, left.Type(), operator, right.Type())
+		return newError("Mstari %d: Operesheni Haielweki: %s %s %s", line, left.Type(), operator, right.Type())
 	}
 }
+
+func evalPostfixExpression(env *object.Environment, operator string, node *ast.PostfixExpression) object.Object {
+	val, ok := env.Get(node.Token.Literal)
+	if !ok {
+		return newError("Tumia kitambulishi cha namba, sio %s", node.Token.Type)
+	}
+	switch operator {
+	case "++":
+		switch arg := val.(type) {
+		case *object.Integer:
+			v := arg.Value + 1
+			return env.Set(node.Token.Literal, &object.Integer{Value: v})
+		default:
+			return newError("%s sio kitambulishi cha namba. Tumia '++' na kitambulishi cha namba tu.\nMfano:\tacha i = 2; i++", node.Token.Literal)
+
+		}
+	case "--":
+		switch arg := val.(type) {
+		case *object.Integer:
+			v := arg.Value - 1
+			return env.Set(node.Token.Literal, &object.Integer{Value: v})
+		default:
+			return newError("%s sio kitambulishi cha namba. Tumia '--' na kitambulishi cha namba tu.\nMfano:\tacha i = 2; i++", node.Token.Literal)
+		}
+	default:
+		return newError("Haifahamiki: %s", operator)
+	}
+}
+
 func evalIfExpression(ie *ast.IfExpression, env *object.Environment) object.Object {
 	condition := Eval(ie.Condition, env)
 

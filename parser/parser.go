@@ -48,8 +48,9 @@ var precedences = map[token.TokenType]int{
 }
 
 type (
-	prefixParseFn func() ast.Expression
-	infixParseFn  func(ast.Expression) ast.Expression
+	prefixParseFn  func() ast.Expression
+	infixParseFn   func(ast.Expression) ast.Expression
+	postfixParseFn func() ast.Expression
 )
 
 type Parser struct {
@@ -57,11 +58,13 @@ type Parser struct {
 
 	curToken  token.Token
 	peekToken token.Token
+	prevToken token.Token
 
 	errors []string
 
-	prefixParseFns map[token.TokenType]prefixParseFn
-	infixParseFns  map[token.TokenType]infixParseFn
+	prefixParseFns  map[token.TokenType]prefixParseFn
+	infixParseFns   map[token.TokenType]infixParseFn
+	postfixParseFns map[token.TokenType]postfixParseFn
 }
 
 func New(l *lexer.Lexer) *Parser {
@@ -105,11 +108,16 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.LPAREN, p.parseCallExpression)
 	p.registerInfix(token.LBRACKET, p.parseIndexExpression)
 	p.registerInfix(token.ASSIGN, p.parseAssignmentExpression)
+
+	p.postfixParseFns = make(map[token.TokenType]postfixParseFn)
+	p.registerPostfix(token.PLUS_PLUS, p.parsePostfixExpression)
+	p.registerPostfix(token.MINUS_MINUS, p.parsePostfixExpression)
+
 	return p
 }
 
 func (p *Parser) nextToken() {
-	// only missing shuffle to make it  a music player XD
+	p.prevToken = p.curToken
 	p.curToken = p.peekToken
 	p.peekToken = p.l.NextToken()
 }
@@ -237,6 +245,10 @@ func (p *Parser) registerInfix(tokenType token.TokenType, fn infixParseFn) {
 	p.infixParseFns[tokenType] = fn
 }
 
+func (p *Parser) registerPostfix(tokenType token.TokenType, fn postfixParseFn) {
+	p.postfixParseFns[tokenType] = fn
+}
+
 func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 	stmt := &ast.ExpressionStatement{Token: p.curToken}
 
@@ -260,6 +272,10 @@ func (p *Parser) noInfixParseFnError(t token.TokenType) {
 }
 
 func (p *Parser) parseExpression(precedence int) ast.Expression {
+	postfix := p.postfixParseFns[p.curToken.Type]
+	if postfix != nil {
+		return (postfix())
+	}
 	prefix := p.prefixParseFns[p.curToken.Type]
 	if prefix == nil {
 		p.noPrefixParseFnError(p.curToken.Type)
@@ -354,6 +370,14 @@ func (p *Parser) parseGroupedExpression() ast.Expression {
 	}
 
 	return exp
+}
+
+func (p *Parser) parsePostfixExpression() ast.Expression {
+	expression := &ast.PostfixExpression{
+		Token:    p.prevToken,
+		Operator: p.curToken.Literal,
+	}
+	return expression
 }
 
 func (p *Parser) parseIfExpression() ast.Expression {

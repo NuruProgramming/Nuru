@@ -63,9 +63,29 @@ func (l *Lexer) NextToken() token.Token {
 	case ',':
 		tok = newToken(token.COMMA, l.line, l.ch)
 	case '+':
-		tok = newToken(token.PLUS, l.line, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.PLUS_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '+' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.PLUS_PLUS, Literal: string(ch) + string(l.ch), Line: l.line}
+		} else {
+			tok = newToken(token.PLUS, l.line, l.ch)
+		}
 	case '-':
-		tok = newToken(token.MINUS, l.line, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.MINUS_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '-' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.MINUS_MINUS, Literal: string(ch) + string(l.ch), Line: l.line}
+		} else {
+			tok = newToken(token.MINUS, l.line, l.ch)
+		}
 	case '!':
 		if l.peekChar() == '=' {
 			ch := l.ch
@@ -75,9 +95,19 @@ func (l *Lexer) NextToken() token.Token {
 			tok = newToken(token.BANG, l.line, l.ch)
 		}
 	case '/':
-		tok = newToken(token.SLASH, l.line, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.SLASH_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.SLASH, l.line, l.ch)
+		}
 	case '*':
-		if l.peekChar() == '*' {
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.ASTERISK_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
+		} else if l.peekChar() == '*' {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.POW, Literal: string(ch) + string(l.ch), Line: l.line}
@@ -125,7 +155,13 @@ func (l *Lexer) NextToken() token.Token {
 			tok = token.Token{Type: token.OR, Literal: string(ch) + string(l.ch), Line: l.line}
 		}
 	case '%':
-		tok = newToken(token.MODULUS, l.line, l.ch)
+		if l.peekChar() == '=' {
+			ch := l.ch
+			l.readChar()
+			tok = token.Token{Type: token.MODULUS_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
+		} else {
+			tok = newToken(token.MODULUS, l.line, l.ch)
+		}
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF
