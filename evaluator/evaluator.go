@@ -133,6 +133,19 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return value
 		}
 
+		// This is a very smart way to assign operators like +=, -= etc
+		// I'm surprised it work at the first try lol
+		// basically divide the += to + and =, take the + only and
+		// then perform the operation as normal
+		op := node.Token.Literal
+		if len(op) >= 2 {
+			op = op[:len(op)-1]
+			value = evalInfixExpression(op, left, value, node.Token.Line)
+			if isError(value) {
+				return value
+			}
+		}
+
 		if ident, ok := node.Left.(*ast.Identifier); ok {
 			env.Set(ident.Value, value)
 		} else if ie, ok := node.Left.(*ast.IndexExpression); ok {
