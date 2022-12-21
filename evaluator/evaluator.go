@@ -354,7 +354,6 @@ func evalIntegerInfixExpression(operator string, left, right object.Object, line
 		} else {
 			return &object.Float{Value: x}
 		}
-
 	case "%":
 		return &object.Integer{Value: leftVal % rightVal}
 	case "<":
@@ -417,17 +416,19 @@ func evalFloatIntegerInfixExpression(operator string, left, right object.Object,
 		leftVal = float64(left.(*object.Integer).Value)
 		rightVal = right.(*object.Float).Value
 	}
+
+	var val float64
 	switch operator {
 	case "+":
-		return &object.Float{Value: leftVal + rightVal}
+		val = leftVal + rightVal
 	case "-":
-		return &object.Float{Value: leftVal - rightVal}
+		val = leftVal - rightVal
 	case "*":
-		return &object.Float{Value: leftVal * rightVal}
+		val = leftVal * rightVal
 	case "**":
-		return &object.Float{Value: math.Pow(float64(leftVal), float64(rightVal))}
+		val = math.Pow(float64(leftVal), float64(rightVal))
 	case "/":
-		return &object.Float{Value: leftVal / rightVal}
+		val = leftVal / rightVal
 	case "<":
 		return nativeBoolToBooleanObject(leftVal < rightVal)
 	case "<=":
@@ -443,6 +444,12 @@ func evalFloatIntegerInfixExpression(operator string, left, right object.Object,
 	default:
 		return newError("Mstari %d: Operesheni Haielweki: %s %s %s",
 			line, left.Type(), operator, right.Type())
+	}
+
+	if math.Mod(val, 1) == 0 {
+		return &object.Integer{Value: int64(val)}
+	} else {
+		return &object.Float{Value: val}
 	}
 }
 
