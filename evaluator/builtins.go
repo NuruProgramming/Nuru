@@ -103,4 +103,34 @@ var builtins = map[string]*object.Builtin{
 			return nil
 		},
 	},
+	"aina": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("Samahani, tunahitaji Hoja 1, wewe umeweka %d", len(args))
+			}
+
+			return &object.String{Value: string(args[0].Type())}
+			// switch args[0].(type) {
+			// case *object.String:
+			// 	return &object.String{Value: "NENO (STRING)"}
+			// case *object.Boolean:
+			// 	return &object.String{Value: "BOOLEAN (KWELI AU SIKWELI)"}
+			// case *object.Builtin:
+			// 	return &object.String{Value: "YA_NDANI (Builtin Function)"}
+			// case *object.Array:
+			// 	return &object.String{Value: "ORODHA (Array)"}
+			// case *object.Function:
+			// 	return &object.String{Value: "UNDO (Function)"}
+			// case *object.Integer:
+			// 	return &object.String{Value: "NAMBA (Integer)"}
+			// case *object.Float:
+			// 	return &object.String{Value: "DESIMALI (Float)"}
+			// case *object.Dict:
+			// 	return &object.String{Value: "KAMUSI (Dict)"}
+			// default:
+			// 	return newError("argument to `type` not supported, got=%s",
+			// 		args[0].Type())
+			// }
+		},
+	},
 }
