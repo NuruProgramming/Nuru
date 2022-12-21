@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/AvicennaJr/Nuru/object"
 )
@@ -93,12 +94,15 @@ var builtins = map[string]*object.Builtin{
 			if len(args) == 0 {
 				fmt.Println("")
 			} else {
+				var arr []string
 				for _, arg := range args {
 					if arg == nil {
 						return newError("Hauwezi kufanya operesheni hii")
 					}
-					fmt.Println(arg.Inspect())
+					arr = append(arr, arg.Inspect())
 				}
+				str := strings.Join(arr, " ")
+				print(str + "\n")
 			}
 			return nil
 		},
