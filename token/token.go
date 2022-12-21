@@ -66,6 +66,7 @@ const (
 	NULL     = "TUPU"
 	BREAK    = "SUSA"
 	CONTINUE = "ENDELEA"
+	IN       = "KTK"
 )
 
 var keywords = map[string]TokenType{
@@ -83,6 +84,7 @@ var keywords = map[string]TokenType{
 	"susa":    BREAK,
 	"endelea": CONTINUE,
 	"tupu":    NULL,
+	"ktk":     IN,
 }
 
 func LookupIdent(ident string) TokenType {
