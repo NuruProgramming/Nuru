@@ -16,6 +16,7 @@ const (
 	IDENT  = "KITAMBULISHI"
 	INT    = "NAMBA"
 	STRING = "NENO"
+	FLOAT  = "DESIMALI"
 
 	// Operators
 	ASSIGN          = "="

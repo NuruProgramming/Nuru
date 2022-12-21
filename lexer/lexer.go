@@ -173,9 +173,7 @@ func (l *Lexer) NextToken() token.Token {
 			tok.Line = l.line
 			return tok
 		} else if isDigit(l.ch) {
-			tok.Type = token.INT
-			tok.Literal = l.readNumber()
-			tok.Line = l.line
+			tok = l.readDecimal()
 			return tok
 		} else {
 			tok = newToken(token.ILLEGAL, l.line, l.ch)
@@ -212,6 +210,10 @@ func (l *Lexer) skipWhitespace() {
 	}
 }
 
+func isDigit(ch byte) bool {
+	return '0' <= ch && ch <= '9'
+}
+
 func (l *Lexer) readNumber() string {
 	position := l.position
 	for isDigit(l.ch) {
@@ -220,8 +222,14 @@ func (l *Lexer) readNumber() string {
 	return l.input[position:l.position]
 }
 
-func isDigit(ch byte) bool {
-	return '0' <= ch && ch <= '9'
+func (l *Lexer) readDecimal() token.Token {
+	integer := l.readNumber()
+	if l.ch == '.' && isDigit(l.peekChar()) {
+		l.readChar()
+		fraction := l.readNumber()
+		return token.Token{Type: token.FLOAT, Literal: integer + "." + fraction, Line: l.line}
+	}
+	return token.Token{Type: token.INT, Literal: integer, Line: l.line}
 }
 
 func (l *Lexer) peekChar() byte {

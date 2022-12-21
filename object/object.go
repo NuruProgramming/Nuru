@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"hash/fnv"
+	"strconv"
 	"strings"
 
 	"github.com/AvicennaJr/Nuru/ast"
@@ -13,6 +14,7 @@ type ObjectType string
 
 const (
 	INTEGER_OBJ      = "NAMBA"
+	FLOAT_OBJ        = "DESIMALI"
 	BOOLEAN_OBJ      = "BOOLEAN"
 	NULL_OBJ         = "NULL"
 	RETURN_VALUE_OBJ = "RUDISHA"
@@ -37,6 +39,13 @@ type Integer struct {
 
 func (i *Integer) Inspect() string  { return fmt.Sprintf("%d", i.Value) }
 func (i *Integer) Type() ObjectType { return INTEGER_OBJ }
+
+type Float struct {
+	Value float64
+}
+
+func (f *Float) Inspect() string  { return strconv.FormatFloat(f.Value, 'f', -1, 64) }
+func (f *Float) Type() ObjectType { return FLOAT_OBJ }
 
 type Boolean struct {
 	Value bool
@@ -153,6 +162,12 @@ func (b *Boolean) HashKey() HashKey {
 
 func (i *Integer) HashKey() HashKey {
 	return HashKey{Type: i.Type(), Value: uint64(i.Value)}
+}
+
+func (f *Float) HashKey() HashKey {
+	h := fnv.New64a()
+	h.Write([]byte(f.Inspect()))
+	return HashKey{Type: f.Type(), Value: h.Sum64()}
 }
 
 func (s *String) HashKey() HashKey {
