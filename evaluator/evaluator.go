@@ -898,15 +898,17 @@ func loopIterable(next func() (object.Object, object.Object), env *object.Enviro
 		if isError(res) {
 			return res
 		}
-		if res.Type() == object.BREAK_OBJ {
-			break
-		}
-		if res.Type() == object.CONTINUE_OBJ {
-			k, v = next()
-			continue
-		}
-		if res.Type() == object.RETURN_VALUE_OBJ {
-			return res
+		if res != nil {
+			if res.Type() == object.BREAK_OBJ {
+				break
+			}
+			if res.Type() == object.CONTINUE_OBJ {
+				k, v = next()
+				continue
+			}
+			if res.Type() == object.RETURN_VALUE_OBJ {
+				return res
+			}
 		}
 		k, v = next()
 	}
