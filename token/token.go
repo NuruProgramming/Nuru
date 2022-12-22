@@ -64,10 +64,13 @@ const (
 	RETURN   = "RUDISHA"
 	WHILE    = "WAKATI"
 	NULL     = "TUPU"
-	BREAK    = "SUSA"
+	BREAK    = "VUNJA"
 	CONTINUE = "ENDELEA"
 	IN       = "KTK"
 	FOR      = "KWA"
+	SWITCH   = "ENDAPO"
+	CASE     = "IKIWA"
+	DEFAULT  = "KAWAIDA"
 )
 
 var keywords = map[string]TokenType{
@@ -85,6 +88,9 @@ var keywords = map[string]TokenType{
 	"tupu":    NULL,
 	"ktk":     IN,
 	"kwa":     FOR,
+	"endapo":  SWITCH,
+	"ikiwa":   CASE,
+	"kawaida": DEFAULT,
 }
 
 func LookupIdent(ident string) TokenType {

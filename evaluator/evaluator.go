@@ -120,12 +120,14 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalBreak(node)
 	case *ast.Continue:
 		return evalContinue(node)
+	case *ast.SwitchExpression:
+		return evalSwitchStatement(node, env)
 	case *ast.Null:
 		return NULL
 	// case *ast.For:
 	// 	return evalForExpression(node, env)
 	case *ast.ForIn:
-		return evalForInExpression(node, env)
+		return evalForInExpression(node, env, node.Token.Line)
 	case *ast.AssignmentExpression:
 		left := Eval(node.Left, env)
 		if isError(left) {
@@ -864,7 +866,7 @@ func evalInArrayExpression(left, right object.Object) object.Object {
 // 	return NULL
 // }
 
-func evalForInExpression(fie *ast.ForIn, env *object.Environment) object.Object {
+func evalForInExpression(fie *ast.ForIn, env *object.Environment, line int) object.Object {
 	iterable := Eval(fie.Iterable, env)
 	existingKeyIdentifier, okk := env.Get(fie.Key) // again, stay safe
 	existingValueIdentifier, okv := env.Get(fie.Value)
@@ -883,7 +885,7 @@ func evalForInExpression(fie *ast.ForIn, env *object.Environment) object.Object 
 		}()
 		return loopIterable(i.Next, env, fie)
 	default:
-		return newError("%s is a %s, not an iterable, cannot be used in for loop", i.Inspect(), i.Type())
+		return newError("Mstari %d: Huwezi kufanya operesheni hii na %s", line, i.Type())
 	}
 }
 
@@ -909,4 +911,28 @@ func loopIterable(next func() (object.Object, object.Object), env *object.Enviro
 		k, v = next()
 	}
 	return NULL
+}
+
+func evalSwitchStatement(se *ast.SwitchExpression, env *object.Environment) object.Object {
+	obj := Eval(se.Value, env)
+	for _, opt := range se.Choices {
+
+		if opt.Default {
+			continue
+		}
+		for _, val := range opt.Expr {
+			out := Eval(val, env)
+			if obj.Type() == out.Type() && obj.Inspect() == out.Inspect() {
+				blockOut := evalBlockStatement(opt.Block, env)
+				return blockOut
+			}
+		}
+	}
+	for _, opt := range se.Choices {
+		if opt.Default {
+			out := evalBlockStatement(opt.Block, env)
+			return out
+		}
+	}
+	return nil
 }

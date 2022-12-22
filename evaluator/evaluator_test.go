@@ -217,8 +217,8 @@ kama (10 > 1) {
 			"Mstari 0: Operesheni Haielweki: NENO - NENO",
 		},
 		{
-			`{"jina": "Avi"}[fn(x) {x}];`,
-			"Mstari 0: Samahani, FUNCTION haitumiki kama key",
+			`{"jina": "Avi"}[unda(x) {x}];`,
+			"Mstari 0: Samahani, UNDO (FUNCTION) haitumiki kama key",
 		},
 	}
 
@@ -242,10 +242,10 @@ func TestLetStatement(t *testing.T) {
 		input    string
 		expected int64
 	}{
-		{"acha a = 5; a;", 5},
-		{"acha a = 5 * 5; a;", 25},
-		{"acha a = 5; acha b = a; b;", 5},
-		{"acha a = 5; acha b = a; acha c = a + b + 5; c;", 15},
+		{"fanya a = 5; a;", 5},
+		{"fanya a = 5 * 5; a;", 25},
+		{"fanya a = 5; fanya b = a; b;", 5},
+		{"fanya a = 5; fanya b = a; fanya c = a + b + 5; c;", 15},
 	}
 
 	for _, tt := range tests {
@@ -254,26 +254,26 @@ func TestLetStatement(t *testing.T) {
 }
 
 func TestFunctionObject(t *testing.T) {
-	input := "fn(x) { x + 2 ;};"
+	input := "unda(x) { x + 2 ;};"
 
 	evaluated := testEval(input)
-	fn, ok := evaluated.(*object.Function)
+	unda, ok := evaluated.(*object.Function)
 	if !ok {
 		t.Fatalf("object is not a Function, got=%T(%+v)", evaluated, evaluated)
 	}
 
-	if len(fn.Parameters) != 1 {
-		t.Fatalf("function haas wrong paramters,Parameters=%+v", fn.Parameters)
+	if len(unda.Parameters) != 1 {
+		t.Fatalf("function haas wrong paramters,Parameters=%+v", unda.Parameters)
 	}
 
-	if fn.Parameters[0].String() != "x" {
-		t.Fatalf("parameter is not x, got=%q", fn.Parameters[0])
+	if unda.Parameters[0].String() != "x" {
+		t.Fatalf("parameter is not x, got=%q", unda.Parameters[0])
 	}
 
 	expectedBody := "(x + 2)"
 
-	if fn.Body.String() != expectedBody {
-		t.Fatalf("body is not %q, got=%q", expectedBody, fn.Body.String())
+	if unda.Body.String() != expectedBody {
+		t.Fatalf("body is not %q, got=%q", expectedBody, unda.Body.String())
 	}
 }
 
@@ -282,12 +282,12 @@ func TestFunctionApplication(t *testing.T) {
 		input    string
 		expected int64
 	}{
-		{"acha mfano = fn(x) {x;}; mfano(5);", 5},
-		{"acha mfano = fn(x) {rudisha x;}; mfano(5);", 5},
-		{"acha double = fn(x) { x * 2;}; double(5);", 10},
-		{"acha add = fn(x, y) {x + y;}; add(5,5);", 10},
-		{"acha add = fn(x, y) {x + y;}; add(5 + 5, add(5, 5));", 20},
-		{"fn(x) {x;}(5)", 5},
+		{"fanya mfano = unda(x) {x;}; mfano(5);", 5},
+		{"fanya mfano = unda(x) {rudisha x;}; mfano(5);", 5},
+		{"fanya double = unda(x) { x * 2;}; double(5);", 10},
+		{"fanya add = unda(x, y) {x + y;}; add(5,5);", 10},
+		{"fanya add = unda(x, y) {x + y;}; add(5 + 5, add(5, 5));", 20},
+		{"unda(x) {x;}(5)", 5},
 	}
 
 	for _, tt := range tests {
@@ -297,11 +297,11 @@ func TestFunctionApplication(t *testing.T) {
 
 func TestClosures(t *testing.T) {
 	input := `
-acha newAdder = fn(x) {
-	fn(y) { x + y};
+fanya newAdder = unda(x) {
+	unda(y) { x + y};
 };
 
-acha addTwo = newAdder(2);
+fanya addTwo = newAdder(2);
 addTwo(2);
 `
 	testIntegerObject(t, testEval(input), 4)
@@ -403,11 +403,11 @@ func TestArrayIndexExpressions(t *testing.T) {
 			3,
 		},
 		{
-			"acha i = 0; [1][i];",
+			"fanya i = 0; [1][i];",
 			1,
 		},
 		{
-			"acha myArr = [1, 2, 3]; myArr[2];",
+			"fanya myArr = [1, 2, 3]; myArr[2];",
 			3,
 		},
 		{
@@ -432,7 +432,7 @@ func TestArrayIndexExpressions(t *testing.T) {
 }
 
 func TestDictLiterals(t *testing.T) {
-	input := `acha two = "two";
+	input := `fanya two = "two";
 {
 	"one": 10 - 9,
 	two: 1 +1,
@@ -485,7 +485,7 @@ func TestDictIndexExpression(t *testing.T) {
 			nil,
 		},
 		{
-			`acha key = "foo"; {"foo": 5}[key]`,
+			`fanya key = "foo"; {"foo": 5}[key]`,
 			5,
 		},
 		{

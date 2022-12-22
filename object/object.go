@@ -26,7 +26,7 @@ const (
 	ARRAY_OBJ        = "ORODHA"
 	DICT_OBJ         = "KAMUSI"
 	CONTINUE_OBJ     = "ENDELEA"
-	BREAK_OBJ        = "SUSA"
+	BREAK_OBJ        = "VUNJA"
 )
 
 type Object interface {

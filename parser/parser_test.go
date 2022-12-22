@@ -14,9 +14,9 @@ func TestLetStatements(t *testing.T) {
 		expectedIdentifier string
 		expectedValue      interface{}
 	}{
-		{"acha x = 5;", "x", 5},
-		{"acha y = x;", "y", "x"},
-		{"acha bangi = y;", "bangi", "y"},
+		{"fanya x = 5;", "x", 5},
+		{"fanya y = x;", "y", "x"},
+		{"fanya bangi = y;", "bangi", "y"},
 	}
 
 	for _, tt := range tests {
@@ -43,8 +43,8 @@ func TestLetStatements(t *testing.T) {
 }
 
 func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
-	if s.TokenLiteral() != "acha" {
-		t.Errorf("s.TokenLiteral not 'acha', got = %q", s.TokenLiteral())
+	if s.TokenLiteral() != "fanya" {
+		t.Errorf("s.TokenLiteral not 'fanya', got = %q", s.TokenLiteral())
 		return false
 	}
 
@@ -633,7 +633,7 @@ func TestIfElseExpression(t *testing.T) {
 }
 
 func TestFunctionLiteralParsing(t *testing.T) {
-	input := `fn(x, y) {x + y}`
+	input := `unda(x, y) {x + y}`
 
 	l := lexer.New(input)
 	p := New(l)
@@ -678,9 +678,9 @@ func TestFunctionParameterParsing(t *testing.T) {
 		input          string
 		expectedParams []string
 	}{
-		{input: "fn() {};", expectedParams: []string{}},
-		{input: "fn(x) {};", expectedParams: []string{"x"}},
-		{input: "fn(x, y, z) {};", expectedParams: []string{"x", "y", "z"}},
+		{input: "unda() {};", expectedParams: []string{}},
+		{input: "unda(x) {};", expectedParams: []string{"x"}},
+		{input: "unda(x, y, z) {};", expectedParams: []string{"x", "y", "z"}},
 	}
 
 	for _, tt := range tests {
