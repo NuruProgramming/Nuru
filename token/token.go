@@ -71,9 +71,7 @@ const (
 )
 
 var keywords = map[string]TokenType{
-	"fn":      FUNCTION,
 	"unda":    FUNCTION,
-	"acha":    LET,
 	"fanya":   LET,
 	"kweli":   TRUE,
 	"sikweli": FALSE,
@@ -82,7 +80,7 @@ var keywords = map[string]TokenType{
 	"sivyo":   ELSE,
 	"wakati":  WHILE,
 	"rudisha": RETURN,
-	"susa":    BREAK,
+	"vunja":   BREAK,
 	"endelea": CONTINUE,
 	"tupu":    NULL,
 	"ktk":     IN,
