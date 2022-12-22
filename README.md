@@ -100,11 +100,11 @@ Nuru, although still in its early stage, intends to be a fully functional progra
 
 ### Defining A Variable
 
-To initiliaze a variable use the `acha` keyword:
+To initiliaze a variable use the `fanya` keyword:
 
 ```
-acha x = 2;
-acha y = 3;
+fanya x = 2;
+fanya y = 3;
 
 andika(x*y) // output is 6
 ```
@@ -161,7 +161,7 @@ DICT      | `{} {"a": 3, 1: "moja", kweli: 2}`        | Keys can be int, string 
 This is how you define a function in Nuru:
 
 ```
-acha jumlisha = fn(x, y) {
+fanya jumlisha = unda(x, y) {
         rudisha x + y
     }
 
@@ -171,7 +171,7 @@ andika(jumlisha(3,4))
 Nuru also supports recursion:
 
 ```
-acha fibo = fn(x) {
+fanya fibo = unda(x) {
 	kama (x == 0) {
 		rudisha 0;
 	} au kama (x == 1) {
@@ -201,7 +201,7 @@ kama (2<1) {
 Nuru's while loop syntax is as follows:
 
 ```
-acha i = 10
+fanya i = 10
 
 wakati (i > 0) {
 	andika(i)
@@ -213,7 +213,7 @@ wakati (i > 0) {
 
 This is how you initiliaze and perform other array operations in Nuru:
 ```
-acha arr = []
+fanya arr = []
 
 // To add elements
 
@@ -221,9 +221,9 @@ sukuma(arr, 2)
 andika(arr) // output = [2]
 // Add two Arrays
 
-acha arr2 = [1,2,3,4]
+fanya arr2 = [1,2,3,4]
 
-acha arr3 = arr1 + arr2
+fanya arr3 = arr1 + arr2
 
 andika(arr3) // output = [2,1,2,3,4]
 
@@ -242,7 +242,7 @@ andika(arr[3]) // output = 3
 
 Nuru also supports dictionaris and you can do a lot with them as follows:
 ```
-acha mtu = {"jina": "Mojo", "kabila": "Mnyakusa"}
+fanya mtu = {"jina": "Mojo", "kabila": "Mnyakusa"}
 
 // get value from key 
 andika(mtu["jina"]) // output = Mojo
@@ -263,7 +263,7 @@ andika(mtu) // output = {"jina": "Avicenna", "kabila": "Mnyakusa", "anapoishi": 
 
 // You can also add two Dictionaries
 
-acha kazi = {"kazi": "jambazi"}
+fanya kazi = {"kazi": "jambazi"}
 
 mtu = mtu + kazi
 
@@ -274,7 +274,7 @@ andika(mtu) // output = {"jina": "Avicenna", "kabila": "Mnyakusa", "anapoishi": 
 
 In Nuru you can get input from users using the `jaza()` keyword as follows:
 ```
-acha jina = jaza("Unaitwa nani? ") // will prompt for input
+fanya jina = jaza("Unaitwa nani? ") // will prompt for input
 
 andika("Habari yako " + jina)
 ```
