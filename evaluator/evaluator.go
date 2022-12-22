@@ -122,6 +122,10 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalContinue(node)
 	case *ast.Null:
 		return NULL
+	// case *ast.For:
+	// 	return evalForExpression(node, env)
+	case *ast.ForIn:
+		return evalForInExpression(node, env)
 	case *ast.AssignmentExpression:
 		left := Eval(node.Left, env)
 		if isError(left) {
@@ -133,9 +137,9 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return value
 		}
 
-		// This is a very smart way to assign operators like +=, -= etc
+		// This is an easy way to assign operators like +=, -= etc
 		// I'm surprised it work at the first try lol
-		// basically divide the += to + and =, take the + only and
+		// basically separate the += to + and =, take the + only and
 		// then perform the operation as normal
 		op := node.Token.Literal
 		if len(op) >= 2 {
@@ -473,7 +477,7 @@ func evalBooleanInfixExpression(operator string, left, right object.Object, line
 func evalPostfixExpression(env *object.Environment, operator string, node *ast.PostfixExpression) object.Object {
 	val, ok := env.Get(node.Token.Literal)
 	if !ok {
-		return newError("Tumia kitambulishi cha namba, sio %s", node.Token.Type)
+		return newError("Tumia KITAMBULISHI CHA NAMBA AU DESIMALI, sio %s", node.Token.Type)
 	}
 	switch operator {
 	case "++":
@@ -481,8 +485,11 @@ func evalPostfixExpression(env *object.Environment, operator string, node *ast.P
 		case *object.Integer:
 			v := arg.Value + 1
 			return env.Set(node.Token.Literal, &object.Integer{Value: v})
+		case *object.Float:
+			v := arg.Value + 1
+			return env.Set(node.Token.Literal, &object.Float{Value: v})
 		default:
-			return newError("%s sio kitambulishi cha namba. Tumia '++' na kitambulishi cha namba tu.\nMfano:\tacha i = 2; i++", node.Token.Literal)
+			return newError("%s sio kitambulishi cha namba. Tumia '++' na kitambulishi cha namba au desimali.\nMfano:\tacha i = 2; i++", node.Token.Literal)
 
 		}
 	case "--":
@@ -490,8 +497,11 @@ func evalPostfixExpression(env *object.Environment, operator string, node *ast.P
 		case *object.Integer:
 			v := arg.Value - 1
 			return env.Set(node.Token.Literal, &object.Integer{Value: v})
+		case *object.Float:
+			v := arg.Value - 1
+			return env.Set(node.Token.Literal, &object.Float{Value: v})
 		default:
-			return newError("%s sio kitambulishi cha namba. Tumia '--' na kitambulishi cha namba tu.\nMfano:\tacha i = 2; i++", node.Token.Literal)
+			return newError("%s sio kitambulishi cha namba. Tumia '--' na kitambulishi cha namba au desimali.\nMfano:\tacha i = 2; i++", node.Token.Literal)
 		}
 	default:
 		return newError("Haifahamiki: %s", operator)
@@ -801,4 +811,102 @@ func evalInArrayExpression(left, right object.Object) object.Object {
 		}
 	}
 	return FALSE
+}
+
+// func evalForExpression(fe *ast.For, env *object.Environment) object.Object {
+// 	obj, ok := env.Get(fe.Identifier)
+// 	defer func() { // stay safe and not reassign an existing variable
+// 		if ok {
+// 			env.Set(fe.Identifier, obj)
+// 		}
+// 	}()
+// 	val := Eval(fe.StarterValue, env)
+// 	if isError(val) {
+// 		return val
+// 	}
+
+// 	env.Set(fe.StarterName.Value, val)
+
+// 	// err := Eval(fe.Starter, env)
+// 	// if isError(err) {
+// 	// 	return err
+// 	// }
+// 	for {
+// 		evaluated := Eval(fe.Condition, env)
+// 		if isError(evaluated) {
+// 			return evaluated
+// 		}
+// 		if !isTruthy(evaluated) {
+// 			break
+// 		}
+// 		res := Eval(fe.Block, env)
+// 		if isError(res) {
+// 			return res
+// 		}
+// 		if res.Type() == object.BREAK_OBJ {
+// 			break
+// 		}
+// 		if res.Type() == object.CONTINUE_OBJ {
+// 			err := Eval(fe.Closer, env)
+// 			if isError(err) {
+// 				return err
+// 			}
+// 			continue
+// 		}
+// 		if res.Type() == object.RETURN_VALUE_OBJ {
+// 			return res
+// 		}
+// 		err := Eval(fe.Closer, env)
+// 		if isError(err) {
+// 			return err
+// 		}
+// 	}
+// 	return NULL
+// }
+
+func evalForInExpression(fie *ast.ForIn, env *object.Environment) object.Object {
+	iterable := Eval(fie.Iterable, env)
+	existingKeyIdentifier, okk := env.Get(fie.Key) // again, stay safe
+	existingValueIdentifier, okv := env.Get(fie.Value)
+	defer func() { // restore them later on
+		if okk {
+			env.Set(fie.Key, existingKeyIdentifier)
+		}
+		if okv {
+			env.Set(fie.Value, existingValueIdentifier)
+		}
+	}()
+	switch i := iterable.(type) {
+	case object.Iterable:
+		defer func() {
+			i.Reset()
+		}()
+		return loopIterable(i.Next, env, fie)
+	default:
+		return newError("%s is a %s, not an iterable, cannot be used in for loop", i.Inspect(), i.Type())
+	}
+}
+
+func loopIterable(next func() (object.Object, object.Object), env *object.Environment, fi *ast.ForIn) object.Object {
+	k, v := next()
+	for k != nil && v != nil {
+		env.Set(fi.Key, k)
+		env.Set(fi.Value, v)
+		res := Eval(fi.Block, env)
+		if isError(res) {
+			return res
+		}
+		if res.Type() == object.BREAK_OBJ {
+			break
+		}
+		if res.Type() == object.CONTINUE_OBJ {
+			k, v = next()
+			continue
+		}
+		if res.Type() == object.RETURN_VALUE_OBJ {
+			return res
+		}
+		k, v = next()
+	}
+	return NULL
 }

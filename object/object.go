@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"hash/fnv"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -108,11 +109,23 @@ func (f *Function) Inspect() string {
 }
 
 type String struct {
-	Value string
+	Value  string
+	offset int
 }
 
 func (s *String) Inspect() string  { return s.Value }
 func (s *String) Type() ObjectType { return STRING_OBJ }
+func (s *String) Next() (Object, Object) {
+	offset := s.offset
+	if len(s.Value) > offset {
+		s.offset = offset + 1
+		return &Integer{Value: int64(offset)}, &String{Value: string(s.Value[offset])}
+	}
+	return nil, nil
+}
+func (s *String) Reset() {
+	s.offset = 0
+}
 
 type BuiltinFunction func(args ...Object) Object
 
@@ -125,6 +138,7 @@ func (b *Builtin) Type() ObjectType { return BUILTIN_OBJ }
 
 type Array struct {
 	Elements []Object
+	offset   int
 }
 
 func (ao *Array) Type() ObjectType { return ARRAY_OBJ }
@@ -141,6 +155,19 @@ func (ao *Array) Inspect() string {
 	out.WriteString("]")
 
 	return out.String()
+}
+
+func (ao *Array) Next() (Object, Object) {
+	idx := ao.offset
+	if len(ao.Elements) > idx {
+		ao.offset = idx + 1
+		return &Integer{Value: int64(idx)}, ao.Elements[idx]
+	}
+	return nil, nil
+}
+
+func (ao *Array) Reset() {
+	ao.offset = 0
 }
 
 type HashKey struct {
@@ -183,7 +210,8 @@ type DictPair struct {
 }
 
 type Dict struct {
-	Pairs map[HashKey]DictPair
+	Pairs  map[HashKey]DictPair
+	offset int
 }
 
 func (d *Dict) Type() ObjectType { return DICT_OBJ }
@@ -203,6 +231,31 @@ func (d *Dict) Inspect() string {
 	return out.String()
 }
 
+func (d *Dict) Next() (Object, Object) {
+	idx := 0
+	dict := make(map[string]DictPair)
+	var keys []string
+	for _, v := range d.Pairs {
+		dict[v.Key.Inspect()] = v
+		keys = append(keys, v.Key.Inspect())
+	}
+
+	sort.Strings(keys)
+
+	for _, k := range keys {
+		if d.offset == idx {
+			d.offset += 1
+			return dict[k].Key, dict[k].Value
+		}
+		idx += 1
+	}
+	return nil, nil
+}
+
+func (d *Dict) Resest() {
+	d.offset = 0
+}
+
 type Hashable interface {
 	HashKey() HashKey
 }
@@ -216,3 +269,9 @@ type Break struct{}
 
 func (b *Break) Type() ObjectType { return BREAK_OBJ }
 func (b *Break) Inspect() string  { return "break" }
+
+// Iterable interface for dicts, strings and arrays
+type Iterable interface {
+	Next() (Object, Object)
+	Reset()
+}

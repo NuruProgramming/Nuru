@@ -418,3 +418,23 @@ type FloatLiteral struct {
 func (fl *FloatLiteral) expressionNode()      {}
 func (fl *FloatLiteral) TokenLiteral() string { return fl.Token.Literal }
 func (fl *FloatLiteral) String() string       { return fl.Token.Literal }
+
+type For struct {
+	Expression
+	Token        token.Token
+	Identifier   string      // "i"
+	StarterName  *Identifier // i = 0
+	StarterValue Expression
+	Closer       Expression // i++
+	Condition    Expression // i < 1
+	Block        *BlockStatement
+}
+
+type ForIn struct {
+	Expression
+	Token    token.Token
+	Key      string
+	Value    string
+	Iterable Expression
+	Block    *BlockStatement
+}
