@@ -22,7 +22,7 @@ const (
 func main() {
 
 	args := os.Args
-	coloredLogo := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 34, LOGO)
+	coloredLogo := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 36, LOGO)
 
 	if len(args) < 2 {
 
@@ -36,10 +36,10 @@ func main() {
 	if len(args) == 2 {
 
 		switch args[1] {
-		case "msaada", "--msaada", "help", "--help", "-h":
+		case "msaada", "-msaada", "--msaada", "help", "-help", "--help", "-h":
 			fmt.Printf("\x1b[%dm%s\x1b[0m\n", 32, "\nTumia 'nuru' kuanza program\n\nAU\n\nTumia 'nuru' ikifuatiwa na jina la file.\n\n\tMfano:\tnuru fileYangu.nr")
 			os.Exit(0)
-		case "version", "--version", "-v", "v":
+		case "version", "-version", "--version", "-v", "v":
 			fmt.Println(coloredLogo)
 			os.Exit(0)
 		}
