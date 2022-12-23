@@ -227,7 +227,7 @@ func evalPrefixExpression(operator string, right object.Object, line int) object
 	case "-":
 		return evalMinusPrefixOperatorExpression(right, line)
 	default:
-		return newError("Mstari %d: peresheni haieleweki: %s%s", line, operator, right.Type())
+		return newError("Mstari %d: Operesheni haieleweki: %s%s", line, operator, right.Type())
 	}
 }
 
@@ -259,6 +259,9 @@ func evalMinusPrefixOperatorExpression(right object.Object, line int) object.Obj
 }
 
 func evalInfixExpression(operator string, left, right object.Object, line int) object.Object {
+	if left == nil {
+		return newError("Mstari %d: Umekosea hapa", line)
+	}
 	switch {
 	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ:
 		return evalStringInfixExpression(operator, left, right, line)
