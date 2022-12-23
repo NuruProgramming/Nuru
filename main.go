@@ -21,14 +21,6 @@ const (
 
 func main() {
 
-	// version := flag.Bool("v", false, "Onyesha version namba ya program")
-	// msaada := flag.Bool
-	// flag.Parse()
-
-	// if *version {
-	// 	fmt.Printf("\x1b[%dm%s%s\x1b[0m", 32, "Nuru Programming Language || Version: ", VERSION)
-	// 	os.Exit(0)
-	// }
 	args := os.Args
 	coloredLogo := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 34, LOGO)
 
