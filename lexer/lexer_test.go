@@ -9,14 +9,14 @@ import (
 func TestNextToken(t *testing.T) {
 	input := `
 	// Testing kama lex luther iko sawa
-	acha tano = 5;
-	acha kumi = 10;
+	fanya tano = 5;
+	fanya kumi = 10;
 
-	acha jumla = fn(x, y){
+	fanya jumla = unda(x, y){
 	x + y;
 	};
 
-	acha jibu = jumla(tano, kumi);
+	fanya jibu = jumla(tano, kumi);
 
 	!-/5;
 	5 < 10 > 5;
@@ -46,20 +46,20 @@ func TestNextToken(t *testing.T) {
 		expectedType    token.TokenType
 		expectedLiteral string
 	}{
-		{token.LET, "acha"},
+		{token.LET, "fanya"},
 		{token.IDENT, "tano"},
 		{token.ASSIGN, "="},
 		{token.INT, "5"},
 		{token.SEMICOLON, ";"},
-		{token.LET, "acha"},
+		{token.LET, "fanya"},
 		{token.IDENT, "kumi"},
 		{token.ASSIGN, "="},
 		{token.INT, "10"},
 		{token.SEMICOLON, ";"},
-		{token.LET, "acha"},
+		{token.LET, "fanya"},
 		{token.IDENT, "jumla"},
 		{token.ASSIGN, "="},
-		{token.FUNCTION, "fn"},
+		{token.FUNCTION, "unda"},
 		{token.LPAREN, "("},
 		{token.IDENT, "x"},
 		{token.COMMA, ","},
@@ -72,7 +72,7 @@ func TestNextToken(t *testing.T) {
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},
 		{token.SEMICOLON, ";"},
-		{token.LET, "acha"},
+		{token.LET, "fanya"},
 		{token.IDENT, "jibu"},
 		{token.ASSIGN, "="},
 		{token.IDENT, "jumla"},

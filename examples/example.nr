@@ -1,8 +1,8 @@
 andika("Testing basic types...");
 andika(2 + 2);
 andika(4 * 4);
-acha a = 10;
-acha b = 20;
+fanya a = 10;
+fanya b = 20;
 
 andika(a + b);
 
@@ -15,23 +15,23 @@ andika("Mambo vipi");
 
 andika("Testing Functions... ");
 
-acha jumlisha = fn(x, y) {x + y};
+fanya jumlisha = unda(x, y) {x + y};
 
 andika(jumlisha(20,30));
 andika(jumlisha(100,1000));
 
-acha zidisha = fn(x, y) {x * y};
+fanya zidisha = unda(x, y) {x * y};
 
 andika(zidisha(100,1000));
 andika(zidisha(200, 20));
 
 // lists can hold any value
 andika("Testing lists...");
-acha list = [1, "a", kweli, sikweli];
+fanya list = [1, "a", kweli, sikweli];
 
 // a few builtins
 
-acha list = sukuma(list, jumlisha(4,5));
+fanya list = sukuma(list, jumlisha(4,5));
 
 andika(list);
 andika(list[2]);
@@ -57,7 +57,7 @@ kama (idadi("Habari") == 6) {
 // fibonacci example
 andika("Testing fibonacci...");
 
-acha fibo = fn(x) {
+fanya fibo = unda(x) {
 	kama (x == 0) {
 		rudisha 0;
 	} au kama (x == 1) {
@@ -72,8 +72,8 @@ andika(fibo(10));
 
 // testing input
 andika("Testing input from user...");
-acha salamu = fn() {
-        acha jina = jaza("Unaitwa nani rafiki? ");
+fanya salamu = unda() {
+        fanya jina = jaza("Unaitwa nani rafiki? ");
         rudisha "Mambo vipi " + jina;
     }
 
@@ -87,7 +87,7 @@ Multiline comment
 
 andika("Testing dictionaries...")
 
-acha watu = [{"jina": "Mojo", "kabila": "Mnyakusa"}, {"jina": "Avi", "kabila": "Mwarabu wa dubai"}]
+fanya watu = [{"jina": "Mojo", "kabila": "Mnyakusa"}, {"jina": "Avi", "kabila": "Mwarabu wa dubai"}]
 
 andika(watu, watu[0], watu[0]["jina"], watu[0]["kabila"])
 
@@ -99,7 +99,7 @@ andika({"a":1} + {"b": 2})
 
 andika("Testing while loop...");
 
-acha i = 10;
+fanya i = 10;
 
 wakati (i > 0) {
 	andika(i);

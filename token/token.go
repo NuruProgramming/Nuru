@@ -56,7 +56,7 @@ const (
 
 	// Keywords
 	FUNCTION = "FUNCTION"
-	LET      = "ACHA"
+	LET      = "FANYA"
 	TRUE     = "KWELI"
 	FALSE    = "SIKWELI"
 	IF       = "KAMA"

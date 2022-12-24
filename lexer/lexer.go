@@ -5,10 +5,10 @@ import (
 )
 
 type Lexer struct {
-	input        string // string or runes. Runes should be better.
+	input        string
 	position     int
 	readPosition int
-	ch           byte // make this a rune too
+	ch           byte
 	line         int
 }
 

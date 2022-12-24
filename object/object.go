@@ -98,7 +98,7 @@ func (f *Function) Inspect() string {
 		params = append(params, p.String())
 	}
 
-	out.WriteString("fn")
+	out.WriteString("unda")
 	out.WriteString("(")
 	out.WriteString(strings.Join(params, ", "))
 	out.WriteString(") {\n")
@@ -252,7 +252,7 @@ func (d *Dict) Next() (Object, Object) {
 	return nil, nil
 }
 
-func (d *Dict) Resest() {
+func (d *Dict) Reset() {
 	d.offset = 0
 }
 
