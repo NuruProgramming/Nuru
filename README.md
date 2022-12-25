@@ -138,7 +138,7 @@ Comment
 
 ### Arithmetic Operations
 
-For now Nuru supports `+`, `-`, `/`, `*` and `%`. More will be added. Nuru also provides precedence of operations using the BODMAS rule:
+For now Nuru supports `+`, `-`, `/`, `*` and `%`. Nuru also provides precedence of operations using the BODMAS rule:
 
 ```
 2 + 2 * 3 // output = 8
