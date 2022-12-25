@@ -68,7 +68,7 @@ const (
 	CONTINUE = "ENDELEA"
 	IN       = "KTK"
 	FOR      = "KWA"
-	SWITCH   = "ENDAPO"
+	SWITCH   = "BADILI"
 	CASE     = "IKIWA"
 	DEFAULT  = "KAWAIDA"
 )
@@ -88,7 +88,7 @@ var keywords = map[string]TokenType{
 	"tupu":    NULL,
 	"ktk":     IN,
 	"kwa":     FOR,
-	"endapo":  SWITCH,
+	"badili":  SWITCH,
 	"ikiwa":   CASE,
 	"kawaida": DEFAULT,
 }
