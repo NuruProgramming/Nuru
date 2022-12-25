@@ -46,9 +46,9 @@ _testmain.go
 
 #Personal
 
-testbinaries
-tests_random
-parser/tracingZeAnnoyingParser.go 
-testTracing.go
+src/testbinaries
+src/tests_random
+src/parser/tracingZeAnnoyingParser.go 
+src/testTracing.go
+src/nuru
 Notes.md
-nuru

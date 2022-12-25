@@ -94,10 +94,10 @@ go build -o nuru main.go
 nuru -v
 ```
 
-## Syntax
+## Syntax At A Glance
 
 **NOTE**
-> There is a more detailed documentation of the language [here](https://github.com/AvicennaJr/NuruDocs).
+> There is a more detailed documentation of the language [here](./docs/README.md).
 
 Nuru, although still in its early stage, intends to be a fully functional programming language, and thus it has been baked with many features.
 
