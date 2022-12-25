@@ -198,8 +198,13 @@ func (p *Parser) parseAssignmentExpression(exp ast.Expression) ast.Expression {
 	switch node := exp.(type) {
 	case *ast.Identifier, *ast.IndexExpression:
 	default:
-		msg := fmt.Sprintf("Mstari %d:Tulitegemea kupata kitambulishi au array, badala yake tumepata: %s %s", p.curToken.Line, p.prevToken.Type, node.TokenLiteral())
-		p.errors = append(p.errors, msg)
+		if node != nil {
+			msg := fmt.Sprintf("Mstari %d:Tulitegemea kupata kitambulishi au array, badala yake tumepata: %s", p.curToken.Line, node.TokenLiteral())
+			p.errors = append(p.errors, msg)
+		} else {
+			msg := fmt.Sprintf("Mstari %d: Umekosea mkuu", p.curToken.Line)
+			p.errors = append(p.errors, msg)
+		}
 		return nil
 	}
 
