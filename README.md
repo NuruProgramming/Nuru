@@ -19,13 +19,13 @@ instructions for your device below:
  - Download the binary:
 
 ```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.1.5/nuru_linux_amd64_v0.1.5.tar.gz
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.2.0/nuru_linux_amd64_v0.2.0.tar.gz
 ```
 
   - Extract the file to make global available:
 
 ```
-sudo tar -C /usr/local/bin -xzvf nuru_linux_amd64_v0.1.5.tar.gz
+sudo tar -C /usr/local/bin -xzvf nuru_linux_amd64_v0.2.0.tar.gz
 ```
 
  - Confirm installation with:
@@ -40,12 +40,12 @@ nuru -v
  - Download the binary with this command:
 
 ```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.1.5/nuru_android_arm64_v0.1.5.tar.gz
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.2.0/nuru_android_arm64_v0.2.0.tar.gz
 ```
  - Extract the file:
 
 ```
-tar -xzvf nuru_android_arm64_v0.1.5.tar.gz
+tar -xzvf nuru_android_arm64_v0.2.0.tar.gz
 ```
  - Add it to path:
 
@@ -65,8 +65,8 @@ nuru -v
 ```
 mkdir C:\bin
 ```
- - Download the Nuru Program [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.1.5/nuru_windows_amd64_v0.1.5.exe)
- - Rename the downloaded program from `nuru_windows_amd64_v0.1.5.exe` to `nuru.exe`
+ - Download the Nuru Program [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.2.0/nuru_windows_amd64_v0.2.0.exe)
+ - Rename the downloaded program from `nuru_windows_amd64_v0.2.0.exe` to `nuru.exe`
  - Move the file `nuru.exe` to the folder `C:\bin`
  - Add the bin folder to Path with this command:
 
@@ -95,6 +95,9 @@ nuru -v
 ```
 
 ## Syntax
+
+**NOTE**
+> There is a more detailed documentation of the language [here](https://github.com/AvicennaJr/NuruDocs).
 
 Nuru, although still in its early stage, intends to be a fully functional programming language, and thus it has been baked with many features.
 
@@ -152,9 +155,11 @@ Type      | Syntax                                    | Comments
 --------- | ----------------------------------------- | -----------------------
 BOOL      | `kweli sikweli`                           | kweli == true, sikweli == false
 INT       | `1, 100, 342, -4`                         | These are signed 64 bit integers
-STRING    | `"" "mambo" "habari yako"`                | They MUST be in DOUBLE QUOTES `"`
-ARRAY     | `[] [1, 2, 3] [1, "moja", kweli]`       | Arrays can hold any types
+FLOAT     | `2.3, 4.5. 100.8094`                      | Signed 64 bit floats
+STRING    | `"" "mambo" "habari yako"`                | They can be in double `"` or single `'` quotes
+ARRAY     | `[] [1, 2, 3] [1, "moja", kweli]`         | Arrays can hold any types
 DICT      | `{} {"a": 3, 1: "moja", kweli: 2}`        | Keys can be int, string or bool. Values can be anything
+NULL      | `tupu`                                    | These are nil objects
 
 ### Functions
 
@@ -205,7 +210,7 @@ fanya i = 10
 
 wakati (i > 0) {
 	andika(i)
-	i = i - 1
+	i--
 }
 ```
 
@@ -270,6 +275,15 @@ mtu = mtu + kazi
 andika(mtu) // output = {"jina": "Avicenna", "kabila": "Mnyakusa", "anapoishi": "Dar Es Salaam", "kazi": "jambazi"}
 ```
 
+### For Loops
+
+These can iterate over strings, arrays and dictionaries:
+```
+kwa i ktk "habari" {
+    andika(i)
+}
+```
+
 ### Getting Input From User
 
 In Nuru you can get input from users using the `jaza()` keyword as follows:
@@ -297,7 +311,7 @@ Kindly Note that everything should be placed in a single line. Here's an example
 ```
 ### Running From File
 
-To run a Nuru script, write the `nuru` command followed by the name of the file with a `.nr` extension:
+To run a Nuru script, write the `nuru` command followed by the name of the file with a `.nr` or `.sw` extension:
 
 ```
 nuru myFile.nr
