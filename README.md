@@ -130,7 +130,6 @@ Nuru supports both single line and multiple line comments as shown below:
 // Single line comment
 
 /*
-
 Multiple
 Line
 Comment 
@@ -139,9 +138,7 @@ Comment
 
 ### Arithmetic Operations
 
-For now Nuru supports `+`, `-`, `/` and `*`. More will be added. The `/` operation will truncate (round to a whole number) as Floating points are not supported yet.
-
-Nuru also provides precedence of operations using the BODMAS rule:
+For now Nuru supports `+`, `-`, `/`, `*` and `%`. More will be added. Nuru also provides precedence of operations using the BODMAS rule:
 
 ```
 2 + 2 * 3 // output = 8
@@ -284,6 +281,14 @@ These can iterate over strings, arrays and dictionaries:
 kwa i ktk "habari" {
     andika(i)
 }
+/* //output
+h
+a
+b
+a
+r
+i
+*/
 ```
 
 ### Getting Input From User
