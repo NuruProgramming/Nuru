@@ -3,6 +3,8 @@
     <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/badge/Nuru-Programming%20Language-yellow"></a>
     <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/badge/platform-Linux | Windows | Android-green.svg"></a>
     <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/last-commit/AvicennaJr/Nuru"></a>
+<br>
+    <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/downloads/avicennajr/nuru/total"></a>
     <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/v/release/AvicennaJr/Nuru"></a>
 <br>
     <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/stars/AvicennaJr/Nuru?style=social"></a>
