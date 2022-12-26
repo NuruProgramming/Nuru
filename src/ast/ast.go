@@ -179,13 +179,13 @@ func (ie *IfExpression) expressionNode()      {}
 func (ie *IfExpression) TokenLiteral() string { return ie.Token.Literal }
 func (ie *IfExpression) String() string {
 	var out bytes.Buffer
-	out.WriteString("if")
+	out.WriteString("kama")
 	out.WriteString(ie.Condition.String())
 	out.WriteString(" ")
 	out.WriteString(ie.Consequence.String())
 
 	if ie.Alternative != nil {
-		out.WriteString("else")
+		out.WriteString("sivyo")
 		out.WriteString(ie.Alternative.String())
 	}
 
@@ -360,7 +360,7 @@ func (we *WhileExpression) TokenLiteral() string { return we.Token.Literal }
 func (we *WhileExpression) String() string {
 	var out bytes.Buffer
 
-	out.WriteString("while")
+	out.WriteString("wakati")
 	out.WriteString(we.Condition.String())
 	out.WriteString(" ")
 	out.WriteString(we.Consequence.String())
@@ -439,6 +439,24 @@ type ForIn struct {
 	Block    *BlockStatement
 }
 
+func (fi *ForIn) expressionNode()      {}
+func (fi *ForIn) TokenLiteral() string { return fi.Token.Literal }
+func (fi *ForIn) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("kwa ")
+	if fi.Key != "" {
+		out.WriteString(fi.Key + ", ")
+	}
+	out.WriteString(fi.Value + " ")
+	out.WriteString("ktk ")
+	out.WriteString(fi.Iterable.String() + " {\n")
+	out.WriteString("\t" + fi.Block.String())
+	out.WriteString("\n}")
+
+	return out.String()
+}
+
 type CaseExpression struct {
 	Token   token.Token
 	Default bool
@@ -452,9 +470,9 @@ func (ce *CaseExpression) String() string {
 	var out bytes.Buffer
 
 	if ce.Default {
-		out.WriteString("default ")
+		out.WriteString("kawaida ")
 	} else {
-		out.WriteString("case ")
+		out.WriteString("ikiwa ")
 
 		tmp := []string{}
 		for _, exp := range ce.Expr {
@@ -476,7 +494,7 @@ func (se *SwitchExpression) expressionNode()      {}
 func (se *SwitchExpression) TokenLiteral() string { return se.Token.Literal }
 func (se *SwitchExpression) String() string {
 	var out bytes.Buffer
-	out.WriteString("\nswitch (")
+	out.WriteString("\nbadili (")
 	out.WriteString(se.Value.String())
 	out.WriteString(")\n{\n")
 

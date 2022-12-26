@@ -968,3 +968,96 @@ func TestParsingEmptyDict(t *testing.T) {
 		t.Errorf("Dict pairs has wrong length, got=%d", len(dict.Pairs))
 	}
 }
+
+func TestWhileLoop(t *testing.T) {
+	input := `wakati ( x > y ) { fanya x = 2 }`
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("program.Body does not contain %d statements. got=%d", 1, len(program.Statements))
+	}
+
+	fmt.Println(program.Statements)
+
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] is not ast.Expression, got=%T", program.Statements[0])
+	}
+	exp, ok := stmt.Expression.(*ast.WhileExpression)
+
+	if !ok {
+		t.Fatalf("stmt.Expression is not ast.WhileExpression. got=%T", stmt.Expression)
+	}
+
+	if !testInfixExpression(t, exp.Condition, "x", ">", "y") {
+		return
+	}
+
+	if len(exp.Consequence.Statements) != 1 {
+		t.Errorf("Consequence is not 1 statements. got=%d\n", len(exp.Consequence.Statements))
+	}
+
+	consequence, ok := exp.Consequence.Statements[0].(*ast.LetStatement)
+
+	if !ok {
+		t.Fatalf("exp.Consequence.Statements[0] is not ast.ExpressionStatement. got=%T", exp.Consequence.Statements[0])
+	}
+
+	if !testLetStatement(t, consequence, "x") {
+		t.Fatalf("exp.Consequence is not LetStatement")
+	}
+}
+
+func TestShorthandAssignment(t *testing.T) {
+	input := []string{
+		"fanya x = 10; x *= 20;",
+		"fanya x = 5; x += 4;",
+		"fanya x = 7; x /= 2;",
+		"fanya x = 8; x -= 1;",
+		"fanya x = 5; x++;",
+		"fanya x = 3; x--;",
+		"fanya x = 40; fanya y = 13; x += y;"}
+
+	for _, txt := range input {
+		l := lexer.New(txt)
+		p := New(l)
+		_ = p.ParseProgram()
+		checkParserErrors(t, p)
+	}
+}
+
+func TestForExpression(t *testing.T) {
+	input := `kwa i, v ktk j {andika(i)}`
+
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("program.Body does not contain %d statements. got=%d", 1, len(program.Statements))
+	}
+
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] is not ast.Expression, got=%T", program.Statements[0])
+	}
+
+	exp, ok := stmt.Expression.(*ast.ForIn)
+
+	if !ok {
+		t.Fatalf("stmt.Expression is not ast.ForIn. got=%T", stmt.Expression)
+	}
+
+	if exp.Key != "i" {
+		t.Fatalf("Wrong Key Index, expected 'i' got %s", exp.Key)
+	}
+
+	if exp.Value != "v" {
+		t.Fatalf("Wrong Value Index, expected 'v' got %s", exp.Value)
+	}
+}
