@@ -48,7 +48,5 @@ _testmain.go
 
 src/testbinaries
 src/tests_random
-src/parser/tracingZeAnnoyingParser.go 
-src/testTracing.go
 src/nuru
 Notes.md

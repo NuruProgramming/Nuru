@@ -62,24 +62,9 @@ nuru -v
 
 ### Windows
 
- - Make a bin directory if it doesn't exist:
-
-```
-mkdir C:\bin
-```
- - Download the Nuru Program [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.2.0/nuru_windows_amd64_v0.2.0.exe)
- - Rename the downloaded program from `nuru_windows_amd64_v0.2.0.exe` to `nuru.exe`
- - Move the file `nuru.exe` to the folder `C:\bin`
- - Add the bin folder to Path with this command:
-
-```
-setx PATH "C:\bin;%PATH%"
-```
- - Confirm installation with:
-
-```
-nuru -v
-```
+ - Download the Nuru Installer [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.2.0/Nuru_Windows_Installer_v0.2.0.exe)
+ - Install the downloaded installer
+ - You can watch a full video guide [Here](https://youtu.be/T-lfaoqIFD4)
 
 ### Building From Source
 
