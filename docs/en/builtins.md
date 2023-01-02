@@ -39,6 +39,14 @@ aina(2) // NAMBA
 idadi("mambo") // 5
 ```
 
+### jumla()
+
+`jumla` is a function that gives the sum of numbers (integers/floats) in a list. It accepts only one argument which is a `list` of numbers :
+```
+jumla([1,2,3,4]) // 10
+```
+
+
 ### sukuma()
 
 `sukuma()` is a function that adds a new element to an array. The function accepts two arguments, the first must be a list and the second is the element to be added/appended:
