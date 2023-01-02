@@ -4,7 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"math"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/AvicennaJr/Nuru/object"
@@ -22,6 +24,45 @@ var builtins = map[string]*object.Builtin{
 				return &object.Integer{Value: int64(len(arg.Elements))}
 			case *object.String:
 				return &object.Integer{Value: int64(len(arg.Value))}
+			default:
+				return newError("Samahani, hii function haitumiki na %s", args[0].Type())
+			}
+		},
+	},
+	"jumla": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("Hoja hazilingani, tunahitaji=1, tumepewa=%d", len(args))
+			}
+
+			switch arg := args[0].(type) {
+			case *object.Array:
+				
+				var sums float64
+				for _,num := range arg.Elements {
+				   
+                   if num.Type() != object.INTEGER_OBJ && num.Type() != object.FLOAT_OBJ{
+					  return newError("Samahani namba tu zinahitajika")
+				   }else{
+					if num.Type() == object.INTEGER_OBJ{
+						no , _ := strconv.Atoi(num.Inspect())
+						floatnum := float64(no)
+						sums += floatnum
+					}else if num.Type() == object.FLOAT_OBJ {
+                        no , _ := strconv.ParseFloat(num.Inspect(), 64)
+                        sums += no
+					}
+					   
+					  
+				   } 
+				}
+
+				if math.Mod(sums,1) == 0 {
+					return &object.Integer{Value : int64(sums)}
+				}
+
+				return &object.Float {Value: float64(sums)}
+			
 			default:
 				return newError("Samahani, hii function haitumiki na %s", args[0].Type())
 			}

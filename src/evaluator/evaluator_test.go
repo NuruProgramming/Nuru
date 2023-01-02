@@ -102,6 +102,22 @@ func testIntegerObject(t *testing.T, obj object.Object, expected int64) bool {
 	return true
 }
 
+func testFloatObject(t *testing.T, obj object.Object, expected float64) bool {
+	result, ok := obj.(*object.Float)
+
+	if !ok {
+		t.Errorf("Object is not Float, got=%T(%+v)", obj, obj)
+		return false
+	}
+
+	if result.Value != expected {
+		t.Errorf("object has wrong value. got=%f, want=%f", result.Value, expected)
+		return false
+	}
+
+	return true
+}
+
 func testBooleanObject(t *testing.T, obj object.Object, expected bool) bool {
 	result, ok := obj.(*object.Boolean)
 	if !ok {
@@ -346,14 +362,24 @@ func TestBuiltinFunctions(t *testing.T) {
 		{`idadi("hello world")`, 11},
 		{`idadi(1)`, "Samahani, hii function haitumiki na NAMBA"},
 		{`idadi("one", "two")`, "Hoja hazilingani, tunahitaji=1, tumepewa=2"},
+		{`jumla()`, "Hoja hazilingani, tunahitaji=1, tumepewa=0"},
+		{`jumla("")`, "Samahani, hii function haitumiki na NENO"},
+		{`jumla(1)`, "Samahani, hii function haitumiki na NAMBA"},
+		{`jumla([1,2,3])`, 6},
+		{`jumla([1,2,3.4])`, 6.4},
+		{`jumla([1.1,2.5,3.4])`, 7},
+		{`jumla([1.1,2.5,"q"])`, "Samahani namba tu zinahitajika"},
 	}
 
 	for _, tt := range tests {
 		evaluated := testEval(tt.input)
-
+        
 		switch expected := tt.expected.(type) {
 		case int:
 			testIntegerObject(t, evaluated, int64(expected))
+		case float64:
+             testFloatObject(t, evaluated, float64(expected))
+
 		case string:
 			errObj, ok := evaluated.(*object.Error)
 			if !ok {
