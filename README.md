@@ -315,7 +315,13 @@ Kindly open an [Issue](https://github.com/AvicennaJr/Nuru/issues) to make sugges
 
 ## Contributions
 
-All contributions are welcomed. Clone the repo, hack it, make sure all tests are passing then submit a pull request.
+### Documentation
+
+There are documentations for two languages, English and Kiswahili, which are both under the `docs` folder. All files are written in markdown. Feel free to contribute by making a pull request.
+
+### Code
+
+Clone the repo, hack it, make sure all tests are passing then submit a pull request.
 
 ## License
 
