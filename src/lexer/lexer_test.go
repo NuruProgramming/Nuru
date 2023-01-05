@@ -40,7 +40,8 @@ func TestNextToken(t *testing.T) {
 	"bangi"
 	"ba ngi"
 	[1, 2];
-	{"mambo": "vipi"}`
+	{"mambo": "vipi"}
+	. // test dot`
 
 	tests := []struct {
 		expectedType    token.TokenType
@@ -132,6 +133,7 @@ func TestNextToken(t *testing.T) {
 		{token.COLON, ":"},
 		{token.STRING, "vipi"},
 		{token.RBRACE, "}"},
+		{token.DOT, "."},
 		{token.EOF, ""},
 	}
 

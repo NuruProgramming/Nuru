@@ -142,6 +142,8 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.RBRACKET, l.line, l.ch)
 	case ':':
 		tok = newToken(token.COLON, l.line, l.ch)
+	case '.':
+		tok = newToken(token.DOT, l.line, l.ch)
 	case '&':
 		if l.peekChar() == '&' {
 			ch := l.ch
