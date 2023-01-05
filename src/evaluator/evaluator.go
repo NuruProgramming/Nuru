@@ -218,6 +218,9 @@ func nativeBoolToBooleanObject(input bool) *object.Boolean {
 	return FALSE
 }
 
+
+
+
 func isTruthy(obj object.Object) bool {
 	switch obj {
 	case NULL:
@@ -231,6 +234,7 @@ func isTruthy(obj object.Object) bool {
 	}
 }
 
+
 func newError(format string, a ...interface{}) *object.Error {
 	format = fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, format)
 	return &object.Error{Message: fmt.Sprintf(format, a...)}
@@ -243,6 +247,8 @@ func isError(obj object.Object) bool {
 
 	return false
 }
+
+
 
 func evalExpressions(exps []ast.Expression, env *object.Environment) []object.Object {
 	var result []object.Object
@@ -295,6 +301,7 @@ func unwrapReturnValue(obj object.Object) object.Object {
 	return obj
 }
 
+
 func evalBreak(node *ast.Break) object.Object {
 	return BREAK
 }
@@ -302,6 +309,8 @@ func evalBreak(node *ast.Break) object.Object {
 func evalContinue(node *ast.Continue) object.Object {
 	return CONTINUE
 }
+
+
 
 // func evalForExpression(fe *ast.For, env *object.Environment) object.Object {
 // 	obj, ok := env.Get(fe.Identifier)
@@ -354,6 +363,8 @@ func evalContinue(node *ast.Continue) object.Object {
 // 	return NULL
 // }
 
+
+
 func loopIterable(next func() (object.Object, object.Object), env *object.Environment, fi *ast.ForIn) object.Object {
 	k, v := next()
 	for k != nil && v != nil {
@@ -379,3 +390,5 @@ func loopIterable(next func() (object.Object, object.Object), env *object.Enviro
 	}
 	return NULL
 }
+
+

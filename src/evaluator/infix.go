@@ -7,18 +7,57 @@ import (
 	"github.com/AvicennaJr/Nuru/object"
 )
 
+func evalFloatIntegerInfixExpression(operator string, left, right object.Object, line int) object.Object {
+	var leftVal, rightVal float64
+	if left.Type() == object.FLOAT_OBJ {
+		leftVal = left.(*object.Float).Value
+		rightVal = float64(right.(*object.Integer).Value)
+	} else {
+		leftVal = float64(left.(*object.Integer).Value)
+		rightVal = right.(*object.Float).Value
+	}
+
+	var val float64
+	switch operator {
+	case "+":
+		val = leftVal + rightVal
+	case "-":
+		val = leftVal - rightVal
+	case "*":
+		val = leftVal * rightVal
+	case "**":
+		val = math.Pow(float64(leftVal), float64(rightVal))
+	case "/":
+		val = leftVal / rightVal
+	case "<":
+		return nativeBoolToBooleanObject(leftVal < rightVal)
+	case "<=":
+		return nativeBoolToBooleanObject(leftVal <= rightVal)
+	case ">":
+		return nativeBoolToBooleanObject(leftVal > rightVal)
+	case ">=":
+		return nativeBoolToBooleanObject(leftVal >= rightVal)
+	case "==":
+		return nativeBoolToBooleanObject(leftVal == rightVal)
+	case "!=":
+		return nativeBoolToBooleanObject(leftVal != rightVal)
+	default:
+		return newError("Mstari %d: Operesheni Haielweki: %s %s %s",
+			line, left.Type(), operator, right.Type())
+	}
+
+	if math.Mod(val, 1) == 0 {
+		return &object.Integer{Value: int64(val)}
+	} else {
+		return &object.Float{Value: val}
+	}
+}
+
 func evalInfixExpression(operator string, left, right object.Object, line int) object.Object {
 	if left == nil {
 		return newError("Mstari %d: Umekosea hapa", line)
 	}
 	switch {
-
-	case operator == "ktk":
-		return evalInExpression(left, right, line)
-
-	case operator == ".":
-		return evalDotExpression(left, right, line)
-
 	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ:
 		return evalStringInfixExpression(operator, left, right, line)
 
@@ -81,6 +120,9 @@ func evalInfixExpression(operator string, left, right object.Object, line int) o
 	case left.Type() == object.FLOAT_OBJ && right.Type() == object.INTEGER_OBJ:
 		return evalFloatIntegerInfixExpression(operator, left, right, line)
 
+	case operator == "ktk":
+		return evalInExpression(left, right, line)
+
 	case operator == "==":
 		return nativeBoolToBooleanObject(left == right)
 
@@ -96,52 +138,6 @@ func evalInfixExpression(operator string, left, right object.Object, line int) o
 	default:
 		return newError("Mstari %d: Operesheni Haielweki: %s %s %s",
 			line, left.Type(), operator, right.Type())
-	}
-}
-
-func evalFloatIntegerInfixExpression(operator string, left, right object.Object, line int) object.Object {
-	var leftVal, rightVal float64
-	if left.Type() == object.FLOAT_OBJ {
-		leftVal = left.(*object.Float).Value
-		rightVal = float64(right.(*object.Integer).Value)
-	} else {
-		leftVal = float64(left.(*object.Integer).Value)
-		rightVal = right.(*object.Float).Value
-	}
-
-	var val float64
-	switch operator {
-	case "+":
-		val = leftVal + rightVal
-	case "-":
-		val = leftVal - rightVal
-	case "*":
-		val = leftVal * rightVal
-	case "**":
-		val = math.Pow(float64(leftVal), float64(rightVal))
-	case "/":
-		val = leftVal / rightVal
-	case "<":
-		return nativeBoolToBooleanObject(leftVal < rightVal)
-	case "<=":
-		return nativeBoolToBooleanObject(leftVal <= rightVal)
-	case ">":
-		return nativeBoolToBooleanObject(leftVal > rightVal)
-	case ">=":
-		return nativeBoolToBooleanObject(leftVal >= rightVal)
-	case "==":
-		return nativeBoolToBooleanObject(leftVal == rightVal)
-	case "!=":
-		return nativeBoolToBooleanObject(leftVal != rightVal)
-	default:
-		return newError("Mstari %d: Operesheni Haielweki: %s %s %s",
-			line, left.Type(), operator, right.Type())
-	}
-
-	if math.Mod(val, 1) == 0 {
-		return &object.Integer{Value: int64(val)}
-	} else {
-		return &object.Float{Value: val}
 	}
 }
 
@@ -175,6 +171,7 @@ func evalBooleanInfixExpression(operator string, left, right object.Object, line
 		return newError("Mstari %d: Operesheni Haielweki: %s %s %s", line, left.Type(), operator, right.Type())
 	}
 }
+
 
 func evalFloatInfixExpression(operator string, left, right object.Object, line int) object.Object {
 	leftVal := left.(*object.Float).Value

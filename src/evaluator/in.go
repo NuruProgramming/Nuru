@@ -32,7 +32,7 @@ func evalInStringExpression(left, right object.Object) object.Object {
 func evalInDictExpression(left, right object.Object, line int) object.Object {
 	leftVal, ok := left.(object.Hashable)
 	if !ok {
-		return newError("Mstari %d: Huwezi kutumia kama 'key': %s", line, left.Type())
+		return newError("Huwezi kutumia kama 'key': %s", left.Type())
 	}
 	key := leftVal.HashKey()
 	rightVal := right.(*object.Dict).Pairs
