@@ -23,13 +23,13 @@ const (
 	PREFIX      //  -X OR !X
 	CALL        // myFunction(X)
 	INDEX       // Arrays
+	DOT         // For methods
 )
 
 var precedences = map[token.TokenType]int{
 	token.AND:             COND,
 	token.OR:              COND,
 	token.IN:              COND,
-	token.DOT:             COND,
 	token.ASSIGN:          ASSIGN,
 	token.EQ:              EQUALS,
 	token.NOT_EQ:          EQUALS,
@@ -50,7 +50,8 @@ var precedences = map[token.TokenType]int{
 	token.MODULUS_ASSIGN:  MODULUS,
 	// token.BANG:     PREFIX,
 	token.LPAREN:   CALL,
-	token.LBRACKET: INDEX, // Highest priority
+	token.LBRACKET: INDEX,
+	token.DOT:      DOT, // Highest priority
 }
 
 type (
@@ -136,7 +137,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.LBRACKET, p.parseIndexExpression)
 	p.registerInfix(token.ASSIGN, p.parseAssignmentExpression)
 	p.registerInfix(token.IN, p.parseInfixExpression)
-	p.registerInfix(token.DOT, p.parseInfixExpression)
+	p.registerInfix(token.DOT, p.parseMethod)
 
 	p.postfixParseFns = make(map[token.TokenType]postfixParseFn)
 	p.registerPostfix(token.PLUS_PLUS, p.parsePostfixExpression)

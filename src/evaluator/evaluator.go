@@ -81,6 +81,9 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		body := node.Body
 		return &object.Function{Parameters: params, Env: env, Body: body}
 
+	case *ast.MethodExpression:
+		return evalMethodExpression(node, env)
+
 	case *ast.CallExpression:
 		function := Eval(node.Function, env)
 		if isError(function) {

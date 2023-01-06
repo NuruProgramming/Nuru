@@ -37,32 +37,31 @@ var builtins = map[string]*object.Builtin{
 
 			switch arg := args[0].(type) {
 			case *object.Array:
-				
+
 				var sums float64
-				for _,num := range arg.Elements {
-				   
-                   if num.Type() != object.INTEGER_OBJ && num.Type() != object.FLOAT_OBJ{
-					  return newError("Samahani namba tu zinahitajika")
-				   }else{
-					if num.Type() == object.INTEGER_OBJ{
-						no , _ := strconv.Atoi(num.Inspect())
-						floatnum := float64(no)
-						sums += floatnum
-					}else if num.Type() == object.FLOAT_OBJ {
-                        no , _ := strconv.ParseFloat(num.Inspect(), 64)
-                        sums += no
+				for _, num := range arg.Elements {
+
+					if num.Type() != object.INTEGER_OBJ && num.Type() != object.FLOAT_OBJ {
+						return newError("Samahani namba tu zinahitajika")
+					} else {
+						if num.Type() == object.INTEGER_OBJ {
+							no, _ := strconv.Atoi(num.Inspect())
+							floatnum := float64(no)
+							sums += floatnum
+						} else if num.Type() == object.FLOAT_OBJ {
+							no, _ := strconv.ParseFloat(num.Inspect(), 64)
+							sums += no
+						}
+
 					}
-					   
-					  
-				   } 
 				}
 
-				if math.Mod(sums,1) == 0 {
-					return &object.Integer{Value : int64(sums)}
+				if math.Mod(sums, 1) == 0 {
+					return &object.Integer{Value: int64(sums)}
 				}
 
-				return &object.Float {Value: float64(sums)}
-			
+				return &object.Float{Value: float64(sums)}
+
 			default:
 				return newError("Samahani, hii function haitumiki na %s", args[0].Type())
 			}
@@ -155,6 +154,46 @@ var builtins = map[string]*object.Builtin{
 			}
 
 			return &object.String{Value: string(args[0].Type())}
+		},
+	},
+	"fungua": {
+		Fn: func(args ...object.Object) object.Object {
+
+			if len(args) > 2 {
+				return newError("Samahani, Hatuhitaji hoja zaidi ya 2, wewe umeweka %d", len(args))
+			}
+			filename := args[0].(*object.String).Value
+			mode := os.O_RDONLY
+			if len(args) == 2 {
+				fileMode := args[1].(*object.String).Value
+				switch fileMode {
+				case "r":
+					mode = os.O_RDONLY
+				// still buggy, will work on this soon
+				// case "w":
+				// 	mode = os.O_WRONLY
+				// 	err := os.Remove(filename)
+				// 	if err != nil {
+				// 		return &object.Null{}
+				// 	}
+				// case "a":
+				// 	mode = os.O_APPEND
+				default:
+					return newError("Tumeshindwa kufungua file na mode %s", fileMode)
+				}
+			}
+			file, err := os.OpenFile(filename, os.O_CREATE|mode, 0644)
+			if err != nil {
+				return &object.Null{}
+			}
+			var reader *bufio.Reader
+			var writer *bufio.Writer
+			if mode == os.O_RDONLY {
+				reader = bufio.NewReader(file)
+			} else {
+				writer = bufio.NewWriter(file)
+			}
+			return &object.File{Filename: filename, Reader: reader, Writer: writer, Handle: file}
 		},
 	},
 }
