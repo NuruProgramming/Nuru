@@ -16,9 +16,6 @@ func evalInfixExpression(operator string, left, right object.Object, line int) o
 	case operator == "ktk":
 		return evalInExpression(left, right, line)
 
-	case operator == ".":
-		return evalDotExpression(left, right, line)
-
 	case left.Type() == object.STRING_OBJ && right.Type() == object.STRING_OBJ:
 		return evalStringInfixExpression(operator, left, right, line)
 
@@ -37,8 +34,7 @@ func evalInfixExpression(operator string, left, right object.Object, line int) o
 	case operator == "+" && left.Type() == object.ARRAY_OBJ && right.Type() == object.ARRAY_OBJ:
 		leftVal := left.(*object.Array).Elements
 		rightVal := right.(*object.Array).Elements
-		elements := make([]object.Object, len(leftVal)+len(rightVal))
-		elements = append(leftVal, rightVal...)
+		elements := append(leftVal, rightVal...)
 		return &object.Array{Elements: elements}
 
 	case operator == "*" && left.Type() == object.ARRAY_OBJ && right.Type() == object.INTEGER_OBJ:
