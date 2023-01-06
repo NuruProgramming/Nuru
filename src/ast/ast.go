@@ -507,3 +507,22 @@ func (se *SwitchExpression) String() string {
 
 	return out.String()
 }
+
+type MethodExpression struct {
+	Expression
+	Token     token.Token
+	Object    Expression
+	Method    Expression
+	Arguments []Expression
+}
+
+func (me *MethodExpression) expressionNode()      {}
+func (me *MethodExpression) TokenLiteral() string { return me.Token.Literal }
+func (me *MethodExpression) String() string {
+	var out bytes.Buffer
+	out.WriteString(me.Object.String())
+	out.WriteString(".")
+	out.WriteString(me.Method.String())
+
+	return out.String()
+}
