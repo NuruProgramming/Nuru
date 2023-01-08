@@ -21,6 +21,7 @@ const (
 	CONTINUE_OBJ     = "ENDELEA"
 	BREAK_OBJ        = "VUNJA"
 	FILE_OBJ         = "FAILI"
+	TIME_OBJ         = "MUDA"
 )
 
 type Object interface {

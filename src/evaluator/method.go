@@ -17,11 +17,24 @@ func evalMethodExpression(node *ast.MethodExpression, env *object.Environment) o
 	return applyMethod(obj, node.Method, args)
 }
 
+func evalTime(node *ast.Time, env *object.Environment) object.Object {
+	obj := &object.Time{}
+
+	args := evalExpressions(node.Arguments, env)
+	if len(args) == 1 && isError(args[0]) {
+		return args[0]
+	}
+
+	return applyMethod(obj, node.Method, args)
+}
+
 func applyMethod(obj object.Object, method ast.Expression, args []object.Object) object.Object {
 	switch obj := obj.(type) {
 	case *object.String:
 		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.File:
+		return obj.Method(method.(*ast.Identifier).Value, args)
+	case *object.Time:
 		return obj.Method(method.(*ast.Identifier).Value, args)
 	}
 	return newError("Samahani, %s haina function '%s()'", obj.Inspect(), method.(*ast.Identifier).Value)
