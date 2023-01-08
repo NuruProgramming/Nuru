@@ -18,6 +18,8 @@ func (p *Parser) parseStatement() ast.Statement {
 		return p.parseBreak()
 	case token.CONTINUE:
 		return p.parseContinue()
+	case token.TIME:
+		return p.parseTime()
 	default:
 		return p.parseExpressionStatement()
 	}
