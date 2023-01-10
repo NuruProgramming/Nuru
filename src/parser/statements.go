@@ -11,7 +11,7 @@ func (p *Parser) parseStatement() ast.Statement {
 	// Remember to add switch statements to the language
 	switch p.curToken.Type {
 	case token.LET:
-		return p.parseLetStatment()
+		return p.parseLetStatement()
 	case token.RETURN:
 		return p.parseReturnStatement()
 	case token.BREAK:
@@ -23,7 +23,7 @@ func (p *Parser) parseStatement() ast.Statement {
 	}
 }
 
-func (p *Parser) parseLetStatment() *ast.LetStatement {
+func (p *Parser) parseLetStatement() *ast.LetStatement {
 	stmt := &ast.LetStatement{Token: p.curToken}
 
 	if !p.expectPeek(token.IDENT) {

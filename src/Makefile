@@ -13,6 +13,10 @@ build_android:
 	tar -zcvf nuru_linux_amd64_v${VERSION}.tar.gz nuru
 	rm nuru
 
+build_test:
+	go build -o test
+	mv test testbinaries/
+
 test:
 	go test ./parser/
 	go test ./ast/

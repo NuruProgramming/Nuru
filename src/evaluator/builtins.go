@@ -167,17 +167,14 @@ var builtins = map[string]*object.Builtin{
 			if len(args) == 2 {
 				fileMode := args[1].(*object.String).Value
 				switch fileMode {
-				case "r":
+				case "soma":
 					mode = os.O_RDONLY
 				// still buggy, will work on this soon
-				// case "w":
-				// 	mode = os.O_WRONLY
-				// 	err := os.Remove(filename)
-				// 	if err != nil {
-				// 		return &object.Null{}
-				// 	}
-				// case "a":
-				// 	mode = os.O_APPEND
+				case "andika":
+					mode = os.O_WRONLY
+					os.Remove(filename)
+				case "ongeza":
+					mode = os.O_APPEND
 				default:
 					return newError("Tumeshindwa kufungua file na mode %s", fileMode)
 				}
