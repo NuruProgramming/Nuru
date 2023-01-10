@@ -19,6 +19,8 @@ func (f *File) Method(method string, args []Object) Object {
 	switch method {
 	case "soma":
 		return f.read(args)
+	case "andika":
+		return f.write(args)
 	case "funga":
 		return f.close(args)
 	}
@@ -34,6 +36,22 @@ func (f *File) read(args []Object) Object {
 	}
 	txt, _ := io.ReadAll(f.Reader)
 	return &String{Value: string(txt)}
+}
+
+func (f *File) write(args []Object) Object {
+	if len(args) != 1 {
+		return newError("Samahani, tunahitaji Hoja 1, wewe umeweka %d", len(args))
+	}
+	if f.Writer == nil {
+		return nil
+	}
+	text := args[0].Inspect()
+	count, err := f.Writer.Write([]byte(text))
+	if err != nil {
+		return nil
+	}
+	_ = f.Writer.Flush()
+	return &Integer{Value: int64(count)}
 }
 
 func (f *File) close(args []Object) Object {
