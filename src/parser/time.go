@@ -5,7 +5,7 @@ import (
 	"github.com/AvicennaJr/Nuru/token"
 )
 
-func (p *Parser) parseTime() *ast.Time {
+func (p *Parser) parseTime() ast.Expression {
 	exp := &ast.Time{Token: p.curToken}
 	if !p.expectPeek(token.DOT) {
 		return nil
