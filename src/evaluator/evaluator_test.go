@@ -279,7 +279,7 @@ func TestFunctionObject(t *testing.T) {
 	}
 
 	if len(unda.Parameters) != 1 {
-		t.Fatalf("function haas wrong paramters,Parameters=%+v", unda.Parameters)
+		t.Fatalf("function has wrong parameters,Parameters=%+v", unda.Parameters)
 	}
 
 	if unda.Parameters[0].String() != "x" {
@@ -373,12 +373,12 @@ func TestBuiltinFunctions(t *testing.T) {
 
 	for _, tt := range tests {
 		evaluated := testEval(tt.input)
-        
+
 		switch expected := tt.expected.(type) {
 		case int:
 			testIntegerObject(t, evaluated, int64(expected))
 		case float64:
-             testFloatObject(t, evaluated, float64(expected))
+			testFloatObject(t, evaluated, float64(expected))
 
 		case string:
 			errObj, ok := evaluated.(*object.Error)

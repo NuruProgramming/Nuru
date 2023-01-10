@@ -203,8 +203,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 func evalProgram(program *ast.Program, env *object.Environment) object.Object {
 	var result object.Object
 
-	for _, statment := range program.Statements {
-		result = Eval(statment, env)
+	for _, statement := range program.Statements {
+		result = Eval(statement, env)
 
 		switch result := result.(type) {
 		case *object.ReturnValue:

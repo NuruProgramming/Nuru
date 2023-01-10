@@ -8,8 +8,8 @@ import (
 func evalBlockStatement(block *ast.BlockStatement, env *object.Environment) object.Object {
 	var result object.Object
 
-	for _, statment := range block.Statements {
-		result = Eval(statment, env)
+	for _, statement := range block.Statements {
+		result = Eval(statement, env)
 
 		if result != nil {
 			rt := result.Type()
