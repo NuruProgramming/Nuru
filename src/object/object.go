@@ -22,6 +22,7 @@ const (
 	BREAK_OBJ        = "VUNJA"
 	FILE_OBJ         = "FAILI"
 	TIME_OBJ         = "MUDA"
+	MODULE_OBJ       = "MODULE"
 )
 
 type Object interface {
