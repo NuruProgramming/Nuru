@@ -86,6 +86,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 
 	case *ast.Time:
 		return evalTime(node, env)
+	case *ast.Import:
+		return evalImport(node, env)
 
 	case *ast.CallExpression:
 		function := Eval(node.Function, env)
