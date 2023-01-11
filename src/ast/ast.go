@@ -543,3 +543,9 @@ func (t *Time) String() string {
 
 	return out.String()
 }
+
+type Import struct {
+	Expression
+	Token       token.Token
+	Identifiers map[string]*Identifier
+}
