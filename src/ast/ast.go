@@ -527,23 +527,6 @@ func (me *MethodExpression) String() string {
 	return out.String()
 }
 
-type Time struct {
-	Expression
-	Token     token.Token
-	Method    Expression
-	Arguments []Expression
-}
-
-func (t *Time) statementNode()       {}
-func (t *Time) TokenLiteral() string { return t.Token.Literal }
-func (t *Time) String() string {
-	var out bytes.Buffer
-
-	out.WriteString("muda." + t.Method.String())
-
-	return out.String()
-}
-
 type Import struct {
 	Expression
 	Token       token.Token
