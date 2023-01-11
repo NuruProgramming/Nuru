@@ -6,4 +6,5 @@ var Mapper = map[string]*object.Module{}
 
 func init() {
 	Mapper["os"] = &object.Module{Name: "os", Functions: OsFunctions}
+	Mapper["muda"] = &object.Module{Name: "time", Functions: TimeFunctions}
 }

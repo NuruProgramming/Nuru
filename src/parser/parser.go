@@ -112,7 +112,6 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.NULL, p.parseNull)
 	p.registerPrefix(token.FOR, p.parseForExpression)
 	p.registerPrefix(token.SWITCH, p.parseSwitchStatement)
-	p.registerPrefix(token.TIME, p.parseTime)
 	p.registerPrefix(token.IMPORT, p.parseImport)
 
 	p.infixParseFns = make(map[token.TokenType]infixParseFn)
