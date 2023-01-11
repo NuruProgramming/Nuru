@@ -73,6 +73,7 @@ const (
 	CASE     = "IKIWA"
 	DEFAULT  = "KAWAIDA"
 	TIME     = "MUDA"
+	IMPORT   = "TUMIA"
 )
 
 var keywords = map[string]TokenType{
@@ -94,6 +95,7 @@ var keywords = map[string]TokenType{
 	"ikiwa":   CASE,
 	"kawaida": DEFAULT,
 	"muda":    TIME,
+	"tumia":   IMPORT,
 }
 
 func LookupIdent(ident string) TokenType {
