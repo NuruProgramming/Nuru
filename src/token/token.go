@@ -72,7 +72,6 @@ const (
 	SWITCH   = "BADILI"
 	CASE     = "IKIWA"
 	DEFAULT  = "KAWAIDA"
-	TIME     = "MUDA"
 	IMPORT   = "TUMIA"
 )
 
@@ -94,7 +93,6 @@ var keywords = map[string]TokenType{
 	"badili":  SWITCH,
 	"ikiwa":   CASE,
 	"kawaida": DEFAULT,
-	"muda":    TIME,
 	"tumia":   IMPORT,
 }
 
