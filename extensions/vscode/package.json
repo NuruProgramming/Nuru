@@ -1,0 +1,35 @@
+{
+    "name": "nuru",
+    "displayName": "Nuru",
+    "description": "Nuru Programming Language",
+    "version": "0.0.1",
+    "engines": {
+        "vscode": "^1.74.0"
+    },
+    "categories": [
+        "Programming Languages"
+    ],
+    "contributes": {
+        "languages": [
+            {
+                "id": "nuru",
+                "aliases": [
+                    "Nuru Programming Language",
+                    "nuru"
+                ],
+                "extensions": [
+                    ".nr",
+                    ".sw"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "nuru",
+                "scopeName": "source.nr",
+                "path": "./syntaxes/nuru.tmLanguage.json"
+            }
+        ]
+    }
+}

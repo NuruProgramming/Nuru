@@ -1,0 +1,156 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "Nuru Programming Language",
+    "scopeName": "source.nr",
+    "fileTypes": [
+        "nr"
+    ],
+    "patterns": [
+        {
+            "include": "#linecomments"
+        },
+        {
+            "include": "#blockcomments"
+        },
+        {
+            "include": "#operators"
+        },
+        {
+            "include": "#punctuation"
+        },
+        {
+            "include": "#numbers"
+        },
+        {
+            "include": "#constant"
+        },
+        {
+            "include": "#keywords"
+        },
+        {
+            "include": "#strings"
+        },
+        {
+            "include": "#identifiers"
+        }
+    ],
+    "repository": {
+        "linecomments": {
+            "name": "comment.line.double-slash.nuru",
+            "match": "(//).*$\n?",
+            "captures": {
+                "1": {
+                    "name": "punctuation.definition.comment.nuru"
+                }
+            }
+        },
+        "blockcomments": {
+            "name": "comment.block.nuru",
+            "begin": "/\\*",
+            "end": "\\*/",
+            "captures": {
+                "0": {
+                    "name": "punctuation.definition.comment.nuru"
+                }
+            }
+        },
+        "numbers": {
+            "name": "constant.numeric.nuru",
+            "match": "\\b[0-9]+(\\.[0-9]+)?\\b"
+        },
+        "constant": {
+            "name": "constant.language.nuru",
+            "match": "\\b(kweli|sikweli)\\b"
+        },
+        "operators": {
+            "patterns": [
+                {
+                    "name": "keyword.operator.arithmetic.nuru",
+                    "match": "\\b(\\+|\\-|%|\\*|\\/|\\^)\\b"
+                },
+                {
+                    "name": "keyword.operator.logical.nuru",
+                    "match": "\\b(==|<=|>=|<|>|&&|\\|\\|)\\b"
+                },
+                {
+                    "name": "keyword.operator.assignment.nuru",
+                    "match": "\\b(=|:)\\b"
+                },
+                {
+                    "name": "punctuation.accessor.nuru",
+                    "match": "\\."
+                }
+            ]
+        },
+        "punctuation": {
+            "patterns": [
+                {
+                    "name": "punctuation.separator",
+                    "match": ","
+                },
+                {
+                    "include": "#groups"
+                }
+            ]
+        },
+        "keywords": {
+            "patterns": [
+                {
+                    "name": "storage.type.function.nuru",
+                    "match": "\\b(unda|andika|idadi|jumla|yamwisho|sukuma|jaza|aina|fungua)\\b"
+                },
+                {
+                    "name": "storage.type.nuru",
+                    "match": "\\bfanya\\b"
+                },
+                {
+                    "name": "keyword.control.nuru",
+                    "match": "\\b(kama|au|sivyo|wakati|rudisha|vunja|endelea|tupu|ktk|kwa|badili|ikiwa|kawaida|tumia)\\b"
+                },
+                {
+                    "name": "support.function.nuru",
+                    "match": "\\b(os|muda)\\b"
+                }
+            ]
+        },
+        "identifiers": {
+            "patterns": [
+                {
+                    "name": "meta.functioncall.nuru",
+                    "match": "\\b([_A-Za-z][_A-Za-z0-9]*)\\b(?=\\()",
+                    "captures": {
+                        "1": {
+                            "name": "entity.name.function.nuru"
+                        }
+                    }
+                }
+            ]
+        },
+        "strings": {
+            "patterns": [
+                {
+                    "name": "string.quoted.double.nuru",
+                    "begin": "\"",
+                    "end": "\"",
+                    "patterns": [
+                        {
+                            "name": "constant.character.escape.nuru",
+                            "match": "\\\\."
+                        }
+                    ]
+                },
+                {
+                    "name": "string.quoted.single.nuru",
+                    "begin": "\\'",
+                    "end": "\\'",
+                    "patterns": [
+                        {
+                            "name": "constant.character.escape.nuru",
+                            "match": "\\\\."
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
