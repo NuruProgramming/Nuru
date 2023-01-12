@@ -1,5 +1,5 @@
 # Nuru Extensions For Various Editors
 
-## [VSCODE](./vscode/README.md)
+## [VSCODE](./vscode/)
 
 Nuru syntax highlighting on VSCode
