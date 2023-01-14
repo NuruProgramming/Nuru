@@ -9,6 +9,10 @@ This is a syntax highliting extension for Nuru on vscode. It detects `.nr` and `
 
 ## How To Install
 
+### Download From Market Place
+
+- Simply download the Nuru Extension from VSCode Market Place
+
 ### Windows
 
 - Copy the whole [nuru folder](https://github.com/AvicennaJr/Nuru/tree/main/extensions/vscode/nuru) and paste it in the VSCode extensions directory found in `%USERPROFILE%\.vscode\extensions`
