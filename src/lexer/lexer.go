@@ -5,15 +5,15 @@ import (
 )
 
 type Lexer struct {
-	input        string
+	input        []rune
 	position     int
 	readPosition int
-	ch           byte
+	ch           rune
 	line         int
 }
 
 func New(input string) *Lexer {
-	l := &Lexer{input: input}
+	l := &Lexer{input: []rune(input)}
 	l.readChar()
 	return l
 }
@@ -32,132 +32,132 @@ func (l *Lexer) readChar() {
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 	l.skipWhitespace()
-	if l.ch == '/' && l.peekChar() == '/' {
+	if l.ch == rune('/') && l.peekChar() == rune('/') {
 		l.skipSingleLineComment()
 		return l.NextToken()
 	}
-	if l.ch == '/' && l.peekChar() == '*' {
+	if l.ch == rune('/') && l.peekChar() == rune('*') {
 		l.skipMultiLineComment()
 		return l.NextToken()
 	}
 
 	switch l.ch {
-	case '=':
-		if l.peekChar() == '=' {
+	case rune('='):
+		if l.peekChar() == rune('=') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.EQ, Literal: string(ch) + string(l.ch), Line: l.line}
 		} else {
 			tok = newToken(token.ASSIGN, l.line, l.ch)
 		}
-	case ';':
+	case rune(';'):
 		tok = newToken(token.SEMICOLON, l.line, l.ch)
-	case '(':
+	case rune('('):
 		tok = newToken(token.LPAREN, l.line, l.ch)
-	case ')':
+	case rune(')'):
 		tok = newToken(token.RPAREN, l.line, l.ch)
-	case '{':
+	case rune('{'):
 		tok = newToken(token.LBRACE, l.line, l.ch)
-	case '}':
+	case rune('}'):
 		tok = newToken(token.RBRACE, l.line, l.ch)
-	case ',':
+	case rune(','):
 		tok = newToken(token.COMMA, l.line, l.ch)
-	case '+':
-		if l.peekChar() == '=' {
+	case rune('+'):
+		if l.peekChar() == rune('=') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.PLUS_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
-		} else if l.peekChar() == '+' {
+		} else if l.peekChar() == rune('+') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.PLUS_PLUS, Literal: string(ch) + string(l.ch), Line: l.line}
 		} else {
 			tok = newToken(token.PLUS, l.line, l.ch)
 		}
-	case '-':
-		if l.peekChar() == '=' {
+	case rune('-'):
+		if l.peekChar() == rune('=') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.MINUS_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
-		} else if l.peekChar() == '-' {
+		} else if l.peekChar() == rune('-') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.MINUS_MINUS, Literal: string(ch) + string(l.ch), Line: l.line}
 		} else {
 			tok = newToken(token.MINUS, l.line, l.ch)
 		}
-	case '!':
-		if l.peekChar() == '=' {
+	case rune('!'):
+		if l.peekChar() == rune('=') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.NOT_EQ, Literal: string(ch) + string(l.ch), Line: l.line}
 		} else {
 			tok = newToken(token.BANG, l.line, l.ch)
 		}
-	case '/':
-		if l.peekChar() == '=' {
+	case rune('/'):
+		if l.peekChar() == rune('=') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.SLASH_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
 		} else {
 			tok = newToken(token.SLASH, l.line, l.ch)
 		}
-	case '*':
-		if l.peekChar() == '=' {
+	case rune('*'):
+		if l.peekChar() == rune('=') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.ASTERISK_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
-		} else if l.peekChar() == '*' {
+		} else if l.peekChar() == rune('*') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.POW, Literal: string(ch) + string(l.ch), Line: l.line}
 		} else {
 			tok = newToken(token.ASTERISK, l.line, l.ch)
 		}
-	case '<':
-		if l.peekChar() == '=' {
+	case rune('<'):
+		if l.peekChar() == rune('=') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.LTE, Literal: string(ch) + string(l.ch), Line: l.line}
 		} else {
 			tok = newToken(token.LT, l.line, l.ch)
 		}
-	case '>':
-		if l.peekChar() == '=' {
+	case rune('>'):
+		if l.peekChar() == rune('=') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.GTE, Literal: string(ch) + string(l.ch), Line: l.line}
 		} else {
 			tok = newToken(token.GT, l.line, l.ch)
 		}
-	case '"':
+	case rune('"'):
 		tok.Type = token.STRING
 		tok.Literal = l.readString()
 		tok.Line = l.line
-	case '\'':
+	case rune('\''):
 		tok = token.Token{Type: token.STRING, Literal: l.readSingleQuoteString(), Line: l.line}
-	case '[':
+	case rune('['):
 		tok = newToken(token.LBRACKET, l.line, l.ch)
-	case ']':
+	case rune(']'):
 		tok = newToken(token.RBRACKET, l.line, l.ch)
-	case ':':
+	case rune(':'):
 		tok = newToken(token.COLON, l.line, l.ch)
-	case '.':
+	case rune('.'):
 		tok = newToken(token.DOT, l.line, l.ch)
-	case '&':
-		if l.peekChar() == '&' {
+	case rune('&'):
+		if l.peekChar() == rune('&') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.AND, Literal: string(ch) + string(l.ch), Line: l.line}
 		}
-	case '|':
-		if l.peekChar() == '|' {
+	case rune('|'):
+		if l.peekChar() == rune('|') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.OR, Literal: string(ch) + string(l.ch), Line: l.line}
 		}
-	case '%':
-		if l.peekChar() == '=' {
+	case rune('%'):
+		if l.peekChar() == rune('=') {
 			ch := l.ch
 			l.readChar()
 			tok = token.Token{Type: token.MODULUS_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
@@ -186,7 +186,7 @@ func (l *Lexer) NextToken() token.Token {
 	return tok
 }
 
-func newToken(tokenType token.TokenType, line int, ch byte) token.Token {
+func newToken(tokenType token.TokenType, line int, ch rune) token.Token {
 	return token.Token{Type: tokenType, Literal: string(ch), Line: line}
 }
 
@@ -196,10 +196,10 @@ func (l *Lexer) readIdentifier() string {
 	for isLetter(l.ch) || isDigit(l.ch) {
 		l.readChar()
 	}
-	return l.input[position:l.position]
+	return string(l.input[position:l.position])
 }
 
-func isLetter(ch byte) bool {
+func isLetter(ch rune) bool {
 	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
 }
 
@@ -212,7 +212,7 @@ func (l *Lexer) skipWhitespace() {
 	}
 }
 
-func isDigit(ch byte) bool {
+func isDigit(ch rune) bool {
 	return '0' <= ch && ch <= '9'
 }
 
@@ -221,7 +221,7 @@ func (l *Lexer) readNumber() string {
 	for isDigit(l.ch) {
 		l.readChar()
 	}
-	return l.input[position:l.position]
+	return string(l.input[position:l.position])
 }
 
 func (l *Lexer) readDecimal() token.Token {
@@ -234,9 +234,9 @@ func (l *Lexer) readDecimal() token.Token {
 	return token.Token{Type: token.INT, Literal: integer, Line: l.line}
 }
 
-func (l *Lexer) peekChar() byte {
+func (l *Lexer) peekChar() rune {
 	if l.readPosition >= len(l.input) {
-		return 0
+		return rune(0)
 	} else {
 		return l.input[l.readPosition]
 	}
