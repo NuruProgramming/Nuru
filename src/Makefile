@@ -8,6 +8,11 @@ build_linux:
 build_windows:
 	env GOOS=windows GOARCH=amd64 go build -o nuru_windows_amd64_v${VERSION}.exe
 
+build_mac:
+	env GOOS=darwin GOARCH=amd64 go build -o nuru
+	tar -zcvf nuru_mac_amd64_v${VERSION}.tar.gz nuru
+	rm nuru
+
 build_android:
 	env GOOS=android GOARCH=arm64 go build -o nuru
 	tar -zcvf nuru_linux_amd64_v${VERSION}.tar.gz nuru
