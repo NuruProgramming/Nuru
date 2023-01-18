@@ -77,9 +77,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalIdentifier(node, env)
 
 	case *ast.FunctionLiteral:
-		params := node.Parameters
-		body := node.Body
-		return &object.Function{Parameters: params, Env: env, Body: body}
+		return evalFunction(node, env)
 
 	case *ast.MethodExpression:
 		return evalMethodExpression(node, env)
@@ -132,6 +130,10 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 	// 	return evalForExpression(node, env)
 	case *ast.ForIn:
 		return evalForInExpression(node, env, node.Token.Line)
+
+	case *ast.Assign: // making let temporarily optional as I debug
+		return evalAssign(node, env)
+
 	case *ast.AssignmentExpression:
 		left := Eval(node.Left, env)
 		if isError(left) {
