@@ -8,7 +8,18 @@ import (
 
 func (p *Parser) parseAssignmentExpression(exp ast.Expression) ast.Expression {
 	switch node := exp.(type) {
-	case *ast.Identifier, *ast.IndexExpression:
+	// temporarily making let keyword optional
+	case *ast.Identifier:
+		e := &ast.Assign{
+			Token: p.curToken,
+			Name:  exp.(*ast.Identifier),
+		}
+		precedence := p.curPrecedence()
+		p.nextToken()
+		e.Value = p.parseExpression(precedence)
+		return e
+
+	case *ast.IndexExpression:
 	default:
 		if node != nil {
 			msg := fmt.Sprintf("Mstari %d:Tulitegemea kupata kitambulishi au array, badala yake tumepata: %s", p.curToken.Line, node.TokenLiteral())
