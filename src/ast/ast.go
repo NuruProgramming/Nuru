@@ -212,6 +212,7 @@ func (bs *BlockStatement) String() string {
 type FunctionLiteral struct {
 	Token      token.Token
 	Parameters []*Identifier
+	Defaults   map[string]Expression
 	Body       *BlockStatement
 }
 
@@ -331,6 +332,24 @@ func (dl *DictLiteral) String() string {
 	return out.String()
 }
 
+type Assign struct {
+	Token token.Token
+	Name  *Identifier
+	Value Expression
+}
+
+func (ae *Assign) expressionNode()      {}
+func (ae *Assign) TokenLiteral() string { return ae.Token.Literal }
+func (ae *Assign) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(ae.Name.String())
+	out.WriteString(ae.TokenLiteral())
+	out.WriteString(ae.Value.String())
+
+	return out.String()
+}
+
 type AssignmentExpression struct {
 	Token token.Token
 	Left  Expression
@@ -420,7 +439,6 @@ func (fl *FloatLiteral) TokenLiteral() string { return fl.Token.Literal }
 func (fl *FloatLiteral) String() string       { return fl.Token.Literal }
 
 type For struct {
-	Expression
 	Token        token.Token
 	Identifier   string      // "i"
 	StarterName  *Identifier // i = 0
@@ -431,7 +449,6 @@ type For struct {
 }
 
 type ForIn struct {
-	Expression
 	Token    token.Token
 	Key      string
 	Value    string
@@ -509,7 +526,6 @@ func (se *SwitchExpression) String() string {
 }
 
 type MethodExpression struct {
-	Expression
 	Token     token.Token
 	Object    Expression
 	Method    Expression
@@ -528,7 +544,17 @@ func (me *MethodExpression) String() string {
 }
 
 type Import struct {
-	Expression
 	Token       token.Token
 	Identifiers map[string]*Identifier
+}
+
+func (i *Import) expressionNode()      {}
+func (i *Import) TokenLiteral() string { return i.Token.Literal }
+func (i *Import) String() string {
+	var out bytes.Buffer
+	out.WriteString("tumia ")
+	for k := range i.Identifiers {
+		out.WriteString(k + " ")
+	}
+	return out.String()
 }
