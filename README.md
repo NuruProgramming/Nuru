@@ -229,7 +229,7 @@ andika(arr[3]) // output = 3
 
 ### Dictionaries
 
-Nuru also supports dictionaris and you can do a lot with them as follows:
+Nuru also supports dictionaries and you can do a lot with them as follows:
 ```
 fanya mtu = {"jina": "Mojo", "kabila": "Mnyakusa"}
 
