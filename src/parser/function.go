@@ -14,6 +14,10 @@ func (p *Parser) parseFunctionLiteral() ast.Expression {
 
 	lit.Parameters = p.parseFunctionParameters()
 
+	// if !p.parseFunctionParameters(lit) {
+	// 	return nil
+	// }
+
 	if !p.expectPeek(token.LBRACE) {
 		return nil
 	}
@@ -49,6 +53,32 @@ func (p *Parser) parseFunctionParameters() []*ast.Identifier {
 
 	return identifiers
 }
+
+// func (p *Parser) parseFunctionParameters(lit *ast.FunctionLiteral) bool {
+// 	lit.Defaults = make(map[string]ast.Expression)
+// 	for !p.peekTokenIs(token.RPAREN) {
+// 		p.nextToken()
+
+// 		if p.curTokenIs(token.COMMA) {
+// 			continue
+// 		}
+
+// 		ident := &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
+// 		lit.Parameters = append(lit.Parameters, ident)
+
+// 		if p.peekTokenIs(token.ASSIGN) {
+// 			p.nextToken()
+// 			p.nextToken()
+// 			lit.Defaults[ident.Value] = p.parseExpression(LOWEST)
+// 		} else {
+// 			if len(lit.Defaults) > 0 {
+// 				return false
+// 			}
+// 		}
+// 	}
+
+// 	return !p.expectPeek(token.RPAREN)
+// }
 
 func (p *Parser) parseCallExpression(function ast.Expression) ast.Expression {
 	exp := &ast.CallExpression{Token: p.curToken, Function: function}
