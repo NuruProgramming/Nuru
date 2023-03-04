@@ -149,6 +149,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		// I'm surprised it work at the first try lol
 		// basically separate the += to + and =, take the + only and
 		// then perform the operation as normal
+		// Update: This 'genius' move wasted two hours of mine
 		op := node.Token.Literal
 		if len(op) >= 2 {
 			op = op[:len(op)-1]
