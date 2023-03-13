@@ -350,6 +350,24 @@ func (ae *Assign) String() string {
 	return out.String()
 }
 
+type AssignEqual struct {
+	Token token.Token
+	Left  *Identifier
+	Value Expression
+}
+
+func (ae *AssignEqual) expressionNode()      {}
+func (ae *AssignEqual) TokenLiteral() string { return ae.Token.Literal }
+func (ae *AssignEqual) String() string {
+	var out bytes.Buffer
+
+	out.WriteString(ae.Left.String())
+	out.WriteString(ae.TokenLiteral())
+	out.WriteString(ae.Value.String())
+
+	return out.String()
+}
+
 type AssignmentExpression struct {
 	Token token.Token
 	Left  Expression
