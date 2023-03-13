@@ -133,6 +133,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 
 	case *ast.Assign: // making let temporarily optional as I debug
 		return evalAssign(node, env)
+	case *ast.AssignEqual:
+		return evalAssignEqual(node, env)
 
 	case *ast.AssignmentExpression:
 		left := Eval(node.Left, env)
@@ -146,10 +148,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		}
 
 		// This is an easy way to assign operators like +=, -= etc
-		// I'm surprised it work at the first try lol
-		// basically separate the += to + and =, take the + only and
-		// then perform the operation as normal
-		// Update: This 'genius' move wasted two hours of mine
+		// for index expressions (arrays and dicts) where applicable
 		op := node.Token.Literal
 		if len(op) >= 2 {
 			op = op[:len(op)-1]
