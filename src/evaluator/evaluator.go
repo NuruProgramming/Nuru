@@ -173,7 +173,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 					return index
 				}
 				if idx, ok := index.(*object.Integer); ok {
-					if int(idx.Value) > len(array.Elements) {
+					if int(idx.Value) >= len(array.Elements) {
 						return newError("Index imezidi idadi ya elements")
 					}
 					array.Elements[idx.Value] = value
