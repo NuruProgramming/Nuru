@@ -694,25 +694,17 @@ func TestArrayConcatenation(t *testing.T) {
 }
 
 func TestDictConcatenation(t *testing.T) {
-	m := map[string]string{
-		"a": "apple",
-		"b": "banana",
-		"c": "cat",
-	}
-	n := map[string]string{
-		"a": "ccc",
-	}
 	tests := []struct {
 		input    string
 		expected map[string]string
 	}{
 		{
-			"{'a': 'apple', 'b': 'banana'} + {'c': 'cat'}",
-			m,
+			input:    "{'a': 'apple', 'b': 'banana'} + {'c': 'cat'}",
+			expected: map[string]string{"a": "apple", "b": "banana", "c": "cat"},
 		},
 		{
-			"{'a':'bbb'} + {'a':'ccc'}",
-			n,
+			input:    "{'a':'bbb'} + {'a':'ccc'}",
+			expected: map[string]string{"a": "ccc"},
 		},
 	}
 
