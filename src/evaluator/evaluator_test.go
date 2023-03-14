@@ -546,3 +546,53 @@ func TestDictIndexExpression(t *testing.T) {
 		}
 	}
 }
+
+func TestPrefixInteger(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{
+			"-4",
+			-4,
+		},
+		{
+			"+5",
+			5,
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		integer, ok := tt.expected.(int)
+		if !ok {
+			t.Errorf("Object is not an integer")
+		}
+		testIntegerObject(t, evaluated, int64(integer))
+	}
+}
+
+func TestPrefixFloat(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{
+			"-4.4",
+			-4.4,
+		},
+		{
+			"+5.5",
+			5.5,
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		float, ok := tt.expected.(float64)
+		if !ok {
+			t.Errorf("Object is not a float")
+		}
+		testFloatObject(t, evaluated, float)
+	}
+}
