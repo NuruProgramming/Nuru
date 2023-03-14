@@ -3,6 +3,7 @@ package evaluator
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/AvicennaJr/Nuru/lexer"
 	"github.com/AvicennaJr/Nuru/object"
@@ -1046,5 +1047,23 @@ func TestAssignEqual(t *testing.T) {
 				t.Errorf("Wrong value, want=%s, got=%s", tt.expected, s.Value)
 			}
 		}
+	}
+}
+
+func TestTimeModule(t *testing.T) {
+	input := `
+	tumia muda
+	muda.hasahivi()
+	`
+
+	evaluated := testEval(input)
+	muda, ok := evaluated.(*object.Time)
+	if !ok {
+		t.Fatalf("Object is not a time object, got=%T", evaluated)
+	}
+
+	_, err := time.Parse("2006-01-02 15:04:05", muda.TimeValue)
+	if err != nil {
+		t.Errorf("Wrong time value: got=%v", err)
 	}
 }
