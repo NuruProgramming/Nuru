@@ -645,7 +645,7 @@ func TestArrayConcatenation(t *testing.T) {
 	}{
 		{
 			"['a', 'b', 'c'] + [1, 2, 3]",
-			`[a, b, c, 1, 2, 3]`,
+			"[a, b, c, 1, 2, 3]",
 		},
 		{
 			"[1, 2, 3] * 4",
@@ -665,7 +665,43 @@ func TestArrayConcatenation(t *testing.T) {
 		}
 
 		if arr.Inspect() != tt.expected {
-			t.Errorf("Array has wrong values, got=%s, want=%s", arr.Inspect(), tt.expected)
+			t.Errorf("Array has wrong values, got=%s want=%s", arr.Inspect(), tt.expected)
+		}
+	}
+}
+
+func TestDictConcatenation(t *testing.T) {
+	m := map[string]string{
+		"a": "apple",
+		"b": "banana",
+		"c": "cat",
+	}
+	n := map[string]string{
+		"a": "ccc",
+	}
+	tests := []struct {
+		input    string
+		expected map[string]string
+	}{
+		{
+			"{'a': 'apple', 'b': 'banana'} + {'c': 'cat'}",
+			m,
+		},
+		{
+			"{'a':'bbb'} + {'a':'ccc'}",
+			n,
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		dict, ok := evaluated.(*object.Dict)
+		if !ok {
+			t.Fatalf("Object is not an dict, got=%T(%+v)", evaluated, evaluated)
+		}
+
+		if len(dict.Pairs) != len(tt.expected) {
+			t.Errorf("Dictionary has wrong number of pairs, got=%d want=%d", len(dict.Pairs), len(tt.expected))
 		}
 	}
 }
