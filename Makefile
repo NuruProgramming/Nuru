@@ -27,6 +27,7 @@ test:
 	go test -v ./ast/
 	go test -v ./evaluator/
 	go test -v ./object/
+	go test -v ./lexer/
 
 clean:
 	go clean
