@@ -41,7 +41,21 @@ func TestNextToken(t *testing.T) {
 	"ba ngi"
 	[1, 2];
 	{"mambo": "vipi"}
-	. // test dot`
+	. // test dot
+	tumia muda
+	
+	badili (a) {
+		ikiwa 2 {
+			andika(2)
+		}
+		kawaida {
+			andika(0)
+		}
+	}
+	
+	tupu
+	
+	kwa i, v ktk j`
 
 	tests := []struct {
 		expectedType    token.TokenType
@@ -134,6 +148,36 @@ func TestNextToken(t *testing.T) {
 		{token.STRING, "vipi"},
 		{token.RBRACE, "}"},
 		{token.DOT, "."},
+		{token.IMPORT, "tumia"},
+		{token.IDENT, "muda"},
+		{token.SWITCH, "badili"},
+		{token.LPAREN, "("},
+		{token.IDENT, "a"},
+		{token.RPAREN, ")"},
+		{token.LBRACE, "{"},
+		{token.CASE, "ikiwa"},
+		{token.INT, "2"},
+		{token.LBRACE, "{"},
+		{token.IDENT, "andika"},
+		{token.LPAREN, "("},
+		{token.INT, "2"},
+		{token.RPAREN, ")"},
+		{token.RBRACE, "}"},
+		{token.DEFAULT, "kawaida"},
+		{token.LBRACE, "{"},
+		{token.IDENT, "andika"},
+		{token.LPAREN, "("},
+		{token.INT, "0"},
+		{token.RPAREN, ")"},
+		{token.RBRACE, "}"},
+		{token.RBRACE, "}"},
+		{token.NULL, "tupu"},
+		{token.FOR, "kwa"},
+		{token.IDENT, "i"},
+		{token.COMMA, ","},
+		{token.IDENT, "v"},
+		{token.IN, "ktk"},
+		{token.IDENT, "j"},
 		{token.EOF, ""},
 	}
 
