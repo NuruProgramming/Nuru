@@ -23,10 +23,10 @@ build_test:
 	mv test testbinaries/
 
 test:
-	go test ./parser/
-	go test ./ast/
-	go test ./evaluator/
-	go test ./object/
+	go test -v ./parser/
+	go test -v ./ast/
+	go test -v ./evaluator/
+	go test -v ./object/
 
 clean:
 	go clean
