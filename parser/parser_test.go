@@ -1093,3 +1093,24 @@ func TestParseDot(t *testing.T) {
 		checkParserErrors(t, p)
 	}
 }
+
+func TestParseSwitch(t *testing.T) {
+	input := `
+	badili (a) {
+		ikiwa 2 {
+			andika(2)
+		}
+		ikiwa 3 {
+			andika(3)
+		}
+		kawaida {
+			andika(0)
+		}
+	}
+	`
+
+	l := lexer.New(input)
+	p := New(l)
+	_ = p.ParseProgram()
+	checkParserErrors(t, p)
+}
