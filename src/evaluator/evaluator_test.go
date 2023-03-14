@@ -596,3 +596,44 @@ func TestPrefixFloat(t *testing.T) {
 		testFloatObject(t, evaluated, float)
 	}
 }
+
+func TestInExpression(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected bool
+	}{
+		{
+			"'a' ktk 'habari'",
+			true,
+		},
+		{
+			"'c' ktk 'habari'",
+			false,
+		},
+		{
+			"1 ktk [1, 2, 3]",
+			true,
+		},
+		{
+			"4 ktk [1, 2, 3]",
+			false,
+		},
+		{
+			"'a' ktk {'a': 'apple', 'b': 'banana'}",
+			true,
+		},
+		{
+			"'apple' ktk {'a': 'apple', 'b': 'banana'}",
+			false,
+		},
+		{
+			"'c' ktk {'a': 'apple', 'b': 'banana'}",
+			false,
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		testBooleanObject(t, evaluated, tt.expected)
+	}
+}
