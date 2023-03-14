@@ -968,10 +968,84 @@ func TestSwitchStatement(t *testing.T) {
 				t.Fatalf("Object is not a string, got=%T", evaluated)
 			}
 
-			if s.Value != "haijulikani" {
+			if s.Value != tt.expected {
 				t.Errorf("Wrong Value, want='haijulikani', got=%s", s.Value)
 			}
 
+		}
+	}
+}
+
+func TestAssignEqual(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{"a = 5; a += 5",
+			10,
+		},
+		{
+			"a = 5; a -= 5",
+			0,
+		},
+		{
+			"a = 5; a *= 10",
+			50,
+		},
+		{
+			"a = 100; a /= 4",
+			25,
+		},
+		{
+			`
+		a = [1, 2, 3]
+		a[0] += 500
+		a[0]
+		`,
+			501,
+		},
+		{
+			`
+		a = "mambo"
+		a += " vipi"
+		`,
+			"mambo vipi",
+		},
+		{
+			"a = 5.5; a += 4.5",
+			10.0,
+		},
+		{
+			"a = 11.3; a -= 0.8",
+			10.5,
+		},
+		{
+			"a = 0.4; a /= 2",
+			0.2,
+		},
+		{
+			"a = 0.1; a *= 10",
+			1.0,
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+
+		switch expected := tt.expected.(type) {
+		case int:
+			testIntegerObject(t, evaluated, int64(expected))
+		case float64:
+			testFloatObject(t, evaluated, float64(expected))
+		case string:
+			s, ok := evaluated.(*object.String)
+			if !ok {
+				t.Fatalf("Object not a string, got=%T", evaluated)
+			}
+
+			if s.Value != tt.expected {
+				t.Errorf("Wrong value, want=%s, got=%s", tt.expected, s.Value)
+			}
 		}
 	}
 }
