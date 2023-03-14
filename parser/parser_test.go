@@ -1065,3 +1065,17 @@ func TestForExpression(t *testing.T) {
 		t.Fatalf("Wrong Value Index, expected 'v' got %s", exp.Value)
 	}
 }
+
+func TestParsePostfix(t *testing.T) {
+	input := []string{
+		"a = 5; a++;",
+		"b = 5; b--;",
+	}
+
+	for _, txt := range input {
+		l := lexer.New(txt)
+		p := New(l)
+		_ = p.ParseProgram()
+		checkParserErrors(t, p)
+	}
+}
