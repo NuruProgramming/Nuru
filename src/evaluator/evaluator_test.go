@@ -831,4 +831,25 @@ func TestBreakLoop(t *testing.T) {
 	if i.Value != 5 {
 		t.Errorf("Wrong value: want=5, got=%d", i.Value)
 	}
+
+	input = `
+	output = ""
+	kwa i ktk "mojo" {
+		output += i
+		kama (i == 'o') {
+			vunja
+		}
+	}
+	output
+	`
+
+	evaluatedFor := testEval(input)
+	j, ok := evaluatedFor.(*object.String)
+	if !ok {
+		t.Fatalf("Object is not a string, got=%T", evaluated)
+	}
+
+	if j.Value != "mo" {
+		t.Errorf("Wrong value: want=%s, got=%s", "mo", j.Value)
+	}
 }
