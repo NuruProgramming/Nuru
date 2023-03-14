@@ -637,3 +637,35 @@ func TestInExpression(t *testing.T) {
 		testBooleanObject(t, evaluated, tt.expected)
 	}
 }
+
+func TestArrayConcatenation(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{
+			"['a', 'b', 'c'] + [1, 2, 3]",
+			`[a, b, c, 1, 2, 3]`,
+		},
+		{
+			"[1, 2, 3] * 4",
+			"[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]",
+		},
+		{
+			"4 * [1, 2, 3]",
+			"[1, 2, 3, 1, 2, 3, 1, 2, 3, 1, 2, 3]",
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		arr, ok := evaluated.(*object.Array)
+		if !ok {
+			t.Fatalf("Object is not an array, got=%T(%+v)", evaluated, evaluated)
+		}
+
+		if arr.Inspect() != tt.expected {
+			t.Errorf("Array has wrong values, got=%s, want=%s", arr.Inspect(), tt.expected)
+		}
+	}
+}
