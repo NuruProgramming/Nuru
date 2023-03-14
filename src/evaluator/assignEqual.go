@@ -91,6 +91,9 @@ func evalAssignEqual(node *ast.AssignEqual, env *object.Environment) object.Obje
 			case *object.Float:
 				v := float64(arg.Value) * val.Value
 				return env.Set(node.Left.Token.Literal, &object.Float{Value: v})
+			case *object.String:
+				v := strings.Repeat(val.Value, int(arg.Value))
+				return env.Set(node.Left.Token.Literal, &object.String{Value: v})
 			default:
 				return newError("Mstari %d: Huwezi kutumia '*=' kujumlisha %v na %v", node.Token.Line, arg.Type(), val.Type())
 			}
