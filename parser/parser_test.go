@@ -1114,3 +1114,15 @@ func TestParseSwitch(t *testing.T) {
 	_ = p.ParseProgram()
 	checkParserErrors(t, p)
 }
+
+func TestParseImport(t *testing.T) {
+	input := `
+	tumia muda
+	muda.hasahivi()
+	`
+
+	l := lexer.New(input)
+	p := New(l)
+	_ = p.ParseProgram()
+	checkParserErrors(t, p)
+}
