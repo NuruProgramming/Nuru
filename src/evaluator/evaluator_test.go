@@ -1050,6 +1050,59 @@ func TestAssignEqual(t *testing.T) {
 	}
 }
 
+func TestStringMethods(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{
+			"'mambo'.idadi()",
+			5,
+		},
+		{
+			"'mambo'.herufikubwa()",
+			"MAMBO",
+		},
+		{
+			"'MaMbO'.herufindogo()",
+			"mambo",
+		},
+		{
+			"'habari'.gawa('a')",
+			"[h, b, ri]",
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+
+		switch expected := tt.expected.(type) {
+		case int:
+			testIntegerObject(t, evaluated, int64(expected))
+		case string:
+			switch eval := evaluated.(type) {
+			case *object.String:
+				s, ok := evaluated.(*object.String)
+				if !ok {
+					t.Fatalf("Object not of type string, got=%T", eval)
+				}
+				if s.Value != tt.expected {
+					t.Errorf("Wrong value: want=%s, got=%s", tt.expected, s.Value)
+				}
+			case *object.Array:
+				arr, ok := evaluated.(*object.Array)
+				if !ok {
+					t.Fatalf("Object not of type array, got=%T", eval)
+				}
+
+				if arr.Inspect() != tt.expected {
+					t.Errorf("Wrong value: want=%s, got=%s", tt.expected, arr.Inspect())
+				}
+			}
+		}
+	}
+}
+
 func TestTimeModule(t *testing.T) {
 	input := `
 	tumia muda
