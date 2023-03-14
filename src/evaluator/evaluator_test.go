@@ -770,3 +770,24 @@ func TestPostfixExpression(t *testing.T) {
 		testFloatObject(t, float, tt.expected)
 	}
 }
+
+func TestWhileLoop(t *testing.T) {
+	input := `
+	i = 10
+	wakati (i > 0){
+		andika(i)
+		i--
+	}
+	i
+	`
+
+	evaluated := testEval(input)
+	i, ok := evaluated.(*object.Integer)
+	if !ok {
+		t.Fatalf("Object is not an integer, got=%T(+%v)", evaluated, evaluated)
+	}
+
+	if i.Value != 0 {
+		t.Errorf("Incorrect value, want=0 got=%d", i.Value)
+	}
+}
