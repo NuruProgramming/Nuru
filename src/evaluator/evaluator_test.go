@@ -723,3 +723,50 @@ func TestDictConcatenation(t *testing.T) {
 		}
 	}
 }
+
+func TestPostfixExpression(t *testing.T) {
+	inttests := []struct {
+		input    string
+		expected int64
+	}{
+		{
+			"a=5; a++",
+			6,
+		},
+		{
+			"a=5; a--",
+			4,
+		},
+	}
+
+	for _, tt := range inttests {
+		evaluated := testEval(tt.input)
+		integer, ok := evaluated.(*object.Integer)
+		if !ok {
+			t.Fatalf("Object is not an integer, got=%T(%+v)", evaluated, evaluated)
+		}
+		testIntegerObject(t, integer, tt.expected)
+	}
+	floattests := []struct {
+		input    string
+		expected float64
+	}{
+		{
+			"a=5.5; a++",
+			6.5,
+		},
+		{
+			"a=5.5; a--",
+			4.5,
+		},
+	}
+
+	for _, tt := range floattests {
+		evaluated := testEval(tt.input)
+		float, ok := evaluated.(*object.Float)
+		if !ok {
+			t.Fatalf("Object is not an float, got=%T(%+v)", evaluated, evaluated)
+		}
+		testFloatObject(t, float, tt.expected)
+	}
+}
