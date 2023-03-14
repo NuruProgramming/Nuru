@@ -897,3 +897,81 @@ func TestContinueLoop(t *testing.T) {
 		t.Errorf("Wrong value: want=%s, got=%s", "mj", j.Value)
 	}
 }
+
+func TestSwitchStatement(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected interface{}
+	}{
+		{
+			`
+			i = 5
+			badili (i) {
+				ikiwa 2 {
+					output = 2
+				}
+				ikiwa 5 {
+					output = 5
+				}
+				kawaida {
+					output = "haijulikani"
+				}
+			}
+			output
+			`,
+			5,
+		},
+		{
+			`
+			i = 5
+			badili (i) {
+				ikiwa 2 {
+					output = 2
+				}
+				kawaida {
+					output = "haijulikani"
+				}
+			}
+			output
+			`,
+			"haijulikani",
+		},
+		{
+			`
+			i = 5
+			badili (i) {
+				ikiwa 5 {
+					output = 5
+				}
+				ikiwa 2 {
+					output = 2
+				}
+				kawaida {
+					output = "haijulikani"
+				}
+			}
+			output
+			`,
+			5,
+		},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+
+		switch expected := tt.expected.(type) {
+		case int:
+			testIntegerObject(t, evaluated, int64(expected))
+		case string:
+			s, ok := evaluated.(*object.String)
+			if !ok {
+				t.Fatalf("Object is not a string, got=%T", evaluated)
+			}
+
+			if s.Value != "haijulikani" {
+				t.Errorf("Wrong Value, want='haijulikani', got=%s", s.Value)
+			}
+
+		}
+	}
+}
