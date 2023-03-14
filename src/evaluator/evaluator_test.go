@@ -792,6 +792,25 @@ func TestWhileLoop(t *testing.T) {
 	}
 }
 
+func TestForLoop(t *testing.T) {
+	input := `
+	output = ""
+	kwa i ktk "mojo" {
+		output += i
+	}
+	output
+	`
+	evaluated := testEval(input)
+	i, ok := evaluated.(*object.String)
+	if !ok {
+		t.Fatalf("Object is not a string, got=%T(+%v)", evaluated, evaluated)
+	}
+
+	if i.Value != "mojo" {
+		t.Errorf("Wrong value: want=%s got=%s", "mojo", i.Value)
+	}
+}
+
 func TestBreakLoop(t *testing.T) {
 	input := `
 	i = 0
