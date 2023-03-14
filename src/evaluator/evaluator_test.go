@@ -775,7 +775,6 @@ func TestWhileLoop(t *testing.T) {
 	input := `
 	i = 10
 	wakati (i > 0){
-		andika(i)
 		i--
 	}
 	i
