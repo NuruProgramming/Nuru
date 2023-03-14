@@ -853,3 +853,47 @@ func TestBreakLoop(t *testing.T) {
 		t.Errorf("Wrong value: want=%s, got=%s", "mo", j.Value)
 	}
 }
+
+func TestContinueLoop(t *testing.T) {
+	input := `
+	i = 0
+	wakati (i < 10) {
+		i++
+		kama (i == 5) {
+			endelea
+		}
+		i++
+	}
+	i
+	`
+	evaluated := testEval(input)
+	i, ok := evaluated.(*object.Integer)
+	if !ok {
+		t.Fatalf("Object is not an integer, got=%T(+%v)", evaluated, evaluated)
+	}
+
+	if i.Value != 11 {
+		t.Errorf("Wrong value: want=11, got=%d", i.Value)
+	}
+
+	input = `
+	output = ""
+	kwa i ktk "mojo" {
+		kama (i == 'o') {
+			endelea
+		}
+		output += i
+	}
+	output
+	`
+
+	evaluatedFor := testEval(input)
+	j, ok := evaluatedFor.(*object.String)
+	if !ok {
+		t.Fatalf("Object is not a string, got=%T", evaluated)
+	}
+
+	if j.Value != "mj" {
+		t.Errorf("Wrong value: want=%s, got=%s", "mj", j.Value)
+	}
+}
