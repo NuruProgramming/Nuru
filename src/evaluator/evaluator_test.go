@@ -356,6 +356,21 @@ func TestStringconcatenation(t *testing.T) {
 	}
 }
 
+func TestStringMultiplyInteger(t *testing.T) {
+	input := `"Mambo" * 4`
+
+	evaluated := testEval(input)
+
+	str, ok := evaluated.(*object.String)
+	if !ok {
+		t.Fatalf("object is not a string, got=%T(%+v)", evaluated, evaluated)
+	}
+
+	if str.Value != "MamboMamboMamboMambo" {
+		t.Errorf("String has wrong value, got=%q", str.Value)
+	}
+}
+
 func TestBuiltinFunctions(t *testing.T) {
 	tests := []struct {
 		input    string
