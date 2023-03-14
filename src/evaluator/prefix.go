@@ -25,7 +25,7 @@ func evalPlusPrefixOperatorExpression(right object.Object, line int) object.Obje
 		return &object.Float{Value: obj.Value}
 
 	default:
-		return newError("Mstari %d: Operesheni Haielweki: -%s", line, right.Type())
+		return newError("Mstari %d: Operesheni Haielweki: +%s", line, right.Type())
 	}
 }
 
