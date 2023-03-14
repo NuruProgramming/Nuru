@@ -1079,3 +1079,17 @@ func TestParsePostfix(t *testing.T) {
 		checkParserErrors(t, p)
 	}
 }
+
+func TestParseDot(t *testing.T) {
+	input := []string{
+		"a.b()",
+		"5.5",
+	}
+
+	for _, txt := range input {
+		l := lexer.New(txt)
+		p := New(l)
+		_ = p.ParseProgram()
+		checkParserErrors(t, p)
+	}
+}
