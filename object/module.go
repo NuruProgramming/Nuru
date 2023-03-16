@@ -7,5 +7,14 @@ type Module struct {
 	Functions map[string]ModuleFunction
 }
 
-func (m *Module) Type() ObjectType { return MODULE_OBJ }
-func (m *Module) Inspect() string  { return "Module: " + m.Name }
+func (m *Module) Type() ObjectType {
+	switch m.Name {
+	case "time":
+		return TIME_OBJ
+	case "json":
+		return JSON_OBJ
+	default:
+		return MODULE_OBJ
+	}
+}
+func (m *Module) Inspect() string { return "Module: " + m.Name }
