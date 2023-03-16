@@ -35,5 +35,5 @@ func (t *Time) add(args []Object) Object {
 	}
 
 	next_time := cur_time.Add(time.Duration(inttime) * time.Hour)
-	return &String{Value: string(next_time.Format("2006-01-02 15:04:05"))}
+	return &Time{TimeValue: string(next_time.Format("2006-01-02 15:04:05"))}
 }
