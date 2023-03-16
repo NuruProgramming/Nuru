@@ -22,6 +22,7 @@ const (
 	BREAK_OBJ        = "VUNJA"
 	FILE_OBJ         = "FAILI"
 	TIME_OBJ         = "MUDA"
+	JSON_OBJ         = "JSONI"
 	MODULE_OBJ       = "MODULE"
 	BYTE_OBJ         = "BYTE"
 )
