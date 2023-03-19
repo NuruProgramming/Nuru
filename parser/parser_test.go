@@ -985,8 +985,6 @@ func TestWhileLoop(t *testing.T) {
 		t.Fatalf("program.Body does not contain %d statements. got=%d", 1, len(program.Statements))
 	}
 
-	fmt.Println(program.Statements)
-
 	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
 	if !ok {
 		t.Fatalf("program.Statements[0] is not ast.Expression, got=%T", program.Statements[0])
