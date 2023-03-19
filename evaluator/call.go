@@ -14,10 +14,8 @@ func evalCall(node *ast.CallExpression, env *object.Environment) object.Object {
 
 	var args []object.Object
 
-	switch function.(type) {
+	switch fn := function.(type) {
 	case *object.Function:
-		fn := function.(*object.Function)
-
 		args = evalArgsExpressions(node, fn, env)
 	default:
 		args = evalExpressions(node.Arguments, env)
@@ -36,14 +34,13 @@ func evalArgsExpressions(node *ast.CallExpression, fn *object.Function, env *obj
 	argsHash.Pairs = make(map[object.HashKey]object.DictPair)
 	for _, exprr := range node.Arguments {
 		switch exp := exprr.(type) {
-		case *ast.AssignmentExpression:
+		case *ast.Assign:
 			val := Eval(exp.Value, env)
 			if isError(val) {
 				return []object.Object{val}
 			}
-
 			var keyHash object.HashKey
-			key := &object.String{Value: exp.Left.String()}
+			key := &object.String{Value: exp.Name.Value}
 			keyHash = key.HashKey()
 			pair := object.DictPair{Key: key, Value: val}
 			argsHash.Pairs[keyHash] = pair
