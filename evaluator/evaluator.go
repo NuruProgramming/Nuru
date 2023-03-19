@@ -86,15 +86,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalImport(node, env)
 
 	case *ast.CallExpression:
-		function := Eval(node.Function, env)
-		if isError(function) {
-			return function
-		}
-		args := evalExpressions(node.Arguments, env)
-		if len(args) == 1 && isError(args[0]) {
-			return args[0]
-		}
-		return applyFunction(function, args, node.Token.Line)
+		return evalCall(node, env)
+
 	case *ast.StringLiteral:
 		return &object.String{Value: node.Value}
 
@@ -279,7 +272,11 @@ func applyFunction(fn object.Object, args []object.Object, line int) object.Obje
 		}
 		return NULL
 	default:
-		return newError("Mstari %d: Hii sio function: %s", line, fn.Type())
+		if fn != nil {
+			return newError("Mstari %d: Hii sio function: %s", line, fn.Type())
+		} else {
+			return newError("Bro how did you even get here??? Contact language maker asap!")
+		}
 	}
 
 }
