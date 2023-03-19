@@ -8,6 +8,7 @@ import (
 )
 
 type Function struct {
+	Name       string
 	Parameters []*ast.Identifier
 	Defaults   map[string]ast.Expression
 	Body       *ast.BlockStatement
