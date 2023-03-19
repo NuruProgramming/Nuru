@@ -242,6 +242,14 @@ func (l *Lexer) peekChar() rune {
 	}
 }
 
+// func (l *Lexer) peekTwoChar() rune {
+// 	if l.readPosition+1 >= len(l.input) {
+// 		return rune(0)
+// 	} else {
+// 		return l.input[l.readPosition+1]
+// 	}
+// }
+
 func (l *Lexer) skipSingleLineComment() {
 	for l.ch != '\n' && l.ch != 0 {
 		l.readChar()
