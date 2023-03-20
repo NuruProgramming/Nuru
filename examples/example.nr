@@ -1,107 +1,398 @@
-andika("Testing basic types...");
-andika(2 + 2);
-andika(4 * 4);
-fanya a = 10;
-fanya b = 20;
+fanya birth_year = 2020
+andika(birth_year) // 2020
 
-andika(a + b);
+fanya convert_c_to_p = "C to P"
+andika(convert_c_to_p) // "C to P"
 
-andika(kweli == sikweli);
-andika("Testing empty lines...")
-andika();
-andika();
-andika();
-andika("Mambo vipi");
+orodha = [1, "pili", kweli]
 
-andika("Testing Functions... ");
+namba = [10, 20, 30]
+jina = namba[1]  // jina is 20
 
-fanya jumlisha = unda(x, y) {x + y};
+namba[1] = 25
 
-andika(jumlisha(20,30));
-andika(jumlisha(100,1000));
+a = [1, 2, 3]
+b = [4, 5, 6]
+c = a + b
+// c is now [1, 2, 3, 4, 5, 6]
 
-fanya zidisha = unda(x, y) {x * y};
+namba = [10, 20, 30]
+andika(20 ktk namba)  // will print kweli
 
-andika(zidisha(100,1000));
-andika(zidisha(200, 20));
+namba = [1, 2, 3, 4, 5]
 
-// lists can hold any value
-andika("Testing lists...");
-fanya list = [1, "a", kweli, sikweli];
+kwa thamani ktk namba {
+    andika(thamani)
+}
 
-// a few builtins
+majina = ["Juma", "Asha", "Haruna"]
 
-fanya list = sukuma(list, jumlisha(4,5));
+kwa idx, jina ktk majina {
+    andika(idx, "-", jina)
+}
 
-andika(list);
-andika(list[2]);
-andika(list[-100]); // prints null
-andika(idadi(list));
-andika(yamwisho(list));
-andika([1,2,3] + [4,5,6]);
-list[0] = 1000
-andika(list[0])
+a = [1, 2, 3]
+urefu = a.idadi()
+andika(urefu)  // will print 3
 
-// if statements
-andika("Testing if statements...");
-kama (1 > 2) {
-	andika("Moja ni zaidi ya mbili");
+a = [1, 2, 3]
+a.sukuma("s", "g")
+andika(a)  // will print [1, 2, 3, "s", "g"]
+
+a = [1, 2, 3]
+mwisho = a.yamwisho()
+andika(mwisho)  // will print 3
+
+b = []
+mwisho = b.yamwisho()
+andika(mwisho)  // will print tupu
+
+andika(1 > 2) // Output: `sikweli`
+
+andika(1 + 3 < 10) // Output: `kweli`
+
+a = 5
+b = 10
+c = 15
+
+result = (a < b) && (b < c)
+
+kama (result) {
+    andika("Both conditions are true")
 } sivyo {
-	andika("Moja si zaidi ya mbili");
+    andika("At least one condition is false")
 }
 
-kama (idadi("Habari") == 6) {
-	andika("Habari yako ndugu");
+// Output: "Both conditions are true"
+
+andika(kweli && kweli) // Output: `kweli`
+
+andika(kweli && sikweli) // Output: `sikweli`
+
+andika(kweli || sikweli) // Output: `kweli`
+
+andika(sikweli || sikweli) // Output: `sikweli`
+
+andika(!kweli) // Output: `sikweli`
+
+andika(!sikweli) // Output: `kweli`
+
+namba = [1, 2, 3, 4, 5]
+
+kwa thamani ktk namba {
+    kama (thamani % 2 == 0) {
+        andika(thamani, "is even")
+    } sivyo {
+        andika(thamani, "is odd")
+    }
+}
+// Output:
+// 1 is odd
+// 2 is even
+// 3 is odd
+// 4 is even
+// 5 is odd
+
+fanya salamu = unda() {
+    fanya jina = jaza("Unaitwa nani? ")
+    andika("Mambo vipi", jina)
 }
 
-// fibonacci example
-andika("Testing fibonacci...");
+salamu()
 
-fanya fibo = unda(x) {
-	kama (x == 0) {
-		rudisha 0;
-	} au kama (x == 1) {
-			rudisha 1;
-	} sivyo {
-			rudisha fibo(x - 1) + fibo(x - 2);
+aina(2) // Output: "NAMBA"
+aina("Nuru") // Output: "NENO"
+
+
+orodha = {"jina": "Juma", "umri": 25}
+
+k = {
+    "jina": "Juma",
+    "umri": 25,
+    kweli: "kweli",
+    "salimu": unda(x) { andika("habari", x) },
+    "sina value": tupu
+}
+
+
+andika(k[kweli]) // kweli
+andika(k["salimu"]("Juma")) // habari Juma
+
+k['umri'] = 30
+andika(k['umri']) // 30
+
+k["lugha"] = "Kiswahili"
+andika(k["lugha"]) // Kiswahili
+
+matunda = {"a": "apple", "b": "banana"}
+mboga = {"c": "carrot", "d": "daikon"}
+vyakula = matunda + mboga
+andika(vyakula) // {"a": "apple", "b": "banana", "c": "carrot", "d": "daikon"}
+
+
+"umri" ktk k // kweli
+"urefu" ktk k // sikweli
+
+
+hobby = {"a": "asili", "b": "baiskeli", "c": "chakula"}
+kwa i, v ktk hobby {
+    andika(i, "=>", v)
+}
+/* a => asili
+   b => baiskeli
+   c => chakula */
+
+
+kwa v ktk hobby {
+    andika(v)
+}
+
+/*
+asili
+baiskeli
+chakula
+*/
+
+jina = "lugano"
+
+kwa i ktk jina {
+    andika(i)
+}
+
+kamusi = {"a": "andaa", "b": "baba"}
+
+kwa v ktk kamusi {
+    andika(v)
+}
+
+
+kwa k, v ktk kamusi {
+    andika(k + " ni " + v)
+}
+
+kwa v ktk "mojo" {
+    andika(v)
+}
+
+kwa i, v ktk "mojo" {
+    andika(i, "->", v)
+}
+
+majina = ["juma", "asha", "haruna"]
+
+kwa v ktk majina {
+    andika(v)
+}
+
+kwa i, v ktk majina {
+    andika(i, "-", v)
+}
+
+
+kwa i, v ktk "mojo" {
+    kama (i == 2) {
+        andika("nimevunja")
+        vunja
+    }
+    andika(v)
+}
+
+kwa i, v ktk "mojo" {
+    kama (i == 2) {
+        andika("nimeruka")
+        endelea
+    }
+    andika(v)
+}
+
+jum = unda(x, y) {
+    rudisha x + y
+}
+
+jum(2, 3) // 5
+
+salamu = unda() {
+    andika("Habari yako")
+}
+
+salamu()
+
+salamu = unda(jina) {
+    andika("Habari yako", jina)
+}
+
+salamu("asha") // Habari yako asha
+
+salimu = unda(salamu="Habari") {
+    andika(salamu)
+}
+
+salimu() // Habari
+salimu("Mambo") // Mambo
+
+mfano = unda(x) {
+    rudisha "nimerudi"
+    andika(x)
+}
+
+mfano("x") // nimerudi
+
+
+fib = unda(n) {
+    kama (n <= 1) {
+        rudisha n
+    } sivyo {
+        rudisha fib(n-1) + fib(n-2)
+    }
+}
+
+andika(fib(10)) // 55
+
+fanya jum = unda(x) {
+    rudisha unda(y) {
+        rudisha x + y
+    }
+}
+
+fanya jum_x = jum(5)
+andika(jum_x(3)) // 8
+
+2 + 3 * 5 // 17
+
+fanya a = 2.5
+fanya b = 3/5
+
+a + b // 2.8
+
+fanya i = 2.4
+
+i++ // 3.4
+
+fanya i = 2
+
+i *= 3 // 6
+i /= 2 // 3
+i += 100 // 103
+i -= 10 // 93
+i %= 90 // 3
+
+fanya i = -10
+
+wakati (i < 0) {
+    andika(i)
+    i++
+}
+
+
+andika("mambo") // mambo
+
+fanya a = 'niaje'
+
+andika("mambo", a) // mambo niaje
+
+fanya a = "habari" + " " + "yako"
+
+andika(a) // habari yako
+
+fanya b = "habari"
+
+b += " yako"
+
+// habari yako
+
+andika("mambo " * 4)
+
+// mambo mambo mambo mambo
+
+fanya a = "habari"
+
+a *= 4
+
+// habarihabarihabarihabari
+
+fanya jina = "avicenna"
+
+kwa i ktk jina {andika(i)}
+
+fanya a = "nuru"
+
+andika(a == "nuru") // kweli
+
+andika(a == "mambo") // sikweli
+
+fanya a = "mambo"
+a.idadi() // 5
+
+fanya a = "NURU"
+a.herufindogo() // nuru
+
+fanya a = "nuru mambo habari"
+fanya b = a.gawa()
+andika(b) // ["nuru", "mambo", "habari"]
+
+fanya a = "nuru,mambo,habari"
+fanya b = a.gawa(",")
+andika(b) // ["nuru", "mambo", "habari"]
+
+fanya a = 2
+
+badili (a){
+	ikiwa 3 {
+		andika("a ni tatu")
+	}
+	ikiwa 2 {
+		andika ("a ni mbili")
 	}
 }
 
+badili (a) {
+	ikiwa 1,2,3 {
+		andika("a ni kati ya 1, 2 au 3")
+	}
+	ikiwa 4 {
+		andika("a ni 4")
+	}
+}
 
-andika(fibo(10));
+fanya z = 20
 
-// testing input
-andika("Testing input from user...");
-fanya salamu = unda() {
-        fanya jina = jaza("Unaitwa nani rafiki? ");
-        rudisha "Mambo vipi " + jina;
-    }
+badili(z) {
+	ikiwa 10 {
+		andika("kumi")
+	}
+	ikiwa 30 {
+		andika("thelathini")
+	}
+	kawaida {
+		andika("ishirini")
+	}
+}
 
-andika(salamu());
+fanya i = 1
 
-/*
-Multiline comment
-*/
+wakati (i <= 5) {
+	andika(i)
+	i++
+}
 
-// test dictionaries
+fanya i = 1
 
-andika("Testing dictionaries...")
+wakati (i < 5) {
+	kama (i == 3) {
+		andika("nimevunja")
+		vunja
+	}
+	andika(i)
+	i++
+}
 
-fanya watu = [{"jina": "Mojo", "kabila": "Mnyakusa"}, {"jina": "Avi", "kabila": "Mwarabu wa dubai"}]
+fanya i = 0
 
-andika(watu, watu[0], watu[0]["jina"], watu[0]["kabila"])
-
-watu[0]["jina"] = "MJ";
-andika(watu[0]["jina"]);
-
-andika({"a":1} + {"b": 2})
-// testing while loop
-
-andika("Testing while loop...");
-
-fanya i = 10;
-
-wakati (i > 0) {
-	andika(i);
-	i = i - 1;
+wakati (i < 5) {
+	i++
+	kama (i == 3) {
+		andika("nimeruka")
+		endelea
+	}
+	andika(i)
 }
