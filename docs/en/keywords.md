@@ -47,11 +47,7 @@ The following are some of the in-built functions in Nuru. They are reserved and 
     <td>andika</td>
     <td>aina</td>
     <td>jaza</td>
-  </tr>
-  <tr>
-    <td>idadi</td>
-    <td>sukuma</td>
-    <td>yamwisho</td>
+    <td>fungua</td>
   </tr>
 </tbody>
 </table>
