@@ -12,8 +12,8 @@ const (
 	// Think of BODMAS
 	_ int = iota
 	LOWEST
-	COND        // OR or AND
 	ASSIGN      // =
+	COND        // OR or AND
 	EQUALS      // ==
 	LESSGREATER // > OR <
 	SUM         // +
