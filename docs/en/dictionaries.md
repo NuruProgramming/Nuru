@@ -1,96 +1,105 @@
-## DICTIONARIES (KAMUSI)
+# Dictionaries in Nuru
 
-### DEFINITION
+Dictionaries in Nuru, also known as "kamusi," are powerful and flexible data structures that store key-value pairs. This page provides a comprehensive overview of dictionaries in Nuru, including how to create, access, modify, and iterate over them.
 
-Dictionaries are enclosed by curly braces `{}` and have keys and values. You can define a dictionary as follows:
+## Creating Dictionaries
+
+Dictionaries are enclosed in curly braces {} and consist of keys and values separated by colons. Here's an example of defining a dictionary:
+
+```s
+
+orodha = {"jina": "Juma", "umri": 25}
 ```
-fanya k = {"jina": "juma"}
-```
-- The `keys` can be `string, int, float` and `boolean`
-- The `values` can be of any type; `string, int, float, boolean, null` and even a `function`:
-```
-fanya k = {
-	"jina": "juma",
-	"umri": 2,
-	kweli : "true",
-	"mi ni function": unda(x){andika("habari", x)}
-	"sina value": tupu
+
+Keys can be strings, integers, floats, or booleans, while values can be any data type, including strings, integers, floats, booleans, null, or functions:
+
+```s
+k = {
+    "jina": "Juma",
+    "umri": 25,
+    kweli: "kweli",
+    "salimu": unda(x) { andika("habari", x) },
+    "sina value": tupu
 }
-
-andika(k["sina value"]) // tupu
 ```
 
-### Accessing Elements
+## Accessing Elements
 
-You can access individual elements as follows:
-```
-andika(k[kweli]) // true
+Access individual elements in a dictionary using their keys:
 
-andika(k["mi ni function"]("juma")) // habari juma
-```
+```s
 
-### Updating Elements
-You can update the value of an element as follows:
-```
-k['umri'] = 50
-
-andika(k['umri']) // 50
+andika(k[kweli]) // kweli
+andika(k["salimu"]("Juma")) // habari Juma
 ```
 
-### Adding New Elements
-If a key-value pair doesn't exist, you can add one as follows:
-```
-k["I am new"] = "new element"
+## Updating Elements
 
-andika(k["I am new"]) // new element
-```
+Update the value of an element by assigning a new value to its key:
 
-### Concatenating Dictionaries
-
-You can add two dictionaries as follows:
-```
-fanya a = {"a": "andazi"}
-fanya b = {"b": "bunduki"}
-fanya c = a + b
-
-andika(c) // {"a": "andazi", "b": "bunduki"}
+```s
+k['umri'] = 30
+andika(k['umri']) // 30
 ```
 
-### Checking If Key Exists In A Dictionary
+## Adding New Elements
 
-Use the `ktk` keyword to check if a key exists:
+Add a new key-value pair to a dictionary by assigning a value to a non-existent key:
+
+```s
+k["lugha"] = "Kiswahili"
+andika(k["lugha"]) // Kiswahili
 ```
+
+## Concatenating Dictionaries
+
+Combine two dictionaries using the + operator:
+
+```s
+matunda = {"a": "apple", "b": "banana"}
+mboga = {"c": "carrot", "d": "daikon"}
+vyakula = matunda + mboga
+andika(vyakula) // {"a": "apple", "b": "banana", "c": "carrot", "d": "daikon"}
+```
+
+## Checking If a Key Exists in a Dictionary
+
+Use the ktk keyword to check if a key exists in a dictionary:
+
+```s
+
 "umri" ktk k // kweli
-"ubini" ktk k // sikweli
+"urefu" ktk k // sikweli
 ```
 
-### Looping Over A Dictionary
+## Looping Over a Dictionary
 
-- You can loop over a dictionary as follows:
+Loop over a dictionary to access its keys and values:
 
-```go
-fanya k = {"a": "afya", "b": "buibui", "c": "chapa"}
-kwa i, v ktk k {
-	andika(i, "=>", v)
+```s
+
+hobby = {"a": "asili", "b": "baiskeli", "c": "chakula"}
+kwa i, v ktk hobby {
+    andika(i, "=>", v)
 }
-/* a => afya
-   b => buibui
-   c => chapa */
+/* a => asili
+   b => baiskeli
+   c => chakula */
 ```
 
-- You can also loop over just values as follows:
+Loop over just the values:
 
-```
-kwa v ktk k {
+```s
+
+kwa v ktk hobby {
     andika(v)
 }
 
 /*
-afya
-buibui
-chapa
+asili
+baiskeli
+chakula
 */
 ```
 
-**Please Note**
-> A lot more dict methods will be added in the future
+With this knowledge, you can now effectively use dictionaries in Nuru to store and manage key-value pairs, offering a flexible way to organize and access data in your programs.
