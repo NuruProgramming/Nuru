@@ -1,110 +1,175 @@
-## FOR (KWA)
+# For Loops in Nuru
 
-### Definition
+For loops are a fundamental control structure in Nuru, used for iterating over iterable objects such as strings, arrays, and dictionaries. This page covers the syntax and usage of for loops in Nuru, including key-value pair iteration, and the use of break and continue statements.
 
-For is used to iterate over an iterable object. An iterable object is a `string`, `array` or `dictionaries`. You use the `kwa` keyword followed by an identifier such as `k` or `v` followed by an iterable. The iterable block must be enclosed in a bracket `{}`. Here's an example:
-```
-fanya jina = "lugano"
+## Basic Syntax
+To create a for loop, use the kwa keyword followed by a temporary identifier (such as i or v) and the iterable object. Enclose the loop body in curly braces {}. Here's an example with a string:
+
+```s
+jina = "lugano"
 
 kwa i ktk jina {
-	andika(i)
+    andika(i)
 }
+```
+Output:
 
-/*
+```s
 l
 u
 g
 a
 n
 o
-*/
 ```
 
-### Key Value Pairs
+## Iterating Over Key-Value Pairs
 
-Nuru allows you to get both the value or the key/value pair of an iterable. To get only the value, use one temporary identifier as such:
-```
-fanya kamusi = {"a": "andaa", "b": "baba"}
+### Dictionaries
+
+Nuru allows you to iterate over both the value or the key-value pair of an iterable. To iterate over just the values, use one temporary identifier:
+
+```s
+kamusi = {"a": "andaa", "b": "baba"}
 
 kwa v ktk kamusi {
-	andika(v)
+    andika(v)
 }
+```
 
-/*
+Output:
+
+```s
 andaa
 baba
-*/
 ```
-To get both the key and the value, use two temporary identifiers:
-```
-kwa k, v ktk kamusi {
-	andika(k + " ni + " v)
-}
+To iterate over both the keys and the values, use two temporary identifiers:
 
-/*
+```s
+
+kwa k, v ktk kamusi {
+    andika(k + " ni " + v)
+}
+```
+Output:
+
+```s
 a ni andaa
 b ni baba
-*/
 ```
-- Note that key-value pair iteration also works for `strings` and `lists`:
-```
-kwa i, v ktk "mojo" {
-	andika(i, "->", v)
+
+### Strings
+
+To iterate over just the values in a string, use one temporary identifier:
+
+```s
+kwa v ktk "mojo" {
+    andika(v)
 }
-/*
+```
+
+Output:
+```s
+m
+o
+j
+o
+```
+To iterate over both the keys and the values in a string, use two temporary identifiers:
+
+```s
+kwa i, v ktk "mojo" {
+    andika(i, "->", v)
+}
+```
+Output:
+```s
 0 -> m
 1 -> o
 2 -> j
 3 -> o
-*/
-fanya majina = ["juma", "asha", "haruna"]
+```
 
-kwa i, v ktk majina {
-	andika(i, "-", v)
+### Lists
+
+To iterate over just the values in a list, use one temporary identifier:
+
+```s
+majina = ["juma", "asha", "haruna"]
+
+kwa v ktk majina {
+    andika(v)
 }
+```
 
-/*
+Output:
+
+```s
+juma
+asha
+haruna
+```
+
+To iterate over both the keys and the values in a list, use two temporary identifiers:
+
+```s
+kwa i, v ktk majina {
+    andika(i, "-", v)
+}
+```
+
+Output:
+
+```s
 0 - juma
 1 - asha
 2 - haruna
-*/
 ```
 
-### Break (Vunja) and Continue (Endelea)
+## Break (Vunja) and Continue (Endelea)
 
-- A loop can be terminated using the `vunja` keyword:
-```
+### Break (Vunja)
+
+Use the vunja keyword to terminate a loop:
+
+```s
+
 kwa i, v ktk "mojo" {
-        kama (i == 2) {
-                andika("nimevunja")
-                vunja
-        }
-        andika(v)
+    kama (i == 2) {
+        andika("nimevunja")
+        vunja
+    }
+    andika(v)
 }
-/*
+```
+
+Output:
+
+```s
 m
 o
 nimevunja
-*/
 ```
 
-- A specific iteration can be skipped using the `endelea` keyword:
-```
+### Continue (Endelea)
+
+Use the endelea keyword to skip a specific iteration:
+
+```s
 kwa i, v ktk "mojo" {
-        kama (i == 2) {
-                andika("nimeruka")
-                endelea
-        }
-        andika(v)
+    kama (i == 2) {
+        andika("nimeruka")
+        endelea
+    }
+    andika(v)
 }
+```
 
-/*
+Output:
+
+```s
 m
 o
 nimeruka
 o
-*/
 ```
-
-**CAUTION**
-> In nested loops, the `vunja` and `endelea` keyword MIGHT misbehave
