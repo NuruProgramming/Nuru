@@ -25,8 +25,8 @@ i++ // 3.4
 
 ### SHORTHAND ASSIGNMENT
 
-You can also perform shorthand assignments with `+=`, `-=`, `/=`, `*=` and `%=` as follows:
-
+Nuru supports shorthand assignments with +=, -=, /=, *=, and %=:
+You
 ```go
 fanya i = 2
 
