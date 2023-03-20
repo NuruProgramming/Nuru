@@ -41,7 +41,7 @@ The table below lists the reserved keywords in Nuru. These words have specific m
 </tbody>
 </table>
 
-### BuiltIns
+## BuiltIns
 
 Nuru also provides several built-in functions that are reserved and cannot be used as identifiers. These functions offer essential functionalities for common tasks in the language:
 
