@@ -55,14 +55,14 @@ kwa i ktk jina {andika(i)}
 ```
 Output
 ```s 
-    a
-	v
-	i
-	c
-	e
-	n
-	n
-	a  
+a
+v
+i
+c
+e
+n
+n
+a  
 ```
 
 And for key-value pairs:
