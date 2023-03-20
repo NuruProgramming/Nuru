@@ -1,121 +1,107 @@
-## ARRAYS (ORODHA)
+# Arrays in Nuru
 
-### Definition
+Arrays in Nuru are versatile data structures that can hold multiple items, including different types such as numbers, strings, booleans, functions, and null values. This page covers various aspects of arrays, including how to create, manipulate, and iterate over them using Nuru's built-in keywords and methods.
 
-Arrays are enclosed in square brackets `[]` and they can hold any type, even function definitions:
-```go
-fanya arr = [1, "mambo", kweli, unda(x, y){rudisha x + y}, 2 * 3 + 20]
+## Creating Arrays
 
-andika(arr)
+To create an array, use square brackets [] and separate items with commas:
 
-/*
-[1, mambo, kweli, unda(x, y) {rudisha (x + y);}, 26]
-*/
+```s
+orodha = [1, "pili", kweli]
+```
+## Accessing and Modifying Array Elements
+
+Arrays in Nuru are zero-indexed. To access an element, use the element's index in square brackets:
+
+```s
+namba = [10, 20, 30]
+jina = namba[1]  // jina is 20
 ```
 
-### Accessing Elements
+You can reassign an element in an array using its index:
 
-You can access individual elements through indexes starting from zero:
-```go
-fanya herufi = ["a", "b", "c"]
-
-andika(herufi[0]) // a
+```s
+namba[1] = 25
 ```
 
-### Reassigning Elements
+## Concatenating Arrays
 
-You can also reassign values in elements:
-```go
-fanya herufi = ["a", "b", "c"]
+To concatenate two or more arrays, use the + operator:
 
-herufi[1] = "z"
-
-andika(herufi) // ["a", "z", "c"]
+```s
+a = [1, 2, 3]
+b = [4, 5, 6]
+c = a + b
+// c is now [1, 2, 3, 4, 5, 6]
 ```
 
-### Looping over an Array
+## Checking for Array Membership
 
-- You can also iterate through an array:
-```go
-fanya herufi = ["a", "b", "c"]
+Use the `ktk` keyword to check if an item exists in an array:
 
-kwa i ktk herufi {
-	andika(i)
+```s
+namba = [10, 20, 30]
+andika(20 ktk namba)  // will print kweli
+```
+
+## Looping Over Arrays
+
+You can use the kwa and ktk keywords to loop over array elements. To loop over just the values, use the following syntax:
+
+```
+namba = [1, 2, 3, 4, 5]
+
+kwa thamani ktk namba {
+    andika(thamani)
 }
-/* a
-   b
-   c  */
 ```
 
-- And for a key, value pair:
-```go
-kwa i, v ktk herufi {
-	andika(i, "=>", v)
+To loop over both index and value pairs, use this syntax:
+
+```s
+majina = ["Juma", "Asha", "Haruna"]
+
+kwa idx, jina ktk majina {
+    andika(idx, "-", jina)
 }
-
-/* 0 => a
-   1 => b
-   2 => c */
 ```
 
-### Check if an Element exists
+## Array Methods
 
-You can also check if elements exist in an array:
-```go
-andika("d" ktk herufi) // sikweli
-andika("a" ktk herufi) // kweli
+Arrays in Nuru have several built-in methods:
+
+### idadi()
+
+idadi() returns the length of an array:
+
+```s
+a = [1, 2, 3]
+urefu = a.idadi()
+andika(urefu)  // will print 3
 ```
 
-### Concatenating Arrays
+### sukuma()
 
-- You can also add two arrays as follows:
-```
-fanya h1 = ["a", "b", "c"]
-fanya h2 = [1, 2, 3]
-fanya h3 = h1 + h2
+sukuma() adds one or more items to the end of an array:
 
-andika(h3) // ["a", "b", "c", 1, 2, 3]
-
-h2 += h3
-
-andika(h2) // [1, 2, 3, "a", "b", "c", 1, 2, 3]
+```s
+a = [1, 2, 3]
+a.sukuma("s", "g")
+andika(a)  // will print [1, 2, 3, "s", "g"]
 ```
 
-- You can also multiply an array as follows:
-```
-fanya a = [1, 2, 3]
+### yamwisho()
 
-andika(a * 2) // [1, 2, 3, 1, 2, 3]
-```
+yamwisho() returns the last item in an array, or tupu if the array is empty:
 
-### Length of an Array
+```s
+a = [1, 2, 3]
+mwisho = a.yamwisho()
+andika(mwisho)  // will print 3
 
-You can get the length of an array with `idadi`:
-```
-fanya a = ["a", "b", "c"]
-
-andika(idadi(a)) // 3
+b = []
+mwisho = b.yamwisho()
+andika(mwisho)  // will print tupu
 ```
 
-### Adding Elements to an Array
-
-You can add new elements to an array with `sukuma`:
-```go
-fanya a = [1, 2, 3]
-
-// you must reassign for the new value to be saved
-a = sukuma(a, "mambo")
-
-andika(a) // [1, 2, 3, "mambo"]
-```
-
-### Getting the Last Element in an Array
-
-You can get the last element of an array with `yamwisho`:
-```
-fanya a = [1, 2, 3]
-
-andika(yamwisho(a)) // 3
-```
-**Please Note**
-> A lot more array methods will be added in the future
+With this information, you can now effectively work with arrays in Nuru, making it easy to manipulate collections of data in your programs.
