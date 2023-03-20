@@ -1,8 +1,11 @@
-## KEYWORDS
+# KEYWORDS
 
-### Reserved
+Keywords in Nuru are reserved words that have special meanings and cannot be used as identifiers for variables, functions, or classes. This page covers the syntax and usage of keywords in Nuru, including reserved keywords and built-in functions.
 
-The keywords used in Nuru are below. Note that these words cannot be used as identifiers
+## Reserved Keywords
+
+The table below lists the reserved keywords in Nuru. These words have specific meanings in the language and cannot be used as identifiers:
+
 <table style="display: inline-table; width: 100%; text-align: center">
 <tbody>
   <tr>
@@ -40,7 +43,8 @@ The keywords used in Nuru are below. Note that these words cannot be used as ide
 
 ### BuiltIns
 
-The following are some of the in-built functions in Nuru. They are reserved and thus cannot be used as identifiers:
+Nuru also provides several built-in functions that are reserved and cannot be used as identifiers. These functions offer essential functionalities for common tasks in the language:
+
 <table style="display: inline-table; width: 100%; text-align: center">
 <tbody>
 <tr>
@@ -51,3 +55,5 @@ The following are some of the in-built functions in Nuru. They are reserved and 
   </tr>
 </tbody>
 </table>
+
+Understanding the keywords and built-in functions in Nuru is essential for writing clear, concise, and error-free code. By respecting the reserved words and their specific meanings, you can create more robust and maintainable programs in Nuru.
