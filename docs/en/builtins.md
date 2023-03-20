@@ -1,69 +1,45 @@
-## BUILTINS
+# Built-in Functions in Nuru
 
-Nuru has a few builtin functions and more will be added in the future
+Nuru has several built-in functions that perform specific tasks.
 
-### andika()
+## The andika() Function
 
-This function will print out whatever is placed inside the parenthesis `()`. It can take zero or multiple number of arguments. Arguments will be printed out with a space in between them:
+The andika() function is used to print out messages to the console. It can take zero or more arguments, and the arguments will be printed out with a space in between them. Additionally, andika() supports basic formatting such as /n for a new line, /t for a tab space, and \\ for a backslash. Here's an example:
+
+```s
+andika(1, 2, 3) // Output: "1 2 3"
 ```
-andika(1,2,3) // 1 2 3
-```
-`andika()` also supports some basic formatting such as:
-- `/n` for a new line
-- `/t` for a tab space
-- `\\` for a backslash
 
-### jaza()
+## The jaza() Function
 
-This is a function to get input from a user. It can have zero or one argument. The only acceptable argument is a string:
-```
-fanya salamu = unda(){
-	fanya jina = jaza("Unaitwa nani? ")
-	andika("mambo vipi", jina)
+The jaza() function is used to get input from the user. It can take zero or one argument, which is a string that will be used as a prompt for the user. Here's an example:
+
+```s
+fanya salamu = unda() {
+    fanya jina = jaza("Unaitwa nani? ")
+    andika("Mambo vipi", jina)
 }
 
 salamu()
 ```
 
-### aina()
+In this example, we define a function `salamu()` that prompts the user to enter their name using the `jaza()` function. We then use the `andika()` function to print out a message that includes the user's name.
 
-`Aina()` is a function to help identify the type of an object. It only accepts one argument:
-```
-aina(2) // NAMBA
-```
+## The aina() Function
 
-### idadi()
+The `aina()` function is used to determine the type of an object. It accepts one argument, and the return value will be a string indicating the type of the object. Here's an example:
 
-`idadi` is a function to know a length of an object. It accepts only one argument which can be a `string`, `list` or `dictionary`:
-```
-idadi("mambo") // 5
+```s
+aina(2) // Output: "NAMBA"
+aina("Nuru") // Output: "NENO"
 ```
 
-### jumla()
+## The fungua() Function
 
-`jumla` is a function that gives the sum of numbers (integers/floats) in a list. It accepts only one argument which is a `list` of numbers :
-```
-jumla([1,2,3,4]) // 10
-```
+The `fungua()` function is used to open a file. It accepts one argument, which is the path to the file that you want to open. Here's an example:
 
-
-### sukuma()
-
-`sukuma()` is a function that adds a new element to an array. The function accepts two arguments, the first must be a list and the second is the element to be added/appended:
-```
-fanya majina = ["juma", "asha"]
-
-majina = sukuma(majina, "mojo")
-```
-**Notice that the list is reassigned for the change to take effect**
-
-### yamwisho()
-
-This is a function to get the last element in an array. It only accepts one argument which must be an array:
-```
-fanya namba = [1,2,3,4,5]
-
-yamwisho(namba) // 5
+```s
+faili = fungua("data.txt")
 ```
 
-**MORE BUILTIN FUNCTIONS WILL BE ADDED WITH TIME**
+In this example, we use the `fungua()` function to open a file named "data.txt". The variable faili will contain a reference to the opened file.
