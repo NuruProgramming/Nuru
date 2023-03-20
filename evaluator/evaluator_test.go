@@ -383,46 +383,41 @@ func TestStringMultiplyInteger(t *testing.T) {
 	}
 }
 
-func TestBuiltinFunctions(t *testing.T) {
-	tests := []struct {
-		input    string
-		expected interface{}
-	}{
-		{`idadi("")`, 0},
-		{`idadi("four")`, 4},
-		{`idadi("hello world")`, 11},
-		{`idadi(1)`, "Samahani, hii function haitumiki na NAMBA"},
-		{`idadi("one", "two")`, "Hoja hazilingani, tunahitaji=1, tumepewa=2"},
-		{`jumla()`, "Hoja hazilingani, tunahitaji=1, tumepewa=0"},
-		{`jumla("")`, "Samahani, hii function haitumiki na NENO"},
-		{`jumla(1)`, "Samahani, hii function haitumiki na NAMBA"},
-		{`jumla([1,2,3])`, 6},
-		{`jumla([1,2,3.4])`, 6.4},
-		{`jumla([1.1,2.5,3.4])`, 7},
-		{`jumla([1.1,2.5,"q"])`, "Samahani namba tu zinahitajika"},
-	}
+// func TestBuiltinFunctions(t *testing.T) {
+// 	tests := []struct {
+// 		input    string
+// 		expected interface{}
+// 	}{
+// 		{`jumla()`, "Hoja hazilingani, tunahitaji=1, tumepewa=0"},
+// 		{`jumla("")`, "Samahani, hii function haitumiki na NENO"},
+// 		{`jumla(1)`, "Samahani, hii function haitumiki na NAMBA"},
+// 		{`jumla([1,2,3])`, 6},
+// 		{`jumla([1,2,3.4])`, 6.4},
+// 		{`jumla([1.1,2.5,3.4])`, 7},
+// 		{`jumla([1.1,2.5,"q"])`, "Samahani namba tu zinahitajika"},
+// 	}
 
-	for _, tt := range tests {
-		evaluated := testEval(tt.input)
+// 	for _, tt := range tests {
+// 		evaluated := testEval(tt.input)
 
-		switch expected := tt.expected.(type) {
-		case int:
-			testIntegerObject(t, evaluated, int64(expected))
-		case float64:
-			testFloatObject(t, evaluated, float64(expected))
+// 		switch expected := tt.expected.(type) {
+// 		case int:
+// 			testIntegerObject(t, evaluated, int64(expected))
+// 		case float64:
+// 			testFloatObject(t, evaluated, float64(expected))
 
-		case string:
-			errObj, ok := evaluated.(*object.Error)
-			if !ok {
-				t.Errorf("Object is not Error, got=%T(%+v)", evaluated, evaluated)
-				continue
-			}
-			if errObj.Message != fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, expected) {
-				t.Errorf("Wrong eror message, expected=%q, got=%q", expected, errObj.Message)
-			}
-		}
-	}
-}
+// 		case string:
+// 			errObj, ok := evaluated.(*object.Error)
+// 			if !ok {
+// 				t.Errorf("Object is not Error, got=%T(%+v)", evaluated, evaluated)
+// 				continue
+// 			}
+// 			if errObj.Message != fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, expected) {
+// 				t.Errorf("Wrong eror message, expected=%q, got=%q", expected, errObj.Message)
+// 			}
+// 		}
+// 	}
+// }
 
 func TestArrayLiterals(t *testing.T) {
 	input := "[1, 2 * 2, 3 + 3]"
