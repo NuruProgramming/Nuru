@@ -82,24 +82,26 @@ hobby = {"a": "asili", "b": "baiskeli", "c": "chakula"}
 kwa i, v ktk hobby {
     andika(i, "=>", v)
 }
-/* a => asili
-   b => baiskeli
-   c => chakula */
+```
+Output
+```s
+a => asili
+b => baiskeli
+c => chakula
 ```
 
 Loop over just the values:
 
 ```s
-
 kwa v ktk hobby {
     andika(v)
 }
-
-/*
+```
+Output
+```s
 asili
 baiskeli
 chakula
-*/
 ```
 
 With this knowledge, you can now effectively use dictionaries in Nuru to store and manage key-value pairs, offering a flexible way to organize and access data in your programs.
