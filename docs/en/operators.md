@@ -1,10 +1,11 @@
 ## OPERATORS
+Operators are the foundation of any programming language, allowing you to perform various operations on variables and values. This page covers the syntax and usage of operators in Nuru, including assignment, arithmetic, comparison, member, and logic operators.
 
 ### ASSIGNMENT
 
 Assuming `i` and `v` are predefined variables, Nuru supports the following assignment operators:
 
-- `i = v`: which is the regular assign operator
+- `i = v`: which is the regular assignment operator
 - `i += v`: which is the equivalent of `i = i + v`
 - `i -= v`: which is the equivalent of `i = i - v`
 - `i *= v`: which is the equivalent of `i = i * v`
@@ -18,7 +19,7 @@ list1 += list2 // this is equivalent to list1 = list1 + list2
 
 ### ARITHMETIC OPERATORS
 
-The following arithmetic operators are supported:
+Nuru supports the following arithmetic operators:
 
 - `+`: Additon
 - `-`: Subtraction
@@ -29,7 +30,7 @@ The following arithmetic operators are supported:
 
 ### COMPARISON OPERATORS
 
-The following comparison operators are supported:
+Nuru supports the following comparison operators:
 
 - `==`: Equal to
 - `!=`: Not equal to
@@ -50,7 +51,7 @@ fanya majina = ['juma', 'asha', 'haruna']
 
 ### LOGIC OPERATORS
 
-The following logic operators are supported:
+Nuru supports the following logic operators:
 
 - `&&`: Logical `AND`. It will evaluate to true if both are true, otherwise it will evaluate to false.
 - `||`: Logical `OR`. It will evaluate to false if both are false, otherwise it will evaluate to true.
@@ -58,7 +59,7 @@ The following logic operators are supported:
 
 ### PRECEDENCE OF OPERATORS
 
-The following is the precedence of operators, starting from the HIGHEST PRIORITY to LOWEST.
+Operators have the following precedence, starting from the highest priority to the lowest:
 
 - `()` : Items in paranthesis have the highest priority
 - `!`: Negation
@@ -71,3 +72,5 @@ The following is the precedence of operators, starting from the HIGHEST PRIORITY
 - `=`: Assignment Operator
 - `ktk`: Member Operator
 - `&&, ||`: Logical AND and OR
+
+Understanding operators in Nuru allows you to create complex expressions, perform calculations, and make decisions based on the values of variables.
