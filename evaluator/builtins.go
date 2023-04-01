@@ -49,7 +49,7 @@ var builtins = map[string]*object.Builtin{
 					arr = append(arr, arg.Inspect())
 				}
 				str := strings.Join(arr, " ")
-				print(str + "\n")
+				return &object.String{Value: str}
 			}
 			return nil
 		},
