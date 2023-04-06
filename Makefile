@@ -3,6 +3,8 @@ VERSION=0.3.0
 build_linux:
 	@echo 'building linux binary...'
 	env GOOS=linux GOARCH=amd64 go build -o nuru
+	@echo 'shrinking binary...'
+	./upx --brute nuru
 	@echo 'zipping build....'
 	tar -zcvf nuru_linux_amd64_v${VERSION}.tar.gz nuru
 	@echo 'cleaning up...'
@@ -15,6 +17,8 @@ build_windows:
 build_mac:
 	@echo 'building mac binary...'
 	env GOOS=darwin GOARCH=amd64 go build -o nuru
+	@echo 'shrinking binary...'
+	./upx --brute nuru
 	@echo 'zipping build...'
 	tar -zcvf nuru_mac_amd64_v${VERSION}.tar.gz nuru
 	@echo 'cleaning up...'
@@ -23,6 +27,8 @@ build_mac:
 build_android:
 	@echo 'building android binary'
 	env GOOS=android GOARCH=arm64 go build -o nuru
+	@echo 'shrinking binary...'
+	./upx --brute nuru
 	@echo 'zipping build...'
 	tar -zcvf nuru_linux_amd64_v${VERSION}.tar.gz nuru
 	@echo 'cleaning up...'
