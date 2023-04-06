@@ -33,11 +33,7 @@ build_test:
 	mv test testbinaries/
 
 test:
-	go test -v ./parser/
-	go test -v ./ast/
-	go test -v ./evaluator/
-	go test -v ./object/
-	go test -v ./lexer/
+	./gotest --format testname ./lexer/ ./parser/ ./ast/ ./object/ ./evaluator/
 
 clean:
 	go clean
