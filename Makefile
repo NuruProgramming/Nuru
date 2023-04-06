@@ -2,7 +2,7 @@ VERSION=0.3.0
 
 build_linux:
 	@echo 'building linux binary...'
-	env GOOS=linux GOARCH=amd64 go build -o nuru
+	env GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o nuru
 	@echo 'shrinking binary...'
 	./upx --brute nuru
 	@echo 'zipping build....'
@@ -16,7 +16,7 @@ build_windows:
 
 build_mac:
 	@echo 'building mac binary...'
-	env GOOS=darwin GOARCH=amd64 go build -o nuru
+	env GOOS=darwin GOARCH=amd64 go build -ldflags="-s -w" -o nuru
 	@echo 'shrinking binary...'
 	./upx --brute nuru
 	@echo 'zipping build...'
@@ -26,7 +26,7 @@ build_mac:
 
 build_android:
 	@echo 'building android binary'
-	env GOOS=android GOARCH=arm64 go build -o nuru
+	env GOOS=android GOARCH=arm64 go build -ldflags="-s -w" -o nuru
 	@echo 'shrinking binary...'
 	./upx --brute nuru
 	@echo 'zipping build...'
@@ -35,7 +35,7 @@ build_android:
 	rm nuru
 
 build_test:
-	go build -o test
+	go build -ldflags="-s -w" -o test
 	mv test testbinaries/
 
 test:
