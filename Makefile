@@ -37,6 +37,10 @@ build_android:
 build_test:
 	go build -ldflags="-s -w" -o nuru
 
+dependencies:
+	@echo 'checking dependencies...'
+	go mod tidy
+
 test:
 	@echo -e '\nTesting Lexer...'
 	@./gotest --format testname ./lexer/ 
