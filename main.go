@@ -42,6 +42,9 @@ func main() {
 		case "version", "-version", "--version", "-v", "v":
 			fmt.Println(coloredLogo)
 			os.Exit(0)
+		case "--tutorial", "--docs", "--mafunzo":
+			repl.Tutor()
+			os.Exit(0)
 		}
 
 		file := args[1]
@@ -49,7 +52,7 @@ func main() {
 		if strings.HasSuffix(file, "nr") || strings.HasSuffix(file, ".sw") {
 			contents, err := ioutil.ReadFile(file)
 			if err != nil {
-				fmt.Printf("\x1b[%dm%s%s\x1b[0m\n", 31, "Error: Nimeshindwa kusoma file: ", args[0])
+				fmt.Printf("\x1b[%dm%s%s\x1b[0m\n", 31, "Error: Nimeshindwa kusoma file: ", args[1])
 				os.Exit(0)
 			}
 
