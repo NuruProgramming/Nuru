@@ -1,4 +1,4 @@
-VERSION=0.3.0
+VERSION=0.3.0-dev
 
 build_linux:
 	@echo 'building linux binary...'
@@ -12,7 +12,9 @@ build_linux:
 
 build_windows:
 	@echo 'building windows executable...'
-	env GOOS=windows GOARCH=amd64 go build -o nuru_windows_amd64_v${VERSION}.exe
+	env GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o nuru_windows_amd64_v${VERSION}.exe
+	@echo 'zipping build...'
+	./upx --brute nuru_windows_amd64_v${VERSION}.exe
 
 build_mac:
 	@echo 'building mac binary...'
@@ -27,16 +29,13 @@ build_mac:
 build_android:
 	@echo 'building android binary'
 	env GOOS=android GOARCH=arm64 go build -ldflags="-s -w" -o nuru
-	@echo 'shrinking binary...'
-	./upx --brute nuru
 	@echo 'zipping build...'
 	tar -zcvf nuru_linux_amd64_v${VERSION}.tar.gz nuru
 	@echo 'cleaning up...'
 	rm nuru
 
 build_test:
-	go build -ldflags="-s -w" -o test
-	mv test testbinaries/
+	go build -ldflags="-s -w" -o nuru
 
 test:
 	@echo -e '\nTesting Lexer...'
