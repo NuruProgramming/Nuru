@@ -156,8 +156,6 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					if evaluated != nil {
 						if evaluated.Type() != object.NULL_OBJ {
 							pg.output.SetContent(evaluated.Inspect())
-							pg.editor.Reset()
-							pg.output.GotoTop()
 						}
 					}
 				}
@@ -178,6 +176,7 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			pg.editor.SetWidth(msg.Width / 2)
 			pg.editor.SetHeight((2 * msg.Height / 3) - 4)
 
+			pg.editor.CharLimit = 0
 			pg.editor.FocusedStyle.CursorLine = lipgloss.NewStyle()
 			pg.editor.FocusedStyle.Base = lipgloss.NewStyle().PaddingTop(2).
 				Border(lipgloss.RoundedBorder()).
