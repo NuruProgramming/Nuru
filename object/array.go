@@ -47,6 +47,8 @@ func (a *Array) Method(method string, args []Object) Object {
 		return a.push(args)
 	case "yamwisho":
 		return a.last()
+	case "unga":
+		return a.join(args)
 	default:
 		return newError("Samahani, function hii haitumiki na Strings (Neno)")
 	}
@@ -70,4 +72,24 @@ func (a *Array) last() Object {
 func (a *Array) push(args []Object) Object {
 	a.Elements = append(a.Elements, args...)
 	return a
+}
+
+func (a *Array) join(args []Object) Object {
+	if len(args) > 1 {
+		return newError("Samahani, tunahitaji Hoja 1 au 0, wewe umeweka %d", len(args))
+	}
+	if len(a.Elements) > 0 {
+		glue := ""
+		if len(args) == 1 {
+			glue = args[0].(*String).Value
+		}
+		length := len(a.Elements)
+		newElements := make([]string, length, length)
+		for k, v := range a.Elements {
+			newElements[k] = v.Inspect()
+		}
+		return &String{Value: strings.Join(newElements, glue)}
+	} else {
+		return &String{Value: ""}
+	}
 }
