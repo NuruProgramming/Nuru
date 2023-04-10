@@ -1110,7 +1110,7 @@ func TestTimeModule(t *testing.T) {
 		t.Fatalf("Object is not a time object, got=%T", evaluated)
 	}
 
-	_, err := time.Parse("2006-01-02 15:04:05", muda.TimeValue)
+	_, err := time.Parse("15:04:05 02-01-2006", muda.TimeValue)
 	if err != nil {
 		t.Errorf("Wrong time value: got=%v", err)
 	}
