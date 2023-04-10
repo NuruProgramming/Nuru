@@ -11,6 +11,6 @@ func evalAssign(node *ast.Assign, env *object.Environment) object.Object {
 		return val
 	}
 
-	env.Set(node.Name.Value, val)
-	return NULL
+	obj := env.Set(node.Name.Value, val)
+	return obj
 }
