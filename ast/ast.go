@@ -549,6 +549,7 @@ type MethodExpression struct {
 	Object    Expression
 	Method    Expression
 	Arguments []Expression
+	Defaults  map[string]Expression
 }
 
 func (me *MethodExpression) expressionNode()      {}
