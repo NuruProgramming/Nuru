@@ -21,7 +21,7 @@ func now(args []object.Object) object.Object {
 	}
 
 	tn := time.Now()
-	time_string := tn.Format("2006-01-02 15:04:05")
+	time_string := tn.Format("15:04:05 02-01-2006")
 
 	return &object.Time{TimeValue: time_string}
 }
@@ -49,15 +49,15 @@ func since(args []object.Object) object.Object {
 		return &object.Error{Message: "tunahitaji hoja moja tu kwenye "}
 	}
 
-	t, err := time.Parse("2006-01-02 15:04:05", args[0].Inspect())
+	t, err := time.Parse("15:04:05 02-01-2006", args[0].Inspect())
 
 	if err != nil {
 
 		return &object.Error{Message: "tumeshindwa kuparse hoja zako"}
 	}
 
-	current_time := time.Now().Format("2006-01-02 15:04:05")
-	ct, _ := time.Parse("2006-01-02 15:04:05", current_time)
+	current_time := time.Now().Format("15:04:05 02-01-2006")
+	ct, _ := time.Parse("15:04:05 02-01-2006", current_time)
 
 	diff := ct.Sub(t)
 	durationInSeconds := diff.Seconds()
