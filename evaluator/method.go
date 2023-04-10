@@ -14,17 +14,23 @@ func evalMethodExpression(node *ast.MethodExpression, env *object.Environment) o
 	if len(args) == 1 && isError(args[0]) {
 		return args[0]
 	}
-	return applyMethod(obj, node.Method, args)
+
+	defs := make(map[string]object.Object)
+
+	for k, v := range node.Defaults {
+		defs[k] = Eval(v, env)
+	}
+	return applyMethod(obj, node.Method, args, defs)
 }
 
-func applyMethod(obj object.Object, method ast.Expression, args []object.Object) object.Object {
+func applyMethod(obj object.Object, method ast.Expression, args []object.Object, defs map[string]object.Object) object.Object {
 	switch obj := obj.(type) {
 	case *object.String:
 		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.File:
 		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.Time:
-		return obj.Method(method.(*ast.Identifier).Value, args)
+		return obj.Method(method.(*ast.Identifier).Value, args, defs)
 	case *object.Array:
 		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.Module:
