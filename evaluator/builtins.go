@@ -49,10 +49,26 @@ var builtins = map[string]*object.Builtin{
 					arr = append(arr, arg.Inspect())
 				}
 				str := strings.Join(arr, " ")
-				print(str + "\n")
-				return &object.String{Value: str}
+				fmt.Println(str)
 			}
 			return nil
+		},
+	},
+	"_andika": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) == 0 {
+				return &object.String{Value: "\n"}
+			} else {
+				var arr []string
+				for _, arg := range args {
+					if arg == nil {
+						return newError("Hauwezi kufanya operesheni hii")
+					}
+					arr = append(arr, arg.Inspect())
+				}
+				str := strings.Join(arr, " ")
+				return &object.String{Value: str}
+			}
 		},
 	},
 	"aina": {
