@@ -15,7 +15,7 @@ func init() {
 	TimeFunctions["tangu"] = since
 }
 
-func now(args []object.Object) object.Object {
+func now(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(args) != 0 {
 		return &object.Error{Message: "hatuhitaji hoja kwenye hasahivi"}
 	}
@@ -26,7 +26,7 @@ func now(args []object.Object) object.Object {
 	return &object.Time{TimeValue: time_string}
 }
 
-func sleep(args []object.Object) object.Object {
+func sleep(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(args) != 1 {
 		return &object.Error{Message: "tunahitaji hoja moja tu kwenye "}
 	}
@@ -43,7 +43,7 @@ func sleep(args []object.Object) object.Object {
 	return nil
 }
 
-func since(args []object.Object) object.Object {
+func since(args []object.Object, defs map[string]object.Object) object.Object {
 
 	if len(args) != 1 {
 		return &object.Error{Message: "tunahitaji hoja moja tu kwenye "}

@@ -16,7 +16,7 @@ func init() {
 	NetFunctions["tuma"] = postRequest
 }
 
-func getRequest(args []object.Object) object.Object {
+func getRequest(args []object.Object, defs map[string]object.Object) object.Object {
 
 	if len(args) > 3 {
 		return &object.Error{Message: "Hatuhitaji hoja zaidi ya 3."}
@@ -80,7 +80,7 @@ func getRequest(args []object.Object) object.Object {
 	return &object.String{Value: string(body)}
 }
 
-func postRequest(args []object.Object) object.Object {
+func postRequest(args []object.Object, defs map[string]object.Object) object.Object {
 
 	if len(args) != 2 {
 		return &object.Error{Message: "Tunahitaji hoja mbili."}

@@ -13,7 +13,7 @@ func init() {
 	JsonFunctions["encode"] = encode
 }
 
-func decode(args []object.Object) object.Object {
+func decode(args []object.Object, defs map[string]object.Object) object.Object {
 	var i interface{}
 
 	input := args[0].(*object.String).Value
@@ -63,7 +63,7 @@ func convertWhateverToObject(i interface{}) object.Object {
 	return &object.Null{}
 }
 
-func encode(args []object.Object) object.Object {
+func encode(args []object.Object, defs map[string]object.Object) object.Object {
 	input := args[0].Inspect()
 
 	jsonBody, err := json.Marshal(input)
