@@ -1,20 +1,21 @@
 package repl
 
 import (
-	"bufio"
 	"embed"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"strings"
 
+	prompt "github.com/AvicennaJr/GoPrompt"
 	"github.com/AvicennaJr/Nuru/evaluator"
 	"github.com/AvicennaJr/Nuru/lexer"
 	"github.com/AvicennaJr/Nuru/object"
 	"github.com/AvicennaJr/Nuru/parser"
+	"github.com/AvicennaJr/Nuru/styles"
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	zone "github.com/lrstanley/bubblezone"
 )
 
@@ -57,57 +58,69 @@ func Read(contents string) {
 	program := p.ParseProgram()
 
 	if len(p.Errors()) != 0 {
-		fmt.Println(colorfy(ERROR_FACE, 31))
-		fmt.Println("Kuna Errors Zifuatazo:")
+		fmt.Println(styles.ErrorStyle.Italic(false).Render(ERROR_FACE))
+		fmt.Println(styles.ErrorStyle.Italic(false).Render("Kuna Errors Zifuatazo:"))
 
 		for _, msg := range p.Errors() {
-			fmt.Println("\t" + colorfy(msg, 31))
+			fmt.Println("\t" + styles.ErrorStyle.Render(msg))
 		}
 
 	}
 	evaluated := evaluator.Eval(program, env)
 	if evaluated != nil {
 		if evaluated.Type() != object.NULL_OBJ {
-			fmt.Println(colorfy(evaluated.Inspect(), 32))
+			fmt.Println(styles.ReplStyle.Render(evaluated.Inspect()))
 		}
 	}
 
 }
 
-func Start(in io.Reader, out io.Writer) {
-
-	scanner := bufio.NewScanner(in)
+func Start() {
 	env := object.NewEnvironment()
 
-	for {
-		fmt.Print(PROMPT)
-		scanned := scanner.Scan()
-		if !scanned {
-			return
-		}
+	var d dummy
+	d.env = env
+	p := prompt.New(
+		d.executor,
+		completer,
+		prompt.OptionPrefix(PROMPT),
+		prompt.OptionTitle("Nuru Programming Language"),
+	)
 
-		line := scanner.Text()
-		if strings.TrimSpace(line) == "exit()" || strings.TrimSpace(line) == "toka()" {
-			fmt.Println("✨🅺🅰🆁🅸🅱🆄 🆃🅴🅽🅰✨")
-			os.Exit(0)
-		}
-		l := lexer.New(line)
-		p := parser.New(l)
+	p.Run()
+}
 
-		program := p.ParseProgram()
+type dummy struct {
+	env *object.Environment
+}
 
-		if len(p.Errors()) != 0 {
-			printParseErrors(out, p.Errors())
-			continue
-		}
-		evaluated := evaluator.Eval(program, env)
-		if evaluated != nil {
-			if evaluated.Type() != object.NULL_OBJ {
-				io.WriteString(out, colorfy(evaluated.Inspect(), 32))
-				io.WriteString(out, "\n")
-			}
+func (d *dummy) executor(in string) {
+	if strings.TrimSpace(in) == "exit()" || strings.TrimSpace(in) == "toka()" {
+		fmt.Println(lipgloss.NewStyle().Render("✨🅺🅰🆁🅸🅱🆄 🆃🅴🅽🅰✨"))
+		os.Exit(0)
+	}
+	l := lexer.New(in)
+	p := parser.New(l)
+
+	program := p.ParseProgram()
+
+	if len(p.Errors()) != 0 {
+		for _, msg := range p.Errors() {
+			fmt.Println("\t" + styles.ErrorStyle.Render(msg))
 		}
 	}
+	env := d.env
+	evaluated := evaluator.Eval(program, env)
+	if evaluated != nil {
+		if evaluated.Type() != object.NULL_OBJ {
+			fmt.Println(styles.ReplStyle.Render(evaluated.Inspect()))
+		}
+	}
+
+}
+
+func completer(in prompt.Document) []prompt.Suggest {
+	return []prompt.Suggest{}
 }
 
 func Tutor() {
@@ -133,19 +146,6 @@ func Tutor() {
 	if _, err := tea.NewProgram(p, tea.WithMouseAllMotion()).Run(); err != nil {
 		log.Fatal(err)
 	}
-}
-
-func printParseErrors(out io.Writer, errors []string) {
-	//io.WriteString(out, colorfy(ERROR_FACE, 31))
-	io.WriteString(out, "Kuna Errors Zifuatazo:\n")
-
-	for _, msg := range errors {
-		io.WriteString(out, "\t"+colorfy(msg, 31)+"\n")
-	}
-}
-
-func colorfy(str string, colorCode int) string {
-	return fmt.Sprintf("\x1b[%dm%s\x1b[0m", colorCode, str)
 }
 
 var (
