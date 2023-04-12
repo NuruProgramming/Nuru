@@ -233,7 +233,6 @@ func isTruthy(obj object.Object) bool {
 }
 
 func newError(format string, a ...interface{}) *object.Error {
-	format = fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, format)
 	return &object.Error{Message: fmt.Sprintf(format, a...)}
 }
 
