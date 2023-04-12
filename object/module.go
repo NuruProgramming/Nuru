@@ -1,6 +1,6 @@
 package object
 
-type ModuleFunction func(args []Object) Object
+type ModuleFunction func(args []Object, defs map[string]Object) Object
 
 type Module struct {
 	Name      string
