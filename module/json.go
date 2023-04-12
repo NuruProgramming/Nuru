@@ -14,6 +14,9 @@ func init() {
 }
 
 func decode(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(defs) != 0 {
+		return &object.Error{Message: "Hoja hii hairuhusiwi"}
+	}
 	var i interface{}
 
 	input := args[0].(*object.String).Value
@@ -64,6 +67,9 @@ func convertWhateverToObject(i interface{}) object.Object {
 }
 
 func encode(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(defs) != 0 {
+		return &object.Error{Message: "Hoja hii hairuhusiwi"}
+	}
 	input := args[0].Inspect()
 
 	jsonBody, err := json.Marshal(input)
