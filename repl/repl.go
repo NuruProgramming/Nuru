@@ -96,7 +96,7 @@ type dummy struct {
 
 func (d *dummy) executor(in string) {
 	if strings.TrimSpace(in) == "exit()" || strings.TrimSpace(in) == "toka()" {
-		fmt.Println(lipgloss.NewStyle().Render("✨🅺🅰🆁🅸🅱🆄 🆃🅴🅽🅰✨"))
+		fmt.Println(lipgloss.NewStyle().Render("\n🔥🅺🅰🆁🅸🅱🆄 🆃🅴🅽🅰 🔥"))
 		os.Exit(0)
 	}
 	l := lexer.New(in)
