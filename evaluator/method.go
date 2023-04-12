@@ -35,7 +35,7 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object,
 		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.Module:
 		if fn, ok := obj.Functions[method.(*ast.Identifier).Value]; ok {
-			return fn(args)
+			return fn(args, defs)
 		}
 	}
 	return newError("Samahani, %s haina function '%s()'", obj.Inspect(), method.(*ast.Identifier).Value)
