@@ -263,8 +263,8 @@ kama (10 > 1) {
 			continue
 		}
 
-		if errObj.Message != fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, tt.expectedMessage) {
-			t.Errorf("wrong error message, expected=%q, got=%q", fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, tt.expectedMessage), errObj.Message)
+		if errObj.Message != fmt.Sprintf(tt.expectedMessage) {
+			t.Errorf("wrong error message, expected=%q, got=%q", fmt.Sprintf(tt.expectedMessage), errObj.Message)
 		}
 	}
 }
