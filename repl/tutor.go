@@ -8,6 +8,7 @@ import (
 	"github.com/AvicennaJr/Nuru/lexer"
 	"github.com/AvicennaJr/Nuru/object"
 	"github.com/AvicennaJr/Nuru/parser"
+	"github.com/AvicennaJr/Nuru/styles"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/textarea"
@@ -26,12 +27,13 @@ var (
 
 	activeButtonStyle = buttonStyle.Copy().
 				Foreground(lipgloss.Color("#FFF7DB")).
-				Background(lipgloss.Color("62")).
+				Background(lipgloss.Color("#aa6f5a")).
 				Margin(0, 2).
 				Underline(true)
 
 	tableOfContentStyle = lipgloss.NewStyle().Margin(1, 2).BorderStyle(lipgloss.RoundedBorder()).
-				BorderForeground(lipgloss.Color("62")).
+				BorderForeground(lipgloss.Color("#aa6f5a")).
+				Foreground(lipgloss.Color("#aa6f5a")).
 				Padding(2)
 )
 
@@ -57,7 +59,6 @@ type playground struct {
 	code           string
 	editor         textarea.Model
 	docs           viewport.Model
-	senderStyle    lipgloss.Style
 	ready          bool
 	filename       string
 	content        []byte
@@ -144,18 +145,31 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		switch msg.Type {
 		case tea.MouseLeft:
 			if zone.Get(pg.id + "run").InBounds(msg) {
-				pg.code = pg.editor.Value()
-				env := object.NewEnvironment()
-				l := lexer.New(pg.code)
-				p := parser.New(l)
-				program := p.ParseProgram()
-				if len(p.Errors()) != 0 {
-					pg.output.SetContent(strings.Join(p.Errors(), "\n"))
+				if strings.Contains(pg.editor.Value(), "jaza") {
+					pg.output.SetContent(styles.HelpStyle.Italic(false).Render("Samahani, huwezi kutumia `jaza()` kwa sasa."))
 				} else {
-					evaluated := evaluator.Eval(program, env)
-					if evaluated != nil {
-						if evaluated.Type() != object.NULL_OBJ {
-							pg.output.SetContent(evaluated.Inspect())
+					// this is just for the output will find a better solution
+					code := strings.ReplaceAll(pg.editor.Value(), "andika", "_andika")
+					pg.code = code
+					env := object.NewEnvironment()
+					l := lexer.New(pg.code)
+					p := parser.New(l)
+					program := p.ParseProgram()
+					if len(p.Errors()) != 0 {
+						pg.output.Style = styles.ErrorStyle.PaddingLeft(3)
+						pg.output.SetContent(strings.Join(p.Errors(), "\n"))
+					} else {
+						evaluated := evaluator.Eval(program, env)
+						if evaluated != nil {
+							if evaluated.Type() != object.NULL_OBJ {
+								pg.output.Style = styles.ReplStyle.PaddingLeft(3)
+								content := evaluated.Inspect()
+								l := strings.Split(content, "\n")
+								if len(l) > 15 {
+									content = strings.Join(l[len(l)-16:], "\n")
+								}
+								pg.output.SetContent(content)
+							}
 						}
 					}
 				}
@@ -186,7 +200,7 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			// output of editor
 			pg.output = viewport.New(msg.Width/2, msg.Height/3-4)
-			pg.output.Style = lipgloss.NewStyle().BorderForeground(lipgloss.Color("238")).PaddingLeft(3).Foreground(lipgloss.Color("76"))
+			pg.output.Style = lipgloss.NewStyle().PaddingLeft(3)
 			var output string
 			if pg.language == "en" {
 
@@ -224,7 +238,6 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			pg.toc.SetSize(msg.Width, msg.Height-8)
 			pg.windowWidth = msg.Width
 			pg.windowHeight = msg.Height
-			pg.senderStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("5"))
 
 			if pg.language == "en" {
 				pg.mybutton = activeButtonStyle.Width(msg.Width / 2).Height(1).Align(lipgloss.Center).Render("Run")
@@ -280,7 +293,7 @@ func (pg playground) View() string {
 	}
 	var docs string
 	if pg.fileSelected != true {
-		docs = zone.Mark(pg.id+"toc", tableOfContentStyle.Width(pg.windowWidth/2-4).Render(pg.toc.View()))
+		docs = zone.Mark(pg.id+"toc", tableOfContentStyle.Width(pg.windowWidth/2-4).Height(pg.windowHeight-8).Render(pg.toc.View()))
 	} else {
 		docs = zone.Mark(pg.id+"docs", pg.docs.View())
 	}
