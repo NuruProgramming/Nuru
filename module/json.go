@@ -9,8 +9,8 @@ import (
 var JsonFunctions = map[string]object.ModuleFunction{}
 
 func init() {
-	JsonFunctions["decode"] = decode
-	JsonFunctions["encode"] = encode
+	JsonFunctions["dikodi"] = decode
+	JsonFunctions["enkodi"] = encode
 }
 
 func decode(args []object.Object, defs map[string]object.Object) object.Object {
@@ -70,13 +70,43 @@ func encode(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
 		return &object.Error{Message: "Hoja hii hairuhusiwi"}
 	}
-	input := args[0].Inspect()
 
-	jsonBody, err := json.Marshal(input)
+	input := args[0]
+	i := convertObjectToWhatever(input)
+	data, err := json.Marshal(i)
 
 	if err != nil {
-		return &object.Error{Message: "Hii data haiwezi kua jsoni"}
+		return &object.Error{Message: "Siwezi kubadilisha data hii kuwa jsoni"}
 	}
 
-	return &object.Byte{String: string(jsonBody), Value: jsonBody}
+	return &object.String{Value: string(data)}
+}
+
+func convertObjectToWhatever(obj object.Object) interface{} {
+	switch v := obj.(type) {
+	case *object.Dict:
+		m := make(map[string]interface{})
+		for _, pair := range v.Pairs {
+			key := pair.Key.(*object.String).Value
+			m[key] = convertObjectToWhatever(pair.Value)
+		}
+		return m
+	case *object.Array:
+		list := make([]interface{}, len(v.Elements))
+		for i, e := range v.Elements {
+			list[i] = convertObjectToWhatever(e)
+		}
+		return list
+	case *object.String:
+		return v.Value
+	case *object.Integer:
+		return v.Value
+	case *object.Float:
+		return v.Value
+	case *object.Boolean:
+		return v.Value
+	case *object.Null:
+		return nil
+	}
+	return nil
 }
