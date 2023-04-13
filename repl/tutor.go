@@ -87,7 +87,7 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	pg.editor, edCmd = pg.editor.Update(msg)
 	pg.output, opCmd = pg.output.Update(msg)
 	pg.languageCursor, _ = pg.languageCursor.Update(msg)
-	if pg.fileSelected != true {
+	if !pg.fileSelected {
 		pg.toc, tocCmd = pg.toc.Update(msg)
 	}
 
@@ -116,6 +116,9 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			if ok {
 				pg.filename = i.filename
 				content, err := res.ReadFile("docs/" + pg.language + "/" + pg.filename)
+				if err != nil {
+					panic(err)
+				}
 				pg.content = content
 				str, err := pg.docRenderer.Render(string(pg.content))
 				if err != nil {
@@ -292,7 +295,7 @@ func (pg playground) View() string {
 		return "\n Tunakuandalia....."
 	}
 	var docs string
-	if pg.fileSelected != true {
+	if !pg.fileSelected {
 		docs = zone.Mark(pg.id+"toc", tableOfContentStyle.Width(pg.windowWidth/2-4).Height(pg.windowHeight-8).Render(pg.toc.View()))
 	} else {
 		docs = zone.Mark(pg.id+"docs", pg.docs.View())
