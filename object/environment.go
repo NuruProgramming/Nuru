@@ -29,3 +29,11 @@ func (e *Environment) Set(name string, val Object) Object {
 	e.store[name] = val
 	return val
 }
+
+func (e *Environment) Del(name string) bool {
+	_, ok := e.store[name]
+	if ok {
+		delete(e.store, name)
+	}
+	return true
+}
