@@ -54,6 +54,7 @@ const (
 	RBRACKET  = "]"
 	COLON     = ":"
 	DOT       = "."
+	AT        = "@"
 
 	// Keywords
 	FUNCTION = "FUNCTION"
@@ -73,6 +74,7 @@ const (
 	CASE     = "IKIWA"
 	DEFAULT  = "KAWAIDA"
 	IMPORT   = "TUMIA"
+	PACKAGE  = "PAKEJI"
 )
 
 var keywords = map[string]TokenType{
@@ -94,6 +96,8 @@ var keywords = map[string]TokenType{
 	"ikiwa":   CASE,
 	"kawaida": DEFAULT,
 	"tumia":   IMPORT,
+	"pakeji":  PACKAGE,
+	"@":       AT,
 }
 
 func LookupIdent(ident string) TokenType {
