@@ -578,3 +578,70 @@ func (i *Import) String() string {
 	}
 	return out.String()
 }
+
+type PackageBlock struct {
+	Token      token.Token
+	Statements []Statement
+}
+
+func (pb *PackageBlock) statementNode()       {}
+func (pb *PackageBlock) TokenLiteral() string { return pb.Token.Literal }
+func (pb *PackageBlock) String() string {
+	var out bytes.Buffer
+
+	for _, s := range pb.Statements {
+		out.WriteString(s.String())
+	}
+
+	return out.String()
+}
+
+type Package struct {
+	Token token.Token
+	Name  *Identifier
+	Block *BlockStatement
+}
+
+func (p *Package) expressionNode()      {}
+func (p *Package) TokenLiteral() string { return p.Token.Literal }
+func (p *Package) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("pakeji " + p.Name.Value + "\n")
+	out.WriteString("::\n")
+	for _, s := range p.Block.Statements {
+		out.WriteString(s.String())
+	}
+	out.WriteString("\n::")
+
+	return out.String()
+}
+
+type At struct {
+	Token token.Token
+}
+
+func (a *At) expressionNode()      {}
+func (a *At) TokenLiteral() string { return a.Token.Literal }
+func (a *At) String() string       { return "@" }
+
+type PropertyAssignment struct {
+	Token token.Token // the '=' token
+	Name  *PropertyExpression
+	Value Expression
+}
+
+func (pa *PropertyAssignment) expressionNode()      {}
+func (pa *PropertyAssignment) TokenLiteral() string { return pa.Token.Literal }
+func (pa *PropertyAssignment) String() string       { return "Ngl I'm tired" }
+
+type PropertyExpression struct {
+	Expression
+	Token    token.Token // The . token
+	Object   Expression
+	Property Expression
+}
+
+func (pe *PropertyExpression) expressionNode()      {}
+func (pe *PropertyExpression) TokenLiteral() string { return pe.Token.Literal }
+func (pe *PropertyExpression) String() string       { return "Ngl I'm tired part two" }
