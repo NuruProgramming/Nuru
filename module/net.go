@@ -119,7 +119,7 @@ func postRequest(args []object.Object, defs map[string]object.Object) object.Obj
 			case "mwili":
 				dictHead, ok := v.(*object.Dict)
 				if !ok {
-					return &object.Error{Message: "Vichwa lazima viwe kamusi"}
+					return &object.Error{Message: "Mwili lazima iwe kamusi"}
 				}
 				params = dictHead
 			default:
