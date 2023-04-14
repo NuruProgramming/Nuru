@@ -142,6 +142,8 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.RBRACKET, l.line, l.ch)
 	case rune(':'):
 		tok = newToken(token.COLON, l.line, l.ch)
+	case rune('@'):
+		tok = newToken(token.AT, l.line, l.ch)
 	case rune('.'):
 		tok = newToken(token.DOT, l.line, l.ch)
 	case rune('&'):
@@ -200,7 +202,7 @@ func (l *Lexer) readIdentifier() string {
 }
 
 func isLetter(ch rune) bool {
-	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_'
+	return 'a' <= ch && ch <= 'z' || 'A' <= ch && ch <= 'Z' || ch == '_' || ch == '@'
 }
 
 func (l *Lexer) skipWhitespace() {
