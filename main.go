@@ -51,7 +51,7 @@ func main() {
 			fmt.Println(NewLogo)
 			os.Exit(0)
 		case "-docs", "--docs", "-nyaraka", "--nyaraka":
-			repl.Tutor()
+			repl.Docs()
 			os.Exit(0)
 		}
 
