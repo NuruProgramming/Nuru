@@ -1,4 +1,4 @@
-# Parsing JSON in Nuru
+# JSON in Nuru
 
 Nuru also makes it easy to deal with JSON.
 

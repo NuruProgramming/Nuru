@@ -1,4 +1,4 @@
-# Working with Files in Nuru
+# Files in Nuru
 
 Nuru's ability to deal with files is primitive, and as for now it only allows you to read contents of a file.
 
