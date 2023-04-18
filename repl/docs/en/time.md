@@ -1,4 +1,4 @@
-# Working with Time in Nuru
+# Time in Nuru
 
 ## Importing Time
 

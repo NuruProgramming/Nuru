@@ -1,6 +1,6 @@
-# Using Third Party Packages in Nuru
+# Packages in Nuru
 
-You can use third packages in Nuru with the following conditions:
+You can use third packages written in Nuru with the following conditions:
 
 - The package file MUST be in the same directory
 - The package file MUST end with `nr`
