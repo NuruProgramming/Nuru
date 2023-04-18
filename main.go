@@ -47,10 +47,10 @@ func main() {
 				styles.HelpStyle.Bold(true).Render("nuru --nyaraka"),
 				styles.HelpStyle.Bold(true).Render("nuru --toleo"))))
 			os.Exit(0)
-		case "version", "-version", "--version", "-v", "v", "--toleo":
+		case "version", "-version", "--version", "-v", "v", "--toleo", "-toleo":
 			fmt.Println(NewLogo)
 			os.Exit(0)
-		case "--tutorial", "--docs", "--mafunzo", "--nyaraka":
+		case "-docs", "--docs", "-nyaraka", "--nyaraka":
 			repl.Tutor()
 			os.Exit(0)
 		}
