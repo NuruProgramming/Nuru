@@ -20,7 +20,7 @@ func getRequest(args []object.Object, defs map[string]object.Object) object.Obje
 
 	if len(defs) != 0 {
 		var url *object.String
-		var headers *object.Dict
+		var headers, params *object.Dict
 		for k, v := range defs {
 			switch k {
 			case "yuareli":
@@ -35,6 +35,12 @@ func getRequest(args []object.Object, defs map[string]object.Object) object.Obje
 					return &object.Error{Message: "Vichwa lazima viwe kamusi"}
 				}
 				headers = dictHead
+			case "mwili":
+				dictHead, ok := v.(*object.Dict)
+				if !ok {
+					return &object.Error{Message: "Mwili lazima iwe kamusi"}
+				}
+				params = dictHead
 			default:
 				return &object.Error{Message: "Hoja si sahihi. Tumia yuareli na vichwa."}
 			}
@@ -43,7 +49,26 @@ func getRequest(args []object.Object, defs map[string]object.Object) object.Obje
 			return &object.Error{Message: "Yuareli ni lazima"}
 		}
 
-		req, err := http.NewRequest("GET", url.Value, nil)
+		var responseBody *bytes.Buffer
+		if params != nil {
+			booty := convertObjectToWhatever(params)
+
+			jsonBody, err := json.Marshal(booty)
+
+			if err != nil {
+				return &object.Error{Message: "Huku format query yako vizuri."}
+			}
+
+			responseBody = bytes.NewBuffer(jsonBody)
+		}
+
+		var req *http.Request
+		var err error
+		if responseBody != nil {
+			req, err = http.NewRequest("GET", url.Value, responseBody)
+		} else {
+			req, err = http.NewRequest("GET", url.Value, nil)
+		}
 		if err != nil {
 			return &object.Error{Message: "Tumeshindwa kufanya request"}
 		}
