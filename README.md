@@ -63,11 +63,11 @@ nuru -v
 ### Windows
 
 - Executable:
- - Download the Nuru executable [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.5.0-alpha/nuru_windows_amd64_v0.5.0-alpha.exe)
- - Double click the executable
+    - Download the Nuru executable [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.5.0-alpha/nuru_windows_amd64_v0.5.0-alpha.exe)
+    - Double click the executable
 
 - Nuru Installer
-> Coming Soon
+    > Coming Soon
 
 ### Building From Source
 
