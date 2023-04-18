@@ -17,6 +17,12 @@ func evalCall(node *ast.CallExpression, env *object.Environment) object.Object {
 	switch fn := function.(type) {
 	case *object.Function:
 		args = evalArgsExpressions(node, fn, env)
+	case *object.Package:
+		obj, ok := fn.Scope.Get("andaa")
+		if !ok {
+			return newError("Pakeji haina 'andaa'")
+		}
+		args = evalArgsExpressions(node, obj.(*object.Function), env)
 	default:
 		args = evalExpressions(node.Arguments, env)
 	}

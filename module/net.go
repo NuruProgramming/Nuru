@@ -16,119 +16,186 @@ func init() {
 	NetFunctions["tuma"] = postRequest
 }
 
-func getRequest(args []object.Object) object.Object {
+func getRequest(args []object.Object, defs map[string]object.Object) object.Object {
 
-	if len(args) > 3 {
-		return &object.Error{Message: "Hatuhitaji hoja zaidi ya 3."}
-	}
+	if len(defs) != 0 {
+		var url *object.String
+		var headers, params *object.Dict
+		for k, v := range defs {
+			switch k {
+			case "yuareli":
+				strUrl, ok := v.(*object.String)
+				if !ok {
+					return &object.Error{Message: "Yuareli iwe neno"}
+				}
+				url = strUrl
+			case "vichwa":
+				dictHead, ok := v.(*object.Dict)
+				if !ok {
+					return &object.Error{Message: "Vichwa lazima viwe kamusi"}
+				}
+				headers = dictHead
+			case "mwili":
+				dictHead, ok := v.(*object.Dict)
+				if !ok {
+					return &object.Error{Message: "Mwili lazima iwe kamusi"}
+				}
+				params = dictHead
+			default:
+				return &object.Error{Message: "Hoja si sahihi. Tumia yuareli na vichwa."}
+			}
+		}
+		if url.Value == "" {
+			return &object.Error{Message: "Yuareli ni lazima"}
+		}
 
-	if args[0].Type() != object.STRING_OBJ {
-		return &object.Error{Message: "Link iwe ndani ya \"\". Mfano: \"https://google.com\""}
-	}
+		var responseBody *bytes.Buffer
+		if params != nil {
+			booty := convertObjectToWhatever(params)
 
-	url := args[0].Inspect()
+			jsonBody, err := json.Marshal(booty)
 
-	req, err := http.NewRequest("GET", url, nil)
+			if err != nil {
+				return &object.Error{Message: "Huku format query yako vizuri."}
+			}
 
-	// var responseBody *bytes.Buffer
+			responseBody = bytes.NewBuffer(jsonBody)
+		}
 
-	if len(args) == 2 {
+		var req *http.Request
+		var err error
+		if responseBody != nil {
+			req, err = http.NewRequest("GET", url.Value, responseBody)
+		} else {
+			req, err = http.NewRequest("GET", url.Value, nil)
+		}
+		if err != nil {
+			return &object.Error{Message: "Tumeshindwa kufanya request"}
+		}
 
-		switch v := args[1].(type) {
-
-		case *object.Byte:
-
-			// responseBody = bytes.NewBuffer(v.Value)
-
-		case *object.Dict:
-			for _, val := range v.Pairs {
+		if headers != nil {
+			for _, val := range headers.Pairs {
 				req.Header.Set(val.Key.Inspect(), val.Value.Inspect())
 			}
-			// input := args[0].Inspect()
-
-			// jsonBody, err := json.Marshal(input)
-
-			// if err != nil {
-			// 	return &object.Error{Message: "Huku format query yako vizuri."}
-			// }
-
-			// responseBody = bytes.NewBuffer(jsonBody)
-
-		default:
-			return &object.Error{Message: "Data unayoruhusiwa kutuma ni Kamusi (Dict) au Bytes."}
 		}
+		client := &http.Client{}
 
-	}
-
-	if err != nil {
-		return &object.Error{Message: "Tumeshindwa kutuma request."}
-	}
-
-	client := &http.Client{}
-
-	resp, err := client.Do(req)
-
-	if err != nil {
-		return &object.Error{Message: "Tumeshindwa kutuma request."}
-	}
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return &object.Error{Message: "Tumeshindwa kusoma majibu."}
-	}
-
-	return &object.String{Value: string(body)}
-}
-
-func postRequest(args []object.Object) object.Object {
-
-	if len(args) != 2 {
-		return &object.Error{Message: "Tunahitaji hoja mbili."}
-	}
-	var url string
-
-	switch link := args[0].(type) {
-	case *object.String:
-		url = link.Value
-	default:
-		return &object.Error{Message: "Hii sio link sahihi. Link iwe ndani ya \"\". Mfano: \"https://google.com\""}
-	}
-
-	var responseBody *bytes.Buffer
-
-	switch v := args[1].(type) {
-
-	case *object.Byte:
-
-		responseBody = bytes.NewBuffer(v.Value)
-
-	case *object.Dict:
-		input := args[0].Inspect()
-
-		jsonBody, err := json.Marshal(input)
+		resp, err := client.Do(req)
 
 		if err != nil {
-			return &object.Error{Message: "Huku format query yako vizuri."}
+			return &object.Error{Message: "Tumeshindwa kutuma request."}
+		}
+		defer resp.Body.Close()
+		respBody, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return &object.Error{Message: "Tumeshindwa kusoma majibu."}
 		}
 
-		responseBody = bytes.NewBuffer(jsonBody)
+		return &object.String{Value: string(respBody)}
 
-	default:
-		return &object.Error{Message: "Data unayoruhusiwa kutuma ni Kamusi (Dict) au Bytes."}
 	}
 
-	resp, err := http.Post(url, "application/json", responseBody)
+	if len(args) == 1 {
+		url, ok := args[0].(*object.String)
+		if !ok {
+			return &object.Error{Message: "Yuareli lazima iwe neno"}
+		}
+		req, err := http.NewRequest("GET", url.Value, nil)
+		if err != nil {
+			return &object.Error{Message: "Tumeshindwa kufanya request"}
+		}
 
-	if err != nil {
-		return &object.Error{Message: "Tumeshindwa kupost data. Huenda huna bando?"}
+		client := &http.Client{}
+
+		resp, err := client.Do(req)
+
+		if err != nil {
+			return &object.Error{Message: "Tumeshindwa kutuma request."}
+		}
+		defer resp.Body.Close()
+		respBody, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return &object.Error{Message: "Tumeshindwa kusoma majibu."}
+		}
+
+		return &object.String{Value: string(respBody)}
 	}
+	return &object.Error{Message: "Hoja si sahihi. Tumia yuareli na vichwa."}
+}
 
-	defer resp.Body.Close()
+func postRequest(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(defs) != 0 {
+		var url *object.String
+		var headers, params *object.Dict
+		for k, v := range defs {
+			switch k {
+			case "yuareli":
+				strUrl, ok := v.(*object.String)
+				if !ok {
+					return &object.Error{Message: "Yuareli iwe neno"}
+				}
+				url = strUrl
+			case "vichwa":
+				dictHead, ok := v.(*object.Dict)
+				if !ok {
+					return &object.Error{Message: "Vichwa lazima viwe kamusi"}
+				}
+				headers = dictHead
+			case "mwili":
+				dictHead, ok := v.(*object.Dict)
+				if !ok {
+					return &object.Error{Message: "Mwili lazima iwe kamusi"}
+				}
+				params = dictHead
+			default:
+				return &object.Error{Message: "Hoja si sahihi. Tumia yuareli na vichwa."}
+			}
+		}
+		if url.Value == "" {
+			return &object.Error{Message: "Yuareli ni lazima"}
+		}
+		var responseBody *bytes.Buffer
+		if params != nil {
+			booty := convertObjectToWhatever(params)
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return &object.Error{Message: "Tumeshindwa kusoma majibu yaliyo rudishwa."}
+			jsonBody, err := json.Marshal(booty)
+
+			if err != nil {
+				return &object.Error{Message: "Huku format query yako vizuri."}
+			}
+
+			responseBody = bytes.NewBuffer(jsonBody)
+		}
+		var req *http.Request
+		var err error
+		if responseBody != nil {
+			req, err = http.NewRequest("POST", url.Value, responseBody)
+		} else {
+			req, err = http.NewRequest("POST", url.Value, nil)
+		}
+		if err != nil {
+			return &object.Error{Message: "Tumeshindwa kufanya request"}
+		}
+		if headers != nil {
+			for _, val := range headers.Pairs {
+				req.Header.Set(val.Key.Inspect(), val.Value.Inspect())
+			}
+		}
+		req.Header.Add("Content-Type", "application/json")
+
+		client := &http.Client{}
+
+		resp, err := client.Do(req)
+
+		if err != nil {
+			return &object.Error{Message: "Tumeshindwa kutuma request."}
+		}
+		defer resp.Body.Close()
+		respBody, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return &object.Error{Message: "Tumeshindwa kusoma majibu."}
+		}
+		return &object.String{Value: string(respBody)}
 	}
-
-	return &object.String{Value: string(body)}
+	return &object.Error{Message: "Hoja si sahihi. Tumia yuareli na vichwa."}
 }

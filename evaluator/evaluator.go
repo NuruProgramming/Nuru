@@ -90,7 +90,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 
 	case *ast.StringLiteral:
 		return &object.String{Value: node.Value}
-
+	case *ast.At:
+		return evalAt(node, env)
 	case *ast.ArrayLiteral:
 		elements := evalExpressions(node.Elements, env)
 		if len(elements) == 1 && isError(elements[0]) {
@@ -123,7 +124,16 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 	// 	return evalForExpression(node, env)
 	case *ast.ForIn:
 		return evalForInExpression(node, env, node.Token.Line)
-
+	case *ast.Package:
+		return evalPackage(node, env)
+	case *ast.PropertyExpression:
+		return evalPropertyExpression(node, env)
+	case *ast.PropertyAssignment:
+		val := Eval(node.Value, env)
+		if isError(val) {
+			return val
+		}
+		return evalPropertyAssignment(node.Name, val, env)
 	case *ast.Assign: // making let temporarily optional as I debug
 		return evalAssign(node, env)
 	case *ast.AssignEqual:
@@ -233,7 +243,6 @@ func isTruthy(obj object.Object) bool {
 }
 
 func newError(format string, a ...interface{}) *object.Error {
-	format = fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, format)
 	return &object.Error{Message: fmt.Sprintf(format, a...)}
 }
 
@@ -271,6 +280,20 @@ func applyFunction(fn object.Object, args []object.Object, line int) object.Obje
 			return result
 		}
 		return NULL
+	case *object.Package:
+		obj := &object.Instance{
+			Package: fn,
+			Env:     object.NewEnclosedEnvironment(fn.Env),
+		}
+		obj.Env.Set("@", obj)
+		node, ok := fn.Scope.Get("andaa")
+		if !ok {
+			return newError("Hamna andaa function")
+		}
+		node.(*object.Function).Env.Set("@", obj)
+		applyFunction(node, args, fn.Name.Token.Line)
+		node.(*object.Function).Env.Del("@")
+		return obj
 	default:
 		if fn != nil {
 			return newError("Mstari %d: Hii sio function: %s", line, fn.Type())

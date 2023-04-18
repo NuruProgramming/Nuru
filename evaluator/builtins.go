@@ -49,9 +49,26 @@ var builtins = map[string]*object.Builtin{
 					arr = append(arr, arg.Inspect())
 				}
 				str := strings.Join(arr, " ")
-				return &object.String{Value: str}
+				fmt.Println(str)
 			}
 			return nil
+		},
+	},
+	"_andika": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) == 0 {
+				return &object.String{Value: "\n"}
+			} else {
+				var arr []string
+				for _, arg := range args {
+					if arg == nil {
+						return newError("Hauwezi kufanya operesheni hii")
+					}
+					arr = append(arr, arg.Inspect())
+				}
+				str := strings.Join(arr, " ")
+				return &object.String{Value: str}
+			}
 		},
 	},
 	"aina": {
@@ -66,38 +83,16 @@ var builtins = map[string]*object.Builtin{
 	"fungua": {
 		Fn: func(args ...object.Object) object.Object {
 
-			if len(args) > 2 {
-				return newError("Samahani, Hatuhitaji hoja zaidi ya 2, wewe umeweka %d", len(args))
+			if len(args) != 1 {
+				return newError("Samahani, tunahitaji hoja 1, wewe umeweka %d", len(args))
 			}
 			filename := args[0].(*object.String).Value
-			mode := os.O_RDONLY
-			if len(args) == 2 {
-				fileMode := args[1].(*object.String).Value
-				switch fileMode {
-				case "soma":
-					mode = os.O_RDONLY
-				// still buggy, will work on this soon
-				case "andika":
-					mode = os.O_WRONLY
-					os.Remove(filename)
-				case "ongeza":
-					mode = os.O_APPEND
-				default:
-					return newError("Tumeshindwa kufungua file na mode %s", fileMode)
-				}
-			}
-			file, err := os.OpenFile(filename, os.O_CREATE|mode, 0644)
+
+			file, err := os.ReadFile(filename)
 			if err != nil {
-				return &object.Null{}
+				return &object.Error{Message: "Tumeshinwa kusoma file"}
 			}
-			var reader *bufio.Reader
-			var writer *bufio.Writer
-			if mode == os.O_RDONLY {
-				reader = bufio.NewReader(file)
-			} else {
-				writer = bufio.NewWriter(file)
-			}
-			return &object.File{Filename: filename, Reader: reader, Writer: writer, Handle: file}
+			return &object.File{Filename: filename, Content: string(file)}
 		},
 	},
 

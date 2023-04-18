@@ -20,6 +20,15 @@ func (p *Parser) parseAssignmentExpression(exp ast.Expression) ast.Expression {
 		return e
 
 	case *ast.IndexExpression:
+	case *ast.PropertyExpression:
+		e := &ast.PropertyAssignment{
+			Token: p.curToken,
+			Name:  exp.(*ast.PropertyExpression),
+		}
+		precedence := p.curPrecedence()
+		p.nextToken()
+		e.Value = p.parseExpression(precedence)
+		return e
 	default:
 		if node != nil {
 			msg := fmt.Sprintf("Mstari %d:Tulitegemea kupata kitambulishi au array, badala yake tumepata: %s", p.curToken.Line, node.TokenLiteral())

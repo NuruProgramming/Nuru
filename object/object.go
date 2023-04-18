@@ -25,6 +25,9 @@ const (
 	JSON_OBJ         = "JSONI"
 	MODULE_OBJ       = "MODULE"
 	BYTE_OBJ         = "BYTE"
+	PACKAGE_OBJ      = "PAKEJI"
+	INSTANCE         = "PAKEJI"
+	AT               = "@"
 )
 
 type Object interface {

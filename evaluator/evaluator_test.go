@@ -263,8 +263,8 @@ kama (10 > 1) {
 			continue
 		}
 
-		if errObj.Message != fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, tt.expectedMessage) {
-			t.Errorf("wrong error message, expected=%q, got=%q", fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, tt.expectedMessage), errObj.Message)
+		if errObj.Message != fmt.Sprintf(tt.expectedMessage) {
+			t.Errorf("wrong error message, expected=%q, got=%q", fmt.Sprintf(tt.expectedMessage), errObj.Message)
 		}
 	}
 }
@@ -1110,7 +1110,7 @@ func TestTimeModule(t *testing.T) {
 		t.Fatalf("Object is not a time object, got=%T", evaluated)
 	}
 
-	_, err := time.Parse("2006-01-02 15:04:05", muda.TimeValue)
+	_, err := time.Parse("15:04:05 02-01-2006", muda.TimeValue)
 	if err != nil {
 		t.Errorf("Wrong time value: got=%v", err)
 	}

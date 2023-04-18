@@ -7,40 +7,51 @@ import (
 	"strings"
 
 	"github.com/AvicennaJr/Nuru/repl"
+	"github.com/AvicennaJr/Nuru/styles"
+	"github.com/charmbracelet/lipgloss"
 )
 
-const (
-	LOGO = `
-
+var (
+	Title = styles.TitleStyle.
+		Render(`
 █░░ █░█ █▀▀ █░█ ▄▀█   █▄█ ▄▀█   █▄░█ █░█ █▀█ █░█
-█▄▄ █▄█ █▄█ █▀█ █▀█   ░█░ █▀█   █░▀█ █▄█ █▀▄ █▄█                                        
-
-        | Authored by Avicenna | v0.2.0 |
-`
+█▄▄ █▄█ █▄█ █▀█ █▀█   ░█░ █▀█   █░▀█ █▄█ █▀▄ █▄█`)
+	Version = styles.VersionStyle.Render("v0.3.0")
+	Author  = styles.AuthorStyle.Render("by Avicenna")
+	NewLogo = lipgloss.JoinVertical(lipgloss.Center, Title, lipgloss.JoinHorizontal(lipgloss.Center, Author, " | ", Version))
 )
 
 func main() {
 
 	args := os.Args
-	coloredLogo := fmt.Sprintf("\x1b[%dm%s\x1b[0m", 36, LOGO)
-
 	if len(args) < 2 {
 
-		fmt.Println(coloredLogo)
-		fmt.Println("𝑯𝒂𝒃𝒂𝒓𝒊, 𝒌𝒂𝒓𝒊𝒃𝒖 𝒖𝒕𝒖𝒎𝒊𝒆 𝒍𝒖𝒈𝒉𝒂 𝒚𝒂 𝑵𝒖𝒓𝒖 ✨")
-		fmt.Println("\nTumia exit() au toka() kuondoka")
-
-		repl.Start(os.Stdin, os.Stdout)
+		help := styles.HelpStyle.Render("💡 Tumia exit() au toka() kuondoka")
+		fmt.Println(lipgloss.JoinVertical(lipgloss.Left, NewLogo, "\n", help))
+		repl.Start()
+		os.Exit(0)
 	}
 
 	if len(args) == 2 {
 
 		switch args[1] {
 		case "msaada", "-msaada", "--msaada", "help", "-help", "--help", "-h":
-			fmt.Printf("\x1b[%dm%s\x1b[0m\n", 32, "\nTumia 'nuru' kuanza program\n\nAU\n\nTumia 'nuru' ikifuatiwa na jina la file.\n\n\tMfano:\tnuru fileYangu.nr")
+			fmt.Println(styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
+	%s: Kuanza programu ya Nuru
+	%s: Kurun file la Nuru
+	%s: Kusoma nyaraka za Nuru
+	%s: Kufahamu toleo la Nuru
+`,
+				styles.HelpStyle.Bold(true).Render("nuru"),
+				styles.HelpStyle.Bold(true).Render("nuru jinaLaFile.nr"),
+				styles.HelpStyle.Bold(true).Render("nuru --nyaraka"),
+				styles.HelpStyle.Bold(true).Render("nuru --toleo"))))
 			os.Exit(0)
-		case "version", "-version", "--version", "-v", "v":
-			fmt.Println(coloredLogo)
+		case "version", "-version", "--version", "-v", "v", "--toleo", "-toleo":
+			fmt.Println(NewLogo)
+			os.Exit(0)
+		case "-docs", "--docs", "-nyaraka", "--nyaraka":
+			repl.Docs()
 			os.Exit(0)
 		}
 
@@ -49,19 +60,28 @@ func main() {
 		if strings.HasSuffix(file, "nr") || strings.HasSuffix(file, ".sw") {
 			contents, err := ioutil.ReadFile(file)
 			if err != nil {
-				fmt.Printf("\x1b[%dm%s%s\x1b[0m\n", 31, "Error: Nimeshindwa kusoma file: ", args[0])
+				fmt.Println(styles.ErrorStyle.Render("Error: Nimeshindwa kusoma file: ", args[1]))
 				os.Exit(0)
 			}
 
 			repl.Read(string(contents))
 		} else {
-			fmt.Printf("\x1b[%dm%s%s\x1b[0m", 31, file, " sii file sahihi. Tumia file la '.nr' au '.sw'\n")
+			fmt.Println(styles.ErrorStyle.Render("'"+file+"'", "sii file sahihi. Tumia file la '.nr' au '.sw'"))
 			os.Exit(0)
 		}
 
 	} else {
-		fmt.Printf("\x1b[%dm%s\x1b[0m\n", 31, "Error: Operesheni imeshindikana boss.")
-		fmt.Printf("\x1b[%dm%s\x1b[0m\n", 32, "\nTumia 'nuru' kuprogram\n\nAU\n\nTumia 'nuru' ikifuatiwa na jina la file.\n\n\tMfano:\tnuru fileYangu.nr")
+		fmt.Println(styles.ErrorStyle.Render("Error: Operesheni imeshindikana boss."))
+		fmt.Println(styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
+	%s: Kuanza programu ya Nuru
+	%s: Kurun file la Nuru
+	%s: Kusoma nyaraka za Nuru
+	%s: Kufahamu toleo la Nuru
+`,
+			styles.HelpStyle.Bold(true).Render("nuru"),
+			styles.HelpStyle.Bold(true).Render("nuru jinaLaFile.nr"),
+			styles.HelpStyle.Bold(true).Render("nuru --nyaraka"),
+			styles.HelpStyle.Bold(true).Render("nuru --toleo"))))
 		os.Exit(0)
 	}
 }
