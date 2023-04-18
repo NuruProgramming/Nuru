@@ -123,7 +123,7 @@ func completer(in prompt.Document) []prompt.Suggest {
 	return []prompt.Suggest{}
 }
 
-func Tutor() {
+func Docs() {
 	zone.NewGlobal()
 
 	languageChoice := []list.Item{
