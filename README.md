@@ -1,4 +1,4 @@
-<h1 align="center"> NURU✨PROGRAMMING✨LANGUAGE</h1>
+<h1 align="center">🔥NURU🔥<br>🔥PROGRAMMING LANGUAGE🔥</h1>
 <p align="center">
     <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/badge/Nuru-Programming%20Language-yellow"></a>
     <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/badge/platform-Linux | Windows | Android-green.svg"></a>
@@ -14,21 +14,20 @@ A Swahili Programming Language of its kind built from the ground up.
 
 ## Installation
 
-To get started download the executables from the release page or follow the
-instructions for your device below:
+To get started download the executables from the release page or follow the instructions for your device below:
 
 ### Linux
 
  - Download the binary:
 
 ```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.2.0/nuru_linux_amd64_v0.2.0.tar.gz
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.0-alpha/nuru_linux_amd64_v0.5.0-alpha.tar.gz
 ```
 
   - Extract the file to make global available:
 
 ```
-sudo tar -C /usr/local/bin -xzvf nuru_linux_amd64_v0.2.0.tar.gz
+sudo tar -C /usr/local/bin -xzvf nuru_linux_amd64_v0.5.0-alpha.tar.gz
 ```
 
  - Confirm installation with:
@@ -43,12 +42,12 @@ nuru -v
  - Download the binary with this command:
 
 ```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.2.0/nuru_android_arm64_v0.2.0.tar.gz
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.0-alpha/nuru_android_arm64_v0.5.0-alpha.tar.gz
 ```
  - Extract the file:
 
 ```
-tar -xzvf nuru_android_arm64_v0.2.0.tar.gz
+tar -xzvf nuru_android_arm64_v0.5.0-alpha.tar.gz
 ```
  - Add it to path:
 
@@ -63,9 +62,12 @@ nuru -v
 
 ### Windows
 
- - Download the Nuru Installer [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.2.0/Nuru_Windows_Installer_v0.2.0.exe)
- - Install the downloaded installer
- - You can watch a full video guide [Here](https://youtu.be/T-lfaoqIFD4)
+- Executable:
+ - Download the Nuru executable [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.5.0-alpha/nuru_windows_amd64_v0.5.0-alpha.exe)
+ - Double click the executable
+
+- Nuru Installer
+> Coming Soon
 
 ### Building From Source
 
@@ -85,28 +87,25 @@ nuru -v
 ## Syntax At A Glance
 
 **NOTE**
-> There is a more detailed documentation of the language [here](./docs/README.md).
+> There is a more detailed documentation of the language [here](./repl/docs/en/README.md).
 
 Nuru, although still in its early stage, intends to be a fully functional programming language, and thus it has been baked with many features.
 
 ### Defining A Variable
 
-To initiliaze a variable use the `fanya` keyword:
+You can define variables like this:
 
 ```
-fanya x = 2;
-fanya y = 3;
+x = 2;
+y = 3;
 
 andika(x*y) // output is 6
 ```
-You can reassign values to the variable after it has been initiliazed:
-
+You can also use the `fanya` keyword to define a variabe:
 ```
-x = 10
-
-andika(x*y) // output is 30
+fanya x = 3
 ```
-**Note that Semicolons ";" are OPTIONAL**
+**Note that `fanya` keyword is OPTIONAL**
 
 ### Comments
 
@@ -151,7 +150,7 @@ NULL      | `tupu`                                    | These are nil objects
 This is how you define a function in Nuru:
 
 ```
-fanya jumlisha = unda(x, y) {
+jumlisha = unda(x, y) {
         rudisha x + y
     }
 
@@ -161,7 +160,7 @@ andika(jumlisha(3,4))
 Nuru also supports recursion:
 
 ```
-fanya fibo = unda(x) {
+fibo = unda(x) {
 	kama (x == 0) {
 		rudisha 0;
 	} au kama (x == 1) {
@@ -191,7 +190,7 @@ kama (2<1) {
 Nuru's while loop syntax is as follows:
 
 ```
-fanya i = 10
+i = 10
 
 wakati (i > 0) {
 	andika(i)
@@ -203,7 +202,7 @@ wakati (i > 0) {
 
 This is how you initiliaze and perform other array operations in Nuru:
 ```
-fanya arr = []
+arr = []
 
 // To add elements
 
@@ -211,9 +210,9 @@ sukuma(arr, 2)
 andika(arr) // output = [2]
 // Add two Arrays
 
-fanya arr2 = [1,2,3,4]
+arr2 = [1,2,3,4]
 
-fanya arr3 = arr1 + arr2
+arr3 = arr1 + arr2
 
 andika(arr3) // output = [2,1,2,3,4]
 
@@ -232,7 +231,7 @@ andika(arr[3]) // output = 3
 
 Nuru also supports dictionaries and you can do a lot with them as follows:
 ```
-fanya mtu = {"jina": "Mojo", "kabila": "Mnyakusa"}
+mtu = {"jina": "Mojo", "kabila": "Mnyakusa"}
 
 // get value from key 
 andika(mtu["jina"]) // output = Mojo
@@ -253,7 +252,7 @@ andika(mtu) // output = {"jina": "Avicenna", "kabila": "Mnyakusa", "anapoishi": 
 
 // You can also add two Dictionaries
 
-fanya kazi = {"kazi": "jambazi"}
+kazi = {"kazi": "jambazi"}
 
 mtu = mtu + kazi
 
@@ -281,7 +280,7 @@ i
 
 In Nuru you can get input from users using the `jaza()` keyword as follows:
 ```
-fanya jina = jaza("Unaitwa nani? ") // will prompt for input
+jina = jaza("Unaitwa nani? ") // will prompt for input
 
 andika("Habari yako " + jina)
 ```
@@ -323,6 +322,10 @@ There are documentations for two languages, English and Kiswahili, which are bot
 ### Code
 
 Clone the repo, hack it, make sure all tests are passing then submit a pull request.
+
+## Community
+
+Nuru has a passionate community, join us on [Telegram](https://t.me/NuruProgrammingChat)
 
 ## License
 
