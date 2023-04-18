@@ -55,10 +55,20 @@ func since(args []object.Object, defs map[string]object.Object) object.Object {
 		return &object.Error{Message: "tunahitaji hoja moja tu"}
 	}
 
-	t, err := time.Parse("15:04:05 02-01-2006", args[0].Inspect())
+	var (
+		t   time.Time
+		err error
+	)
 
-	if err != nil {
-
+	switch m := args[0].(type) {
+	case *object.Time:
+		t, _ = time.Parse("15:04:05 02-01-2006", m.TimeValue)
+	case *object.String:
+		t, err = time.Parse("15:04:05 02-01-2006", m.Value)
+		if err != nil {
+			return &object.Error{Message: fmt.Sprintf("Hoja %s sii sahihi", args[0].Inspect())}
+		}
+	default:
 		return &object.Error{Message: fmt.Sprintf("Hoja %s sii sahihi", args[0].Inspect())}
 	}
 
@@ -68,5 +78,5 @@ func since(args []object.Object, defs map[string]object.Object) object.Object {
 	diff := ct.Sub(t)
 	durationInSeconds := diff.Seconds()
 
-	return &object.Float{Value: durationInSeconds}
+	return &object.Integer{Value: int64(durationInSeconds)}
 }
