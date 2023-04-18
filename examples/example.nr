@@ -396,3 +396,44 @@ wakati (i < 5) {
 	}
 	andika(i)
 }
+
+// using time:
+
+tumia muda 
+
+andika(muda.hasahivi())
+andika("Tunalala")
+muda.lala(2)
+andika("Tumeamka")
+
+s = muda.hasahivi()
+muda.lala(2)
+andika(muda.tangu(s))
+
+andika(s.ongeza(sekunde=3, miaka=10, dakika=4))
+
+// using file:
+
+fail = fungua("sarufi.nr")
+
+andika(fail.soma())
+
+// using net and json:
+
+tumia mtandao, jsoni
+url = "https://v2.jokeapi.dev/joke/Any?type=single"
+
+resp = mtandao.peruzi(url)
+
+resp = jsoni.dikodi(resp)
+
+andika(resp["joke"])
+
+
+// os module
+
+tumia os
+
+andika(os.kimbiza("pwd"))
+
+os.toka(0)
