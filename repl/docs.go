@@ -133,6 +133,35 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				pg.fileSelected = true
 				pg.editor.Focus()
 			}
+		case tea.KeyCtrlR:
+			if strings.Contains(pg.editor.Value(), "jaza") {
+				pg.output.SetContent(styles.HelpStyle.Italic(false).Render("Samahani, huwezi kutumia `jaza()` kwa sasa."))
+			} else {
+				// this is just for the output will find a better solution
+				code := strings.ReplaceAll(pg.editor.Value(), "andika", "_andika")
+				pg.code = code
+				env := object.NewEnvironment()
+				l := lexer.New(pg.code)
+				p := parser.New(l)
+				program := p.ParseProgram()
+				if len(p.Errors()) != 0 {
+					pg.output.Style = styles.ErrorStyle.PaddingLeft(3)
+					pg.output.SetContent(strings.Join(p.Errors(), "\n"))
+				} else {
+					evaluated := evaluator.Eval(program, env)
+					if evaluated != nil {
+						if evaluated.Type() != object.NULL_OBJ {
+							pg.output.Style = styles.ReplStyle.PaddingLeft(3)
+							content := evaluated.Inspect()
+							l := strings.Split(content, "\n")
+							if len(l) > 15 {
+								content = strings.Join(l[len(l)-16:], "\n")
+							}
+							pg.output.SetContent(content)
+						}
+					}
+				}
+			}
 		case tea.KeyEsc:
 			if pg.fileSelected {
 				pg.fileSelected = false
@@ -243,10 +272,10 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			pg.windowHeight = msg.Height
 
 			if pg.language == "en" {
-				pg.mybutton = activeButtonStyle.Width(msg.Width / 2).Height(1).Align(lipgloss.Center).Render("Run")
+				pg.mybutton = activeButtonStyle.Width(msg.Width / 2).Height(1).Align(lipgloss.Center).Render("Run (CTRL + R)")
 			} else {
 
-				pg.mybutton = activeButtonStyle.Width(msg.Width / 2).Height(1).Align(lipgloss.Center).Render("Run")
+				pg.mybutton = activeButtonStyle.Width(msg.Width / 2).Height(1).Align(lipgloss.Center).Render("Run (CTRL + R)")
 			}
 			pg.ready = true
 
@@ -274,9 +303,9 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 			pg.docs.SetContent(str + "\n\n\n\n\n\n")
 			if pg.language == "en" {
-				pg.mybutton = activeButtonStyle.Width(msg.Width / 2).Height(1).Align(lipgloss.Center).Render("Run")
+				pg.mybutton = activeButtonStyle.Width(msg.Width / 2).Height(1).Align(lipgloss.Center).Render("Run (CTRL + R)")
 			} else {
-				pg.mybutton = activeButtonStyle.Width(msg.Width / 2).Height(1).Align(lipgloss.Center).Render("Run")
+				pg.mybutton = activeButtonStyle.Width(msg.Width / 2).Height(1).Align(lipgloss.Center).Render("Run (CTRL + R)")
 			}
 			pg.toc.SetSize(msg.Width, msg.Height-8)
 			pg.windowWidth = msg.Width
