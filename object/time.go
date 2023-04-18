@@ -1,6 +1,7 @@
 package object
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 )
@@ -15,7 +16,8 @@ func (t *Time) Method(method string, args []Object, defs map[string]Object) Obje
 	switch method {
 	case "ongeza":
 		return t.add(args, defs)
-
+	case "tangu":
+		return t.since(args, defs)
 	}
 	return nil
 }
@@ -70,4 +72,37 @@ func (t *Time) add(args []Object, defs map[string]Object) Object {
 
 	next_time := cur_time.Add(time.Duration(inttime) * time.Hour)
 	return &Time{TimeValue: string(next_time.Format("15:04:05 02-01-2006"))}
+}
+
+func (t *Time) since(args []Object, defs map[string]Object) Object {
+	if len(defs) != 0 {
+		return &Error{Message: "Hoja hii hairuhusiwi"}
+	}
+	if len(args) != 1 {
+		return &Error{Message: "tunahitaji hoja moja tu"}
+	}
+
+	var (
+		o   time.Time
+		err error
+	)
+
+	switch m := args[0].(type) {
+	case *Time:
+		o, _ = time.Parse("15:04:05 02-01-2006", m.TimeValue)
+	case *String:
+		o, err = time.Parse("15:04:05 02-01-2006", m.Value)
+		if err != nil {
+			return &Error{Message: fmt.Sprintf("Hoja %s sii sahihi", args[0].Inspect())}
+		}
+	default:
+		return &Error{Message: fmt.Sprintf("Hoja %s sii sahihi", args[0].Inspect())}
+	}
+
+	ct, _ := time.Parse("15:04:05 02-01-2006", t.TimeValue)
+
+	diff := ct.Sub(o)
+	durationInSeconds := diff.Seconds()
+
+	return &Integer{Value: int64(durationInSeconds)}
 }
