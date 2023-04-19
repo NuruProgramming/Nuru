@@ -1,8 +1,9 @@
-fanya birth_year = 2020
-andika(birth_year) // 2020
+// basics
 
-fanya convert_c_to_p = "C to P"
-andika(convert_c_to_p) // "C to P"
+jina = "Nuru"
+andika(jina) // Nuru
+
+// lists
 
 orodha = [1, "pili", kweli]
 
@@ -13,8 +14,7 @@ namba[1] = 25
 
 a = [1, 2, 3]
 b = [4, 5, 6]
-c = a + b
-// c is now [1, 2, 3, 4, 5, 6]
+c = a + b // c is now [1, 2, 3, 4, 5, 6]
 
 namba = [10, 20, 30]
 andika(20 ktk namba)  // will print kweli
@@ -93,8 +93,8 @@ kwa thamani ktk namba {
 // 4 is even
 // 5 is odd
 
-fanya salamu = unda() {
-    fanya jina = jaza("Unaitwa nani? ")
+salamu = unda() {
+    jina = jaza("Unaitwa nani? ")
     andika("Mambo vipi", jina)
 }
 
@@ -248,27 +248,27 @@ fib = unda(n) {
 
 andika(fib(10)) // 55
 
-fanya jum = unda(x) {
+jum = unda(x) {
     rudisha unda(y) {
         rudisha x + y
     }
 }
 
-fanya jum_x = jum(5)
+jum_x = jum(5)
 andika(jum_x(3)) // 8
 
 2 + 3 * 5 // 17
 
-fanya a = 2.5
-fanya b = 3/5
+a = 2.5
+b = 3/5
 
 a + b // 2.8
 
-fanya i = 2.4
+i = 2.4
 
 i++ // 3.4
 
-fanya i = 2
+i = 2
 
 i *= 3 // 6
 i /= 2 // 3
@@ -276,7 +276,7 @@ i += 100 // 103
 i -= 10 // 93
 i %= 90 // 3
 
-fanya i = -10
+i = -10
 
 wakati (i < 0) {
     andika(i)
@@ -286,15 +286,15 @@ wakati (i < 0) {
 
 andika("mambo") // mambo
 
-fanya a = 'niaje'
+a = 'niaje'
 
 andika("mambo", a) // mambo niaje
 
-fanya a = "habari" + " " + "yako"
+a = "habari" + " " + "yako"
 
 andika(a) // habari yako
 
-fanya b = "habari"
+b = "habari"
 
 b += " yako"
 
@@ -304,37 +304,37 @@ andika("mambo " * 4)
 
 // mambo mambo mambo mambo
 
-fanya a = "habari"
+a = "habari"
 
 a *= 4
 
 // habarihabarihabarihabari
 
-fanya jina = "avicenna"
+jina = "avicenna"
 
 kwa i ktk jina {andika(i)}
 
-fanya a = "nuru"
+a = "nuru"
 
 andika(a == "nuru") // kweli
 
 andika(a == "mambo") // sikweli
 
-fanya a = "mambo"
+a = "mambo"
 a.idadi() // 5
 
-fanya a = "NURU"
+a = "NURU"
 a.herufindogo() // nuru
 
-fanya a = "nuru mambo habari"
-fanya b = a.gawa()
+a = "nuru mambo habari"
+b = a.gawa()
 andika(b) // ["nuru", "mambo", "habari"]
 
-fanya a = "nuru,mambo,habari"
-fanya b = a.gawa(",")
+a = "nuru,mambo,habari"
+b = a.gawa(",")
 andika(b) // ["nuru", "mambo", "habari"]
 
-fanya a = 2
+a = 2
 
 badili (a){
 	ikiwa 3 {
@@ -354,7 +354,7 @@ badili (a) {
 	}
 }
 
-fanya z = 20
+z = 20
 
 badili(z) {
 	ikiwa 10 {
@@ -368,14 +368,14 @@ badili(z) {
 	}
 }
 
-fanya i = 1
+i = 1
 
 wakati (i <= 5) {
 	andika(i)
 	i++
 }
 
-fanya i = 1
+i = 1
 
 wakati (i < 5) {
 	kama (i == 3) {
@@ -386,7 +386,7 @@ wakati (i < 5) {
 	i++
 }
 
-fanya i = 0
+i = 0
 
 wakati (i < 5) {
 	i++
