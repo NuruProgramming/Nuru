@@ -8,8 +8,8 @@
 #############################################
 */
 
-fanya slice = unda(arr,start, end) {
-    fanya result = []
+slice = unda(arr,start, end) {
+    result = []
     wakati (start < end) {
         result = result + [arr[start]]
         start = start + 1
@@ -17,12 +17,12 @@ fanya slice = unda(arr,start, end) {
     rudisha result
 }
 
-fanya merge = unda(left, right) {
-    fanya result = []
-    fanya lLen = idadi(left)
-    fanya rLen = idadi(right)
-    fanya  l = 0
-    fanya  r = 0
+merge = unda(left, right) {
+    result = []
+    lLen = left.idadi()
+    rLen = right.idadi()
+     l = 0
+     r = 0
     wakati (l < lLen && r < rLen) {
         kama (left[l] < right[r]) {
             result = result + [left[l]]
@@ -36,28 +36,28 @@ fanya merge = unda(left, right) {
 }
 
 
-fanya mergeSort = unda(arr){
-    fanya len = idadi(arr)
+mergeSort = unda(arr){
+    len = arr.idadi()
     andika("arr is ", arr," of length ", len)
     kama (len < 2) {
         rudisha arr
     }
     andika("len is greater than or == to 2", len > 1)
 
-    fanya mid = (len / 2)
+    mid = (len / 2)
     andika("arr has a mid point of ", mid)
    
-    fanya left = slice(arr, 0, mid)
-    fanya right = slice(arr, mid, len)
+    left = slice(arr, 0, mid)
+    right = slice(arr, mid, len)
     andika("left slice is ", left)
     andika("right slice is ", right)
-    fanya sortedLeft = mergeSort(left)
-    fanya sortedRight = mergeSort(right)
+    sortedLeft = mergeSort(left)
+    sortedRight = mergeSort(right)
     andika("sortedLeft is ", sortedLeft)
     andika("sortedRight is ", sortedRight)
     rudisha merge(sortedLeft, sortedRight)
 }
 
-fanya arr = [6, 5, 3, 1, 8, 7, 2, 4]
-fanya sortedArray = mergeSort(arr)
+arr = [6, 5, 3, 1, 8, 7, 2, 4]
+sortedArray = mergeSort(arr)
 andika(sortedArray)
