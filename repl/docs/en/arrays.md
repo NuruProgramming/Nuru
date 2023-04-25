@@ -104,4 +104,30 @@ mwisho = b.yamwisho()
 andika(mwisho)  // will print tupu
 ```
 
+### map()
+
+map() goes through every element in the array and applies the passed function to each element. It will then return a new array with the updated elements:
+```s
+a = [1, 2, 3]
+
+b = a.map(unda(x){rudisha x*2})
+
+andika(b) // [2, 4, 6]
+```
+
+### chuja()
+
+chuja() will go through every single element of an array and checks if that element returns true or false when passed into a function. It will return a new array with elements that returned true:
+```s
+a = [1, 2, 3, 4]
+
+b = a.chuja(unda(x){
+    kama (x % 2 == 0) 
+        {rudisha kweli}
+    rudisha sikweli
+    })
+
+andika(b) // [2, 4]
+```
+
 With this information, you can now effectively work with arrays in Nuru, making it easy to manipulate collections of data in your programs.
