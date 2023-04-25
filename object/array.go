@@ -49,6 +49,8 @@ func (a *Array) Method(method string, args []Object) Object {
 		return a.last()
 	case "unga":
 		return a.join(args)
+	case "chuja":
+		return a.filter(args)
 	default:
 		return newError("Samahani, function hii haitumiki na Strings (Neno)")
 	}
@@ -84,7 +86,7 @@ func (a *Array) join(args []Object) Object {
 			glue = args[0].(*String).Value
 		}
 		length := len(a.Elements)
-		newElements := make([]string, length, length)
+		newElements := make([]string, length)
 		for k, v := range a.Elements {
 			newElements[k] = v.Inspect()
 		}
@@ -92,4 +94,19 @@ func (a *Array) join(args []Object) Object {
 	} else {
 		return &String{Value: ""}
 	}
+}
+
+func (a *Array) filter(args []Object) Object {
+	if len(args) != 1 {
+		return newError("Samahani, idadi ya hoja sii sahihi")
+	}
+
+	dummy := []Object{}
+	filteredArr := Array{Elements: dummy}
+	for _, obj := range a.Elements {
+		if obj.Inspect() == args[0].Inspect() && obj.Type() == args[0].Type() {
+			filteredArr.Elements = append(filteredArr.Elements, obj)
+		}
+	}
+	return &filteredArr
 }
