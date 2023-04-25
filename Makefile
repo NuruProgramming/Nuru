@@ -1,4 +1,4 @@
-VERSION=0.5.0-alpha
+VERSION=0.5.1
 
 build_linux:
 	@echo 'building linux binary...'
