@@ -16,7 +16,7 @@ var (
 		Render(`
 █░░ █░█ █▀▀ █░█ ▄▀█   █▄█ ▄▀█   █▄░█ █░█ █▀█ █░█
 █▄▄ █▄█ █▄█ █▀█ █▀█   ░█░ █▀█   █░▀█ █▄█ █▀▄ █▄█`)
-	Version = styles.VersionStyle.Render("v0.3.0")
+	Version = styles.VersionStyle.Render("v0.5.1")
 	Author  = styles.AuthorStyle.Render("by Avicenna")
 	NewLogo = lipgloss.JoinVertical(lipgloss.Center, Title, lipgloss.JoinHorizontal(lipgloss.Center, Author, " | ", Version))
 )
