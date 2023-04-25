@@ -51,6 +51,8 @@ func (a *Array) Method(method string, args []Object) Object {
 		return a.join(args)
 	case "chuja":
 		return a.filter(args)
+	case "tafuta":
+		return a.find(args)
 	default:
 		return newError("Samahani, function hii haitumiki na Strings (Neno)")
 	}
@@ -109,4 +111,17 @@ func (a *Array) filter(args []Object) Object {
 		}
 	}
 	return &filteredArr
+}
+
+func (a *Array) find(args []Object) Object {
+	if len(args) != 1 {
+		return newError("Samahani, idadi ya hoja sii sahihi")
+	}
+
+	for _, obj := range a.Elements {
+		if obj.Inspect() == args[0].Inspect() && obj.Type() == args[0].Type() {
+			return obj
+		}
+	}
+	return &Null{}
 }
