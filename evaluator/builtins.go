@@ -90,7 +90,7 @@ var builtins = map[string]*object.Builtin{
 
 			file, err := os.ReadFile(filename)
 			if err != nil {
-				return &object.Error{Message: "Tumeshinwa kusoma faili"}
+				return &object.Error{Message: "Tumeshindwa kusoma faili"}
 			}
 			return &object.File{Filename: filename, Content: string(file)}
 		},
