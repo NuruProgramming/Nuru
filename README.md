@@ -93,7 +93,7 @@ nuru -v
 
 ### Building From Source
 
- - Make sure you have golang installed
+ - Make sure you have golang installed (atleast 1.19.0 and above)
  - Run the following command:
 
 ```
