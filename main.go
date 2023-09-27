@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 
@@ -58,7 +57,7 @@ func main() {
 		file := args[1]
 
 		if strings.HasSuffix(file, "nr") || strings.HasSuffix(file, ".sw") {
-			contents, err := ioutil.ReadFile(file)
+			contents, err := os.ReadFile(file)
 			if err != nil {
 				fmt.Println(styles.ErrorStyle.Render("Error: Nuru imeshindwa kusoma faili: ", args[1]))
 				os.Exit(0)
