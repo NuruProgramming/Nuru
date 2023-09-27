@@ -18,6 +18,16 @@ var (
 	Version = styles.VersionStyle.Render("v0.5.1")
 	Author  = styles.AuthorStyle.Render("by Avicenna")
 	NewLogo = lipgloss.JoinVertical(lipgloss.Center, Title, lipgloss.JoinHorizontal(lipgloss.Center, Author, " | ", Version))
+	Help    = styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
+	%s: Kuanza programu ya Nuru
+	%s: Kuendesha faili la Nuru
+	%s: Kusoma nyaraka za Nuru
+	%s: Kufahamu toleo la Nuru
+`,
+		styles.HelpStyle.Bold(true).Render("nuru"),
+		styles.HelpStyle.Bold(true).Render("nuru jinaLaFile.nr"),
+		styles.HelpStyle.Bold(true).Render("nuru --nyaraka"),
+		styles.HelpStyle.Bold(true).Render("nuru --toleo")))
 )
 
 func main() {
@@ -35,16 +45,7 @@ func main() {
 
 		switch args[1] {
 		case "msaada", "-msaada", "--msaada", "help", "-help", "--help", "-h":
-			fmt.Println(styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
-	%s: Kuanza programu ya Nuru
-	%s: Kuendesha faili la Nuru
-	%s: Kusoma nyaraka za Nuru
-	%s: Kufahamu toleo la Nuru
-`,
-				styles.HelpStyle.Bold(true).Render("nuru"),
-				styles.HelpStyle.Bold(true).Render("nuru jinaLaFile.nr"),
-				styles.HelpStyle.Bold(true).Render("nuru --nyaraka"),
-				styles.HelpStyle.Bold(true).Render("nuru --toleo"))))
+			fmt.Println(Help)
 			os.Exit(0)
 		case "version", "-version", "--version", "-v", "v", "--toleo", "-toleo":
 			fmt.Println(NewLogo)
@@ -71,16 +72,7 @@ func main() {
 
 	} else {
 		fmt.Println(styles.ErrorStyle.Render("Error: Operesheni imeshindikana boss."))
-		fmt.Println(styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
-	%s: Kuanza programu ya Nuru
-	%s: Kuendesha faili la Nuru
-	%s: Kusoma nyaraka za Nuru
-	%s: Kufahamu toleo la Nuru
-`,
-			styles.HelpStyle.Bold(true).Render("nuru"),
-			styles.HelpStyle.Bold(true).Render("nuru jinaLaFile.nr"),
-			styles.HelpStyle.Bold(true).Render("nuru --nyaraka"),
-			styles.HelpStyle.Bold(true).Render("nuru --toleo"))))
+		fmt.Println(Help)
 		os.Exit(0)
 	}
 }
