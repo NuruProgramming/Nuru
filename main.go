@@ -38,7 +38,7 @@ func main() {
 		case "msaada", "-msaada", "--msaada", "help", "-help", "--help", "-h":
 			fmt.Println(styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
 	%s: Kuanza programu ya Nuru
-	%s: Kurun file la Nuru
+	%s: Kuendesha faili la Nuru
 	%s: Kusoma nyaraka za Nuru
 	%s: Kufahamu toleo la Nuru
 `,
@@ -60,13 +60,13 @@ func main() {
 		if strings.HasSuffix(file, "nr") || strings.HasSuffix(file, ".sw") {
 			contents, err := ioutil.ReadFile(file)
 			if err != nil {
-				fmt.Println(styles.ErrorStyle.Render("Error: Nimeshindwa kusoma file: ", args[1]))
+				fmt.Println(styles.ErrorStyle.Render("Error: Nuru imeshindwa kusoma faili: ", args[1]))
 				os.Exit(0)
 			}
 
 			repl.Read(string(contents))
 		} else {
-			fmt.Println(styles.ErrorStyle.Render("'"+file+"'", "sii file sahihi. Tumia file la '.nr' au '.sw'"))
+			fmt.Println(styles.ErrorStyle.Render("'"+file+"'", "sii faili sahihi. Tumia faili la '.nr' au '.sw'"))
 			os.Exit(0)
 		}
 
@@ -74,7 +74,7 @@ func main() {
 		fmt.Println(styles.ErrorStyle.Render("Error: Operesheni imeshindikana boss."))
 		fmt.Println(styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
 	%s: Kuanza programu ya Nuru
-	%s: Kurun file la Nuru
+	%s: Kuendesha faili la Nuru
 	%s: Kusoma nyaraka za Nuru
 	%s: Kufahamu toleo la Nuru
 `,
