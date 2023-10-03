@@ -1,3 +1,5 @@
+// This will convert the sequence of characters into a sequence of tokens
+
 package lexer
 
 import (
@@ -13,7 +15,7 @@ type Lexer struct {
 }
 
 func New(input string) *Lexer {
-	l := &Lexer{input: []rune(input)}
+	l := &Lexer{input: []rune(input), line: 1}
 	l.readChar()
 	return l
 }
@@ -172,6 +174,11 @@ func (l *Lexer) NextToken() token.Token {
 		tok.Line = l.line
 	default:
 		if isLetter(l.ch) {
+			tok.Literal = l.readIdentifier()
+			tok.Type = token.LookupIdent(tok.Literal)
+			tok.Line = l.line
+			return tok
+		} else if isDigit(l.ch) && isLetter(l.peekChar()) {
 			tok.Literal = l.readIdentifier()
 			tok.Type = token.LookupIdent(tok.Literal)
 			tok.Line = l.line
