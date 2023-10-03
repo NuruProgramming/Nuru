@@ -206,27 +206,27 @@ func TestErrorHandling(t *testing.T) {
 	}{
 		{
 			"5 + kweli",
-			"Mstari 0: Aina Hazilingani: NAMBA + BOOLEAN",
+			"Mstari 1: Aina Hazilingani: NAMBA + BOOLEAN",
 		},
 		{
 			"5 + kweli; 5;",
-			"Mstari 0: Aina Hazilingani: NAMBA + BOOLEAN",
+			"Mstari 1: Aina Hazilingani: NAMBA + BOOLEAN",
 		},
 		{
 			"-kweli",
-			"Mstari 0: Operesheni Haielweki: -BOOLEAN",
+			"Mstari 1: Operesheni Haielweki: -BOOLEAN",
 		},
 		{
 			"kweli + sikweli",
-			"Mstari 0: Operesheni Haielweki: BOOLEAN + BOOLEAN",
+			"Mstari 1: Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			"5; kweli + sikweli; 5",
-			"Mstari 0: Operesheni Haielweki: BOOLEAN + BOOLEAN",
+			"Mstari 1: Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			"kama (10 > 1) { kweli + sikweli;}",
-			"Mstari 0: Operesheni Haielweki: BOOLEAN + BOOLEAN",
+			"Mstari 1: Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			`
@@ -238,19 +238,19 @@ kama (10 > 1) {
 	rudisha 1;
 }
 			`,
-			"Mstari 3: Operesheni Haielweki: BOOLEAN + BOOLEAN",
+			"Mstari 4: Operesheni Haielweki: BOOLEAN + BOOLEAN",
 		},
 		{
 			"bangi",
-			"Mstari 0: Neno Halifahamiki: bangi",
+			"Mstari 1: Neno Halifahamiki: bangi",
 		},
 		{
 			`"Habari" - "Habari"`,
-			"Mstari 0: Operesheni Haielweki: NENO - NENO",
+			"Mstari 1: Operesheni Haielweki: NENO - NENO",
 		},
 		{
 			`{"jina": "Avi"}[unda(x) {x}];`,
-			"Mstari 0: Samahani, UNDO (FUNCTION) haitumiki kama key",
+			"Mstari 1: Samahani, UNDO (FUNCTION) haitumiki kama key",
 		},
 	}
 
