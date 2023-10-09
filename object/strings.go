@@ -40,7 +40,7 @@ func (s *String) Method(method string, args []Object) Object {
 	case "gawa":
 		return s.split(args)
 	default:
-		return newError("Samahani, kiendesh hiki hakitumiki na tungo (Neno)")
+		return newError("Samahani, kiendesha hiki hakitumiki na tungo (Neno)")
 	}
 }
 
