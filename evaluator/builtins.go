@@ -15,7 +15,7 @@ var builtins = map[string]*object.Builtin{
 		Fn: func(args ...object.Object) object.Object {
 
 			if len(args) > 1 {
-				return newError("Samahani, hii function inapokea hoja 0 au 1, wewe umeweka %d", len(args))
+				return newError("Samahani, kiendesha hiki kinapokea hoja 0 au 1, wewe umeweka %d", len(args))
 			}
 
 			if len(args) > 0 && args[0].Type() != object.STRING_OBJ {

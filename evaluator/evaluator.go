@@ -288,7 +288,7 @@ func applyFunction(fn object.Object, args []object.Object, line int) object.Obje
 		obj.Env.Set("@", obj)
 		node, ok := fn.Scope.Get("andaa")
 		if !ok {
-			return newError("Hamna andaa function")
+			return newError("Hamna andaa kiendesha")
 		}
 		node.(*object.Function).Env.Set("@", obj)
 		applyFunction(node, args, fn.Name.Token.Line)
@@ -296,7 +296,7 @@ func applyFunction(fn object.Object, args []object.Object, line int) object.Obje
 		return obj
 	default:
 		if fn != nil {
-			return newError("Mstari %d: Hii sio function: %s", line, fn.Type())
+			return newError("Mstari %d: Hiki sio kiendesha: %s", line, fn.Type())
 		} else {
 			return newError("Bro how did you even get here??? Contact language maker asap!")
 		}
