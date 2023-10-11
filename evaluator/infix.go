@@ -117,6 +117,8 @@ func evalFloatIntegerInfixExpression(operator string, left, right object.Object,
 		val = math.Pow(float64(leftVal), float64(rightVal))
 	case "/":
 		val = leftVal / rightVal
+	case "%":
+		val = math.Mod(leftVal, rightVal)
 	case "<":
 		return nativeBoolToBooleanObject(leftVal < rightVal)
 	case "<=":
