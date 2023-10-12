@@ -180,7 +180,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 					}
 					array.Elements[idx.Value] = value
 				} else {
-					return newError("Hauwezi kufanya opereshen hii na %#v", index)
+					return newError("Hauwezi kufanya operesheni hii na %#v", index)
 				}
 			} else if hash, ok := obj.(*object.Dict); ok {
 				key := Eval(ie.Index, env)
@@ -191,13 +191,13 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 					hashed := hashKey.HashKey()
 					hash.Pairs[hashed] = object.DictPair{Key: key, Value: value}
 				} else {
-					return newError("Hauwezi kufanya opereshen hii na %T", key)
+					return newError("Hauwezi kufanya operesheni hii na %T", key)
 				}
 			} else {
-				return newError("%T haifanyi operation hii", obj)
+				return newError("%T haifanyi operesheni hii", obj)
 			}
 		} else {
-			return newError("Tumia neno kama variable, sio %T", left)
+			return newError("Tumia neno kama kibadala, sio %T", left)
 		}
 
 	}

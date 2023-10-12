@@ -31,7 +31,7 @@ func evalImportFile(name string, ident *ast.Identifier, env *object.Environment)
 	addSearchPath("")
 	filename := findFile(name)
 	if filename == "" {
-		return newError("Module %s haipo", name)
+		return newError("Moduli %s haipo", name)
 	}
 	var scope *object.Environment
 	scope, err := evaluateFile(filename, env)
@@ -70,7 +70,7 @@ func evaluateFile(file string, env *object.Environment) (*object.Environment, ob
 	p := parser.New(l)
 	program := p.ParseProgram()
 	if len(p.Errors()) != 0 {
-		return nil, &object.Error{Message: fmt.Sprintf("Pakeji %s ina errors zifuatozo:\n%s", file, strings.Join(p.Errors(), "\n"))}
+		return nil, &object.Error{Message: fmt.Sprintf("Pakeji %s ina makosa yafuatayo:\n%s", file, strings.Join(p.Errors(), "\n"))}
 	}
 
 	scope := object.NewEnvironment()
