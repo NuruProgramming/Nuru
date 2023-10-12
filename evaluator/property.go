@@ -58,6 +58,7 @@ func evalPropertyAssignment(name *ast.PropertyExpression, val object.Object, env
 		obj.Env.Set(prop, val)
 		return NULL
 	default:
-		return newError("Imeshindikana ku assign kwenye package %s", left.Type())
+		return newError("Imeshindikana kuweka kwenye pakiti %s", left.Type())
+		// Alternative: return newError("Imeshindikana kukabidhi kwenye kifurushi %s", left.Type())
 	}
 }
