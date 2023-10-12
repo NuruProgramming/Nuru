@@ -32,7 +32,7 @@ func evalDictIndexExpression(dict, index object.Object, line int) object.Object 
 
 	key, ok := index.(object.Hashable)
 	if !ok {
-		return newError("Mstari %d: Samahani, %s haitumiki kama key", line, index.Type())
+		return newError("Mstari %d: Samahani, %s haitumiki kama ufunguo", line, index.Type())
 	}
 
 	pair, ok := dictObject.Pairs[key.HashKey()]
