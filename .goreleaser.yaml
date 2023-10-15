@@ -48,5 +48,11 @@ changelog:
       - "^test:"
 
 nfpms:
-  - file_name_template: nuru
+  - name: nuru
     maintainer: AvicennaJr
+    arch: amd64
+    platform: linux
+    section: default
+    priority: extra
+    homepage: "https://nuruprogramming.org"
+    description: "Nuru is a programming language built from the ground up"
