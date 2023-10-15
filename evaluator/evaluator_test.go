@@ -250,7 +250,7 @@ kama (10 > 1) {
 		},
 		{
 			`{"jina": "Avi"}[unda(x) {x}];`,
-			"Mstari 1: Samahani, UNDO (FUNCTION) haitumiki kama key",
+			"Mstari 1: Samahani, UNDO (FUNCTION) haitumiki kama ufunguo",
 		},
 	}
 

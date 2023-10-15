@@ -90,7 +90,7 @@ func evalInfixExpression(operator string, left, right object.Object, line int) o
 			line, left.Type(), operator, right.Type())
 
 	default:
-		return newError("Mstari %d: Operesheni Haielweki: %s %s %s",
+		return newError("Mstari %d: Operesheni Haieleweki: %s %s %s",
 			line, left.Type(), operator, right.Type())
 	}
 }
@@ -132,7 +132,7 @@ func evalFloatIntegerInfixExpression(operator string, left, right object.Object,
 	case "!=":
 		return nativeBoolToBooleanObject(leftVal != rightVal)
 	default:
-		return newError("Mstari %d: Operesheni Haielweki: %s %s %s",
+		return newError("Mstari %d: Operesheni Haieleweki: %s %s %s",
 			line, left.Type(), operator, right.Type())
 	}
 
@@ -156,7 +156,7 @@ func evalStringInfixExpression(operator string, left, right object.Object, line 
 	case "!=":
 		return nativeBoolToBooleanObject(leftVal != rightVal)
 	default:
-		return newError("Mstari %d: Operesheni Haielweki: %s %s %s", line, left.Type(), operator, right.Type())
+		return newError("Mstari %d: Operesheni Haieleweki: %s %s %s", line, left.Type(), operator, right.Type())
 	}
 }
 
@@ -170,7 +170,7 @@ func evalBooleanInfixExpression(operator string, left, right object.Object, line
 	case "||":
 		return nativeBoolToBooleanObject(leftVal || rightVal)
 	default:
-		return newError("Mstari %d: Operesheni Haielweki: %s %s %s", line, left.Type(), operator, right.Type())
+		return newError("Mstari %d: Operesheni Haieleweki: %s %s %s", line, left.Type(), operator, right.Type())
 	}
 }
 
@@ -202,7 +202,7 @@ func evalFloatInfixExpression(operator string, left, right object.Object, line i
 	case "!=":
 		return nativeBoolToBooleanObject(leftVal != rightVal)
 	default:
-		return newError("Mstari %d: Operesheni Haielweki: %s %s %s",
+		return newError("Mstari %d: Operesheni Haieleweki: %s %s %s",
 			line, left.Type(), operator, right.Type())
 	}
 }
@@ -242,7 +242,7 @@ func evalIntegerInfixExpression(operator string, left, right object.Object, line
 	case "!=":
 		return nativeBoolToBooleanObject(leftVal != rightVal)
 	default:
-		return newError("Mstari %d: Operesheni Haielweki: %s %s %s",
+		return newError("Mstari %d: Operesheni Haieleweki: %s %s %s",
 			line, left.Type(), operator, right.Type())
 	}
 }
