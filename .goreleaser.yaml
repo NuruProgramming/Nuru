@@ -21,6 +21,9 @@ builds:
       - windows
       - darwin
       - android
+    ignore:
+      - goos: android
+        goarch: 386
 
 archives:
   - format: tar.gz
