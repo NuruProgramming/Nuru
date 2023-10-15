@@ -46,3 +46,7 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+
+nfpms:
+  - file_name_template: nuru
+    maintainer: AvicennaJr
