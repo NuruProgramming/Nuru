@@ -52,7 +52,10 @@ nuru
 Notes.md
 tutorials/en/*
 config.json
+*local*
 
 # For Nuru executables
 /nuru
 /Nuru
+
+dist/
