@@ -12,7 +12,7 @@ func evalMinusPrefixOperatorExpression(right object.Object, line int) object.Obj
 		return &object.Float{Value: -obj.Value}
 
 	default:
-		return newError("Mstari %d: Operesheni Haielweki: -%s", line, right.Type())
+		return newError("Mstari %d: Operesheni Haieleweki: -%s", line, right.Type())
 	}
 }
 func evalPlusPrefixOperatorExpression(right object.Object, line int) object.Object {
@@ -25,7 +25,7 @@ func evalPlusPrefixOperatorExpression(right object.Object, line int) object.Obje
 		return &object.Float{Value: obj.Value}
 
 	default:
-		return newError("Mstari %d: Operesheni Haielweki: +%s", line, right.Type())
+		return newError("Mstari %d: Operesheni Haieleweki: +%s", line, right.Type())
 	}
 }
 
@@ -38,6 +38,6 @@ func evalPrefixExpression(operator string, right object.Object, line int) object
 	case "+":
 		return evalPlusPrefixOperatorExpression(right, line)
 	default:
-		return newError("Mstari %d: Operesheni haieleweki: %s%s", line, operator, right.Type())
+		return newError("Mstari %d: Operesheni Haieleweki: %s%s", line, operator, right.Type())
 	}
 }

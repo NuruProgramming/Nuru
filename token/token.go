@@ -1,3 +1,5 @@
+// This is where we define our tokens
+
 package token
 
 type TokenType string
