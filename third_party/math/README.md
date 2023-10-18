@@ -1,158 +1,245 @@
-# Math Package
+# Pakeji Hisabati (Math Package)
+
+Pakeji Hisabati is a math package written in pure Nuru by [VictorKariuki](https://github.com/VictorKariuki).
+
+This package provides various mathematical functions and constants implemented in nuru programming language. It includes methods for `trigonometric functions`, `logarithmic functions`, `array operations`, and `utility functions`.
 
 
+## Usage
+To use the `pakeji hisabati` package follow the steps below:
 
-## Explanation
-This math package provides a collection of mathematical functions and constants implemented in the Nuru programming language. These functions cover a wide range of mathematical operations, including trigonometric functions, logarithmic functions, and other common mathematical operations. Below is a detailed list of all methods along with their descriptions and examples:
+1. Copy the `hisabati.nr` file and any required third-party package files into the same directory as your project.
+
+2. Ensure that the package file names end with the `.nr` extension and match the package names. For example, if the package name is `hisabati`, the corresponding file name should be `hisabati.nr`.
+
+3. You can directly import the `hisabati.nr` package and any required third-party packages in your Nuru code using the `tumia` keyword. For example:
+
+   ```nuru
+   tumia "hisabati"
+   ```
+   Example of calling the package methods:
+   ```nuru
+   andika(hisabati.e())
+
+## What is in
+This package covers a wide range of mathematical operations, including `basic arithmetic`, `trigonometry`, `exponential and logarithmic functions`, `rounding and comparison operations`, as well as some `utility and array operations`.
+
+The methods provided in the `hisabati` package can be classified into different categories based on their functionalities. Here is a classification of the methods:
+
+1. Trigonometric Functions:
+   - `cos(x)`
+   - `sin(x)`
+   - `tan(x)`
+   - `acos(x)`
+   - `asin(x)`
+   - `atan(x)`
+
+2. Hyperbolic Functions:
+   - `cosh(x)`
+   - `sinh(x)`
+   - `tanh(x)`
+   - `acosh(x)`
+   - `asinh(x)`
+   - `atanh(x)`
+
+3. Exponential and Logarithmic Functions:
+   - `exp(x)`
+   - `expm1(x)`
+   - `log(x)`
+   - `log10(x)`
+   - `log1p(x)`
+
+4. Other Mathematical Functions:
+   - `abs(namba)`
+   - `ceil(x)`
+   - `floor(x)`
+   - `sqrt(x)`
+   - `cbrt(x)`
+   - `root(x, n)`
+   - `hypot(values)`
+   - `factorial(n)`
+
+5. Rounding and Comparison Functions:
+   - `round(x, method)`
+   - `max(numbers)`
+   - `min(numbers)`
+
+6. Utility Functions:
+   - `sign(x)`
+   - `isNegative(num)`
+   - `isInteger(num)`
+   - `getIntegerPart(num)`
+
+7. Array and List Operations:
+   - `list(first, last, interval)`
+   - `reduce(iterator, callback, initialValue)`
+
+
+### 1. Constants:
+   - **PI**: Represents the mathematical constant `π`.
+   - **e**: Represents `Euler's Number`.
+   - **phi**: Represents the `Golden Ratio`.
+   - **ln10**: Represents the `natural logarithm of 10`.
+   - **ln2**: Represents the `natural logarithm of 2`.
+   - **log10e**: Represents the `base 10 logarithms` of Euler's number `(e)`.
+   - **log2e**: Represents the `base 2 logarithm` of Euler's number` (e)`.
+   - **sqrt1_2**: Represents the `square root` of `1/2`.
+   - **sqrt2**: Represents the `square root` of `2`.
+   - **sqrt3**: Represents the `square root` of `3`.
+   - **sqrt5**: Represents the `square root` of `5`.
+   - **EPSILON**: Represents a small value (2.220446049250313e-16).
+
+### 2. Methods:
 
 1. **abs(namba)**
    - Description: Calculates the absolute value of a number.
-   - Example: `Hisabati.abs(-42)` returns `42`.
+   - Example: `hisabati.abs(-42)` returns `42`.
 
 2. **acos(x)**
-   - Description: Calculates the arccosine (inverse cosine) of a number in radians.
-   - Example: `Hisabati.acos(0.5)` returns the arccosine of 0.5.
+   - Description: Calculates the arccosine of a number.
+   - Example: `hisabati.acos(0.5)` returns `1.0471975511965979`.
 
 3. **acosh(x)**
    - Description: Calculates the inverse hyperbolic cosine of a number.
-   - Example: `Hisabati.acosh(2)` returns the inverse hyperbolic cosine of 2.
+   - Example: `hisabati.acosh(2)` returns `1.3169578969248166`.
 
 4. **arcsin(x)**
-   - Description: Calculates the arcsine (inverse sine) of a number using a Taylor series.
-   - Example: `Hisabati.arcsin(0.5)` returns the arcsine of 0.5.
+   - Description: Calculates the arcsine of a number using the Taylor series.
+   - Example: `hisabati.arcsin(0.5)` returns `0.5235987755982988`.
 
 5. **arsinh(x)**
    - Description: Calculates the inverse hyperbolic sine of a number.
-   - Example: `Hisabati.arsinh(1)` returns the inverse hyperbolic sine of 1.
+   - Example: `hisabati.arsinh(2)` returns `1.4436354751788103`.
 
 6. **atan(x)**
-   - Description: Calculates the arctangent (inverse tangent) of a number in radians using a Taylor series.
-   - Example: `Hisabati.atan(1)` returns the arctangent of 1.
+   - Description: Calculates the arctangent of a number using the Taylor series.
+   - Example: `hisabati.atan(1)` returns `0.7853981633974483`.
 
 7. **atan2(y, x)**
-   - Description: Calculates the angle in radians between the positive x-axis and the point (x, y).
-   - Example: `Hisabati.atan2(1, 1)` returns the angle for the point (1, 1).
+   - Description: Calculates the arctangent of the quotient of its arguments.
+   - Example: `hisabati.atan2(1, 1)` returns `0.7853981633974483`.
 
 8. **atanh(x)**
    - Description: Calculates the inverse hyperbolic tangent of a number.
-   - Example: `Hisabati.atanh(0.5)` returns the inverse hyperbolic tangent of 0.5.
+   - Example: `hisabati.atanh(0.5)` returns `0.5493061443340549`.
 
 9. **cbrt(x)**
    - Description: Calculates the cube root of a number.
-   - Example: `Hisabati.cbrt(8)` returns the cube root of 8.
+   - Example: `hisabati.cbrt(8)` returns `2`.
 
-10. **ceil(x)**
+10. **root(x, n)**
+    - Description: Calculates the nth root of a number using the Newton-Raphson method.
+    - Example: `hisabati.root(27, 3)` returns `3`.
+
+11. **ceil(x)**
     - Description: Rounds up to the smallest integer greater than or equal to a given number.
-    - Example: `Hisabati.ceil(4.2)` returns `5`.
+    - Example: `hisabati.ceil(4.3)` returns `5`.
 
-11. **cos(x, terms)**
-    - Description: Calculates the cosine of a number in radians using a Taylor series.
-    - Example: `Hisabati.cos(1)` returns the cosine of 1.
+12. **cos(x)**
+    - Description: Calculates the cosine of an angle in radians using the Taylor series.
+    - Example: `hisabati.cos(0)` returns `1`.
 
-12. **cosh(x)**
+13. **cosh(x)**
     - Description: Calculates the hyperbolic cosine of a number.
-    - Example: `Hisabati.cosh(2)` returns the hyperbolic cosine of 2.
+    - Example: `hisabati.cosh(0)` returns `1`.
 
-13. **exp(x, precision)**
-    - Description: Calculates the value of the mathematical constant e raised to the power of x using a Taylor series.
-    - Example: `Hisabati.exp(2)` returns `e^2`.
+14. **exp(x)**
+    - Description: Calculates the value of Euler's number raised to the power of a given number.
+    - Example: `hisabati.exp(2)` returns `7.38905609893065`.
 
-14. **expm1(x)**
-    - Description: Calculates the value of e^x - 1 using a Taylor series.
-    - Example: `Hisabati.expm1(1)` returns `e - 1`.
+15. **expm1(x)**
+    - Description: Calculates Euler's number raised to the power of a number minus 1.
+    - Example: `hisabati.expm1(1)` returns `1.718281828459045`.
 
-15. **floor(x)**
+16. **floor(x)**
     - Description: Rounds down to the largest integer less than or equal to a given number.
-    - Example: `Hisabati.floor(4.9)` returns `4`.
+    - Example: `hisabati.floor(4.7)` returns `4`.
 
-16. **hypot(values)**
-    - Description: Calculates the Euclidean norm (square root of the sum of squares) of a list of values.
-    - Example: `Hisabati.hypot([3, 4])` returns `5`, which is the hypotenuse of a right triangle.
+17. **hypot(values)**
+    - Description: Calculates the square root of the sum of squares of the given values.
+    - Example: `hisabati.hypot([3, 4])` returns `5`.
 
-17. **log(x)**
-    - Description: Calculates the natural logarithm of a number using a Taylor series.
-    - Example: `Hisabati.log(2)` returns the natural logarithm of 2.
+18. **log(x)**
+    - Description: Calculates the natural logarithm of a number.
+    - Example: `hisabati.log(1)` returns `0`.
 
-18. **log10(x)**
-    - Description: Calculates the base 10 logarithm of a number using the natural logarithm.
-    - Example: `Hisabati.log10(100)` returns `2`.
+19. **log10(x)**
+    - Description: Calculates the base 10 logarithm of a number.
+    - Example: `hisabati.log10(100)` returns `2`.
 
-19. **log1p(x)**
-    - Description: Calculates the natural logarithm of 1 + x using a Taylor series.
-    - Example: `Hisabati.log1p(0.5)` returns the natural logarithm of 1.5.
+20. **log1p(x)**
+    - Description: Calculates the natural logarithm of 1 plus the given number.
+    - Example: `hisabati.log1p(1)` returns `0.6931471805599453`.
 
-20. **log2(x)**
-
-
+21. **log2(x)**
     - Description: Calculates the base 2 logarithm of a number.
-    - Example: `Hisabati.log2(8)` returns `3`.
+    - Example: `hisabati.log2(8)` returns `3`.
 
-21. **max(numbers)**
-    - Description: Returns the largest number from a list of numbers.
-    - Example: `Hisabati.max([3, 7, 2, 9])` returns `9`.
+22. **max(numbers)**
+    - Description: Finds the maximum value in a list of numbers.
+    - Example: `hisabati.max([4, 2, 9, 5])` returns `9`.
 
-22. **min(numbers)**
-    - Description: Returns the smallest number from a list of numbers.
-    - Example: `Hisabati.min([3, 7, 2, 9])` returns `2`.
+23. **min(numbers)**
+    - Description: Finds the minimum value in a list of numbers.
+    - Example: `hisabati.min([4, 2, 9, 5])` returns `2`.
 
-23. **round(x, method)**
-    - Description: Rounds a number to the nearest integer using different rounding methods.
-    - Example: `Hisabati.round(3.6, "rpi")` rounds to the nearest integer (`4`) using "round half up."
+24. **round(x, method)**
+    - Description: Rounds a number to the nearest integer using the specified method.
+    - Example: `hisabati.round(4.6, "rpi")` returns `5`.
 
-24. **sign(x)**
-    - Description: Returns the sign of a number: `1` for positive, `-1` for negative, and `0` for zero.
-    - Example: `Hisabati.sign(-7)` returns `-1`.
+25. **sign(x)**
+    - Description: Determines the sign of a number.
+    - Example: `hisabati.sign(-5)` returns `-1`.
 
-25. **sin(x, terms)**
-    - Description: Calculates the sine of a number in radians using a Taylor series.
-    - Example: `Hisabati.sin(0.5)` returns the sine of 0.5.
+26. **sin(x)**
+    - Description: Calculates the sine of an angle in radians using the Taylor series.
+    - Example: `hisabati.sin(0)` returns `0`.
 
-26. **sinh(x)**
+27. **sinh(x)**
     - Description: Calculates the hyperbolic sine of a number.
-    - Example: `Hisabati.sinh(1)` returns the hyperbolic sine of 1.
+    - Example: `hisabati.sinh(0)` returns `0`.
 
-27. **sqrt(x)**
-    - Description: Calculates the square root of a number using the Newton-Raphson method.
-    - Example: `Hisabati.sqrt(16)` returns `4`.
+28. **sqrt(x)**
+    - Description: Calculates the square root of a number.
+    - Example: `hisabati.sqrt(4)` returns `2`.
 
-28. **tangent(x)**
-    - Description: Calculates the tangent of a number in radians.
-    - Example: `Hisabati.tangent(1)` returns the tangent of 1.
+29. **tan(x)**
+    - Description: Calculates the tangent of an angle in radians.
+    - Example: `hisabati.tan(0)` returns `0`.
 
-29. **tanh(x)**
+30. **tanh(x)**
     - Description: Calculates the hyperbolic tangent of a number.
-    - Example: `Hisabati.tanh(0.5)` returns the hyperbolic tangent of 0.5.
-
-30. **isNegativeZero(num)**
-    - Description: Checks if a number is negative zero (0 with a negative sign).
-    - Example: `Hisabati.isNegativeZero(-0)` returns `true`.
+    - Example: `hisabati.tanh(0)` returns `0`.
 
 31. **factorial(n)**
     - Description: Calculates the factorial of a number.
-    - Example: `Hisabati.factorial(5)` returns `120`.
+    - Example: `hisabati.factorial(5)` returns `120`.
 
-32. **pow(base, exponent)**
-    - Description: Calculates the power of a number.
-    - Example: `Hisabati.pow(2, 3)` returns `8`.
-
-33. **isNegative(num)**
+32. **isNegative(num)**
     - Description: Checks if a number is negative.
-    - Example: `Hisabati.isNegative(-5)` returns `true`.
+    - Example: `hisabati.isNegative(-5)` returns `true`.
 
-34. **isInteger(num)**
+33. **isInteger(num)**
     - Description: Checks if a number is an integer.
-    - Example: `Hisabati.isInteger(42)` returns `true`.
+    - Example: `hisabati.isInteger(4.5)` returns `false`.
 
-35. **getIntegerPart(num)**
+34. **getIntegerPart(num)**
     - Description: Gets the integer part of a number.
-    - Example: `Hisabati.getIntegerPart(5.8)` returns `5`.
+    - Example: `hisabati.getIntegerPart(4.5)` returns `4`.
 
-36. **list(first, last, interval)**
-    - Description: Creates a list of numbers within a specified range with a given interval.
-    - Example: `Hisabati.list(0, 10, 2)` returns `[0, 2, 4, 6, 8]`.
+35. **list(first, last, interval)**
+    - Description: Creates a list of numbers with the specified interval between them.
+    - Example: `hisabati.list(1, 5, 1)` returns `[1, 2, 3, 4]`.
 
-37. **square(n, i, j)**
-    - Description: Finds the square root of a number using a method that iteratively narrows down the root.
-    - Example: `Hisabati.square(16)` returns `4`.
+36. **reduce(iterator, callback, initialValue)**
+      - Description: Reduces the elements of an array to a single value using a specified callback function.
+      - Example: `hisabati.reduce([1, 2, 3, 4], (accumulator, currentValue) => accumulator + currentValue, 0)` returns `10`.
 
-Feel free to use this package for your mathematical calculations and applications.
+
+### Contributing
+
+Contributions to the `pakeji hisabati` package are welcome. If you have any improvements or bug fixes, feel free to create a pull request.
+
+### License
+
+This package is available under the MIT License. See the [LICENSE](LICENSE) file for more information.
