@@ -1,31 +1,29 @@
 # Pakeji Hisabati (Math Package)
 
-A math package written in pure Nuru by [VictorKariuki](https://github.com/VictorKariuki).
+Pakeji Hisabati is a math package written in pure Nuru by [VictorKariuki](https://github.com/VictorKariuki).
 
-This package provides various mathematical functions and constants implemented in a custom programming language. It includes methods for `trigonometric functions`, `logarithmic functions`, `array operations`, and `utility functions`.
+This package provides various mathematical functions and constants implemented in nuru programming language. It includes methods for `trigonometric functions`, `logarithmic functions`, `array operations`, and `utility functions`.
 
 
 ## Usage
-To use the `pakeji hisabati` package and its third-party packages, follow the steps below:
+To use the `pakeji hisabati` package follow the steps below:
 
 1. Copy the `hisabati.nr` file and any required third-party package files into the same directory as your project.
 
-2. Ensure that the third-party package file names end with the `.nr` extension and match the package names. For example, if the package name is `hisabati`, the corresponding file name should be `hisabati.nr`.
+2. Ensure that the package file names end with the `.nr` extension and match the package names. For example, if the package name is `hisabati`, the corresponding file name should be `hisabati.nr`.
 
-3. You can directly import the `hisabati.nr` package and any required third-party packages in your Nuru code using the `ingiza` keyword. For example:
+3. You can directly import the `hisabati.nr` package and any required third-party packages in your Nuru code using the `tumia` keyword. For example:
 
    ```nuru
-   tumia "hisabati.nr"
+   tumia "hisabati"
    ```
-   Example of usage:
+   Example of calling the package methods:
    ```nuru
    andika(hisabati.e())
 
 ## What is in
-These package covers a wide range of mathematical operations, including `basic arithmetic`, `trigonometry`, `exponential and logarithmic functions`, `rounding and comparison operations`, as well as some `utility and array operations`.
+This package covers a wide range of mathematical operations, including `basic arithmetic`, `trigonometry`, `exponential and logarithmic functions`, `rounding and comparison operations`, as well as some `utility and array operations`.
 
-
-Here's an overview of the available methods and their functionalities:
 The methods provided in the `hisabati` package can be classified into different categories based on their functionalities. Here is a classification of the methods:
 
 1. Trigonometric Functions:
@@ -83,11 +81,11 @@ The methods provided in the `hisabati` package can be classified into different 
    - **phi**: Represents the `Golden Ratio`.
    - **ln10**: Represents the `natural logarithm of 10`.
    - **ln2**: Represents the `natural logarithm of 2`.
-   - **log10e**: Represents the `base 10 logarithm` of Euler's number `(e)`.
+   - **log10e**: Represents the `base 10 logarithms` of Euler's number `(e)`.
    - **log2e**: Represents the `base 2 logarithm` of Euler's number` (e)`.
    - **sqrt1_2**: Represents the `square root` of `1/2`.
    - **sqrt2**: Represents the `square root` of `2`.
-   - **sqrt3**: Represents the `square root`of `3`.
+   - **sqrt3**: Represents the `square root` of `3`.
    - **sqrt5**: Represents the `square root` of `5`.
    - **EPSILON**: Represents a small value (2.220446049250313e-16).
 
