@@ -21,13 +21,13 @@ To get started download the executables from the release page or follow the inst
  - Download the binary:
 
 ```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.0-alpha/nuru_linux_amd64_v0.5.0-alpha.tar.gz
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.15/nuru_Linux_amd64.tar.gz
 ```
 
   - Extract the file to make global available:
 
 ```
-sudo tar -C /usr/local/bin -xzvf nuru_linux_amd64_v0.5.0-alpha.tar.gz
+sudo tar -C /usr/local/bin -xzvf nuru_Linux_amd64.tar.gz
 ```
 
  - Confirm installation with:
@@ -41,17 +41,31 @@ nuru -v
 
  - Download the binary:
 
-```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.0-alpha/nuru_mac_arm64_v0.5.0-alpha.tar.gz
-```
+    - For apple silicon mac use:
 
-  - Extract the file to make global available:
+        ```
+        curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.15/nuru_Darwin_arm64.tar.gz
+        ```
 
-```
-sudo tar -C /usr/local/bin -xzvf nuru_mac_arm64_v0.5.0-alpha.tar.gz
-```
+    - For apple intel mac use:
 
- - Confirm installation with:
+        ```
+        curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.15/nuru_Darwin_amd64.tar.gz
+        ```
+
+- Extract the file to make global available:
+    - For apple silicon mac use:
+
+        ```
+        sudo tar -C /usr/local/bin -xzvf nuru_Darwin_arm64.tar.gz
+        ```
+    - For apple intel mac use:
+
+        ```
+        sudo tar -C /usr/local/bin -xzvf nuru_Darwin_amd64.tar.gz
+        ```
+
+- Confirm installation with:
 
 ```
 nuru -v
@@ -64,12 +78,12 @@ nuru -v
  - Download the binary with this command:
 
 ```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.0-alpha/nuru_android_arm64_v0.5.0-alpha.tar.gz
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.15/nuru_Android_arm64.tar.gz
 ```
  - Extract the file:
 
 ```
-tar -xzvf nuru_android_arm64_v0.5.0-alpha.tar.gz
+tar -xzvf nuru_Android_arm64.tar.gz
 ```
  - Add it to path:
 
@@ -85,7 +99,8 @@ nuru -v
 ### Windows
 
 - Executable:
-    - Download the Nuru executable [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.5.0-alpha/nuru_windows_amd64_v0.5.0-alpha.exe)
+    - Download the Nuru zip file [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.5.15/nuru_Windows_amd64.zip)
+    - Unzip to get the executable
     - Double click the executable
 
 - Nuru Installer
