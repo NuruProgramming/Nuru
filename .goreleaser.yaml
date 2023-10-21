@@ -13,7 +13,7 @@ builds:
       - darwin
       - android
     ldflags:
-      - '-s -w'
+      - "-s -w"
     ignore:
       - goos: android
         goarch: 386
@@ -23,7 +23,7 @@ archives:
     name_template: >-
       nuru_
       {{- title .Os }}_
-      {{- if eq .Arch "amd64" }}x86_64
+      {{- if eq .Arch "amd64" }}amd64
       {{- else if eq .Arch "386" }}i386
       {{- else }}{{ .Arch }}{{ end }}
       {{- if .Arm }}v{{ .Arm }}{{ end }}
