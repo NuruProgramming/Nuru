@@ -14,3 +14,8 @@ Hii nyaraka imeandikwa ikilenga watu wenye uzoefu na kuandika au kupanga program
         - [idadi()](arrays.md#idadi())
         - [sukuma()](arrays.md#sukuma())
         - [yamwisho()](arrays.md#yamwisho())
+- [Visaidia-kazi vya Nuru](builtins.md#built-in-functions-in-nuru)
+    - [Kisaidia-kazi andika() ](builtins.md#the-andika()-function)
+    - [Kisaidia-kazi jaza()](builtins.md#the-jaza()-function)
+    - [Kisaidia-kazi aina()](builtins.md#the-aina()-function)
+    - [Kisaidia-kazi fungua()](builtins.md#the-fungua()-function)
