@@ -1,3 +1,16 @@
 # NYARAKA YA LUGHA YA PROGRAMU YA NURU
 
 Hii nyaraka imeandikwa ikilenga watu wenye uzoefu na kuandika au kupanga programu. Inaelezea sintaksia, aina na namna ya kufanya operesheni mbali mbali kutumia lugha ya NURU.
+
+## Yaliyomo
+
+- [Safu Kwenye Nuru](arrays.md#arrays-in-nuru)
+    - [Kutengeneza Safu](arrays.md#creating-arrays)
+    - [Kupata na Kurekebisha vipengele vya Safu](arrays.md#accessing-and-modifying-array-elements)
+    - [Kuunganisha Safu](arrays.md#concatenating-arrays)
+    - [Kuangalia uwepo wa vipengele ndani ya safu](arrays.md#checking-for-array-membership)
+    - [Looping Over Arrays](arrays.md#looping-over-arrays)
+    - [Mbinu za Safu](arrays.md#array-methods)
+        - [idadi()](arrays.md#idadi())
+        - [sukuma()](arrays.md#sukuma())
+        - [yamwisho()](arrays.md#yamwisho())
