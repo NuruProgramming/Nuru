@@ -9,7 +9,7 @@ Hii nyaraka imeandikwa ikilenga watu wenye uzoefu na kuandika au kupanga program
     - [Kupata na Kurekebisha vipengele vya Safu](arrays.md#accessing-and-modifying-array-elements)
     - [Kuunganisha Safu](arrays.md#concatenating-arrays)
     - [Kuangalia uwepo wa vipengele ndani ya safu](arrays.md#checking-for-array-membership)
-    - [Looping Over Arrays](arrays.md#looping-over-arrays)
+    - [Kupita na Kurejea kwenye safu](arrays.md#looping-over-arrays)
     - [Mbinu za Safu](arrays.md#array-methods)
         - [idadi()](arrays.md#idadi())
         - [sukuma()](arrays.md#sukuma())
