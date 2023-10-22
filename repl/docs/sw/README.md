@@ -22,3 +22,6 @@ Hii nyaraka imeandikwa ikilenga watu wenye uzoefu na kuandika au kupanga program
 - [Maoni kwenye Nuru](comments.md#comments-in-nuru)
     - [Maoni ya mstari mmoja](comments.md#single-line-comments)
     - [Maoni ya mistari mingi](comments.md#multi-line-comments)
+- [Kauli za masharti kwenye Nuru](ifStatements.md#conditional-statements-in-nuru)
+    - [Kauli ya kama](ifStatements.md#if-statement-(kama))
+    - [Kauli za Au Kama na Sivyo)](ifStatements.md#else-if-and-else-blocks-(au-kama-and-sivyo))
