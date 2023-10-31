@@ -20,7 +20,6 @@ To use the `pakeji hisabati` package follow the steps below:
    Example of calling the package methods:
    ```nuru
    andika(hisabati.e())
-
 ## What is in
 This package covers a wide range of mathematical operations, including `basic arithmetic`, `trigonometry`, `exponential and logarithmic functions`, `rounding and comparison operations`, as well as some `utility and array operations`.
 

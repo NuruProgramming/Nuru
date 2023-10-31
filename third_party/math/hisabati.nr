@@ -60,7 +60,7 @@ pakeji hisabati{
 
     // @.EPSILON
     EPSILON = unda() {
-        rudisha 2.220446049250313e-16;
+        rudisha 0.0000000000000002220446049250313;
     }
 
     // Methods
@@ -80,12 +80,12 @@ pakeji hisabati{
         }
 
         // Define the precision for the approximation.
-        fanya precision = 1e-10;
+        fanya precision = 0.0000000001;
 
         // Initial guess for the angle in radians (between 0 and π).
-        fanya angle = @.PI / 4;
+        fanya angle = @.PI() / 4;
 
-        wakati(true) {
+        wakati(kweli) {
             fanya cosAngle = @.cos(angle);
             fanya error = @.abs(cosAngle - x);
 
@@ -144,12 +144,12 @@ pakeji hisabati{
         kama(x == 0) {
             rudisha 0;
         } // arctan(0) is 0
-        kama(x == Infinity) {
+        kama(x == 1/0) {
             rudisha @.PI / 2;
         }
-        kama(x == -Infinity) {
+        kama(x == -1/0) {
             rudisha - @.PI / 2;
-        } // arctan(-Infinity) is -π/2
+        } // arctan(-Inf) is -π/2
 
         // Use the Taylor series expansion for arctan(x)
         // arctan(x) = x - (x^3) / 3 + (x^5) / 5 - (x^7) / 7 + ...
@@ -158,7 +158,7 @@ pakeji hisabati{
         fanya term = x * x;
         fanya sign = -1;
 
-        wakati(true) {
+        wakati(kweli) {
             fanya currentTerm = sign * (term / n);
 
             kama(currentTerm == 0) {
@@ -209,17 +209,17 @@ pakeji hisabati{
     }
 
     //root(x, n), calculates the nth root of a number using the Newton-Raphson method.
-    root = unda(x, n) {
+    root =  unda(x, n) {
         fanya guess = x / 2; // Initial guess
-        fanya tolerance = 1e-10; // Tolerance for convergence
+        fanya tolerance = 0.0000000001; // Tolerance for convergence
 
-        wakati(true) {
-            fanya nextGuess = ((n - 1) * guess + x / guess ** n - 1) / n;
-            kama(@.abs(nextGuess - guess) < tolerance) {
-                rudisha nextGuess;
-            }
-            guess = nextGuess;
+        fanya calculateNthRoot = unda(x, n, guess, tolerance) {
+            fanya nextGuess = ((n - 1) * guess + x / (guess ** (n - 1))) / n;
+            kama (abs(nextGuess - guess) < tolerance) {rudisha nextGuess};
+            rudisha calculateNthRoot(x, n, nextGuess, tolerance);
         }
+        
+        rudisha calculateNthRoot(x, n, guess, tolerance)
     }
 
     //ceil(x), rounds up to the smallest integer greater than or equal to a given number.
@@ -235,11 +235,12 @@ pakeji hisabati{
     }
 
     //cos(x), calculates the cosine of an angle in radians using the Taylor series.
-    cos = unda(x, terms = 10) {
+    cos = unda(x) {
         // Initialize the result
         fanya n = 0;
+        fanya terms = 10;
         fanya result = 0;
-
+        
         wakati(n < terms) {
             // Calculate the numerator and denominator for the nth term
             fanya numerator = 0;
@@ -248,10 +249,11 @@ pakeji hisabati{
             } sivyo {
                 numerator = -x ** (2 * n + 1);
             }
-            fanya denominator = @.factorial(2 * n);
+            andika(@.factorial(2 * n));
+            //fanya denominator = @.factorial(2 * n);
 
             // Add the nth term to the result
-            result += numerator / denominator;
+            //result += numerator / denominator;
 
             n++;
         }
@@ -358,11 +360,11 @@ pakeji hisabati{
         }
 
         kama(x == -1) {
-            rudisha(-Infinity);
+            rudisha(-Inf);
         }
 
-        kama(x == Infinity) {
-            rudisha Infinity;
+        kama(x == Inf) {
+            rudisha Inf;
         }
 
         kama(x == 0) {
@@ -403,7 +405,7 @@ pakeji hisabati{
     //max(numbers), finds the maximum value in a list of numbers.
     max = unda(numbers) {
         // Initialize a variable to store the largest number
-        fanya largest = -Infinity;
+        fanya largest = -Inf;
 
         // Iterate through the numbers and update 'largest' kama a larger number is found
         kwa num ktk numbers {
@@ -412,14 +414,14 @@ pakeji hisabati{
             }
         }
 
-        // rudisha the largest number (or -Infinity kama there are no parameters)
+        // rudisha the largest number (or -Inf kama there are no parameters)
         rudisha largest;
     }
 
     //min(numbers), finds the minimum value in a list of numbers.
     min = unda(numbers) {
         kama(numbers.length == 0) {
-            rudisha Infinity;
+            rudisha Inf;
         }
 
         fanya minVal = numbers[0];
@@ -507,7 +509,7 @@ pakeji hisabati{
         fanya guess = x / 2;
         fanya tolerance = 1e-7; // Tolerance for approximation
 
-        wakati(true) {
+        wakati(kweli) {
             fanya nextGuess = 0.5 * (guess + x / guess);
 
             // Check kama the guess is close enough to the actual square root
@@ -533,9 +535,9 @@ pakeji hisabati{
 
     //tanh(x), calculates the hyperbolic tangent of a number.
     tanh = unda(x) {
-        kama(x == Infinity) {
+        kama(x == Inf) {
             rudisha 1;
-        } au kama(x == -Infinity) {
+        } au kama(x == -Inf) {
             rudisha - 1;
         } sivyo {
             fanya expX = @.exp(x);
