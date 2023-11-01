@@ -201,6 +201,10 @@ pakeji hisabati{
 
     //cbrt(x), calculates the cube root of a number.
     cbrt = unda(x) {
+        kama(x == 0) {
+            rudisha 0;
+        }
+        
         kama(x >= 0) {
             rudisha @.root(x, 3);
         } sivyo {
@@ -215,7 +219,8 @@ pakeji hisabati{
 
         fanya calculateNthRoot = unda(x, n, guess, tolerance) {
             fanya nextGuess = ((n - 1) * guess + x / (guess ** (n - 1))) / n;
-            kama (abs(nextGuess - guess) < tolerance) {rudisha nextGuess};
+            fanya ipotolerance = abs(nextGuess - guess);
+            kama (ipotolerance < tolerance) {rudisha nextGuess};
             rudisha calculateNthRoot(x, n, nextGuess, tolerance);
         }
         
@@ -504,20 +509,10 @@ pakeji hisabati{
         kama(x < 0) {
             rudisha 0;
         }
-
-        // Initial guess for the square root (you can choose a better initial guess)
-        fanya guess = x / 2;
-        fanya tolerance = 1e-7; // Tolerance for approximation
-
-        wakati(kweli) {
-            fanya nextGuess = 0.5 * (guess + x / guess);
-
-            // Check kama the guess is close enough to the actual square root
-            kama(@.abs(nextGuess - guess) < tolerance) {
-                rudisha nextGuess;
-            }
-
-            guess = nextGuess;
+         kama(x >= 0) {
+            rudisha @.root(x, 2);
+        } sivyo {
+            rudisha - @.root(-x, 2);
         }
     }
 
