@@ -117,13 +117,13 @@ func epsilon(args []object.Object, defs map[string]object.Object) object.Object 
 
 func abs(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.INTEGER_OBJ && args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 	switch arg := args[0].(type) {
 	case *object.Integer:
@@ -137,16 +137,16 @@ func abs(args []object.Object, defs map[string]object.Object) object.Object {
 		}
 		return arg
 	default:
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 }
 
 func sign(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	switch arg := args[0].(type) {
 	case *object.Integer:
@@ -166,19 +166,19 @@ func sign(args []object.Object, defs map[string]object.Object) object.Object {
 			return &object.Integer{Value: -1}
 		}
 	default:
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 }
 
 func ceil(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.INTEGER_OBJ && args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 	switch arg := args[0].(type) {
 	case *object.Integer:
@@ -186,19 +186,19 @@ func ceil(args []object.Object, defs map[string]object.Object) object.Object {
 	case *object.Float:
 		return &object.Integer{Value: int64(math.Ceil(arg.Value))}
 	default:
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 }
 
 func floor(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.INTEGER_OBJ && args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 	switch arg := args[0].(type) {
 	case *object.Integer:
@@ -206,19 +206,19 @@ func floor(args []object.Object, defs map[string]object.Object) object.Object {
 	case *object.Float:
 		return &object.Integer{Value: int64(math.Floor(arg.Value))}
 	default:
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 }
 
 func sqrt(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.INTEGER_OBJ && args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 	switch arg := args[0].(type) {
 	case *object.Integer:
@@ -226,19 +226,19 @@ func sqrt(args []object.Object, defs map[string]object.Object) object.Object {
 	case *object.Float:
 		return &object.Float{Value: math.Sqrt(arg.Value)}
 	default:
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 }
 
 func cbrt(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.INTEGER_OBJ && args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 	switch arg := args[0].(type) {
 	case *object.Integer:
@@ -246,22 +246,22 @@ func cbrt(args []object.Object, defs map[string]object.Object) object.Object {
 	case *object.Float:
 		return &object.Float{Value: math.Cbrt(arg.Value)}
 	default:
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 }
 
 func root(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 2 {
-		return &object.Error{Message: "This function requires exactly two arguments"}
+		return &object.Error{Message: "Undo hili linahitaji hoja mbili tu"}
 	}
 	if args[0].Type() != object.INTEGER_OBJ && args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "First argument must be a number"}
+		return &object.Error{Message: "Hoja ya kwanza lazima iwe namba"}
 	}
 	if args[1].Type() != object.INTEGER_OBJ {
-		return &object.Error{Message: "Second argument must be an integer"}
+		return &object.Error{Message: "Hoja ya pili lazima iwe namba"}
 	}
 	base, ok := args[0].(*object.Float)
 	if !ok {
@@ -272,7 +272,7 @@ func root(args []object.Object, defs map[string]object.Object) object.Object {
 	if exp == 0 {
 		return &object.Float{Value: 1.0}
 	} else if exp < 0 {
-		return &object.Error{Message: "Second argument must be a non-negative integer"}
+		return &object.Error{Message: "Second Hoja lazima iwe a non-negative integer"}
 	}
 
 	x := 1.0
@@ -285,15 +285,15 @@ func root(args []object.Object, defs map[string]object.Object) object.Object {
 
 func hypot(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) < 2 {
-		return &object.Error{Message: "This function requires at least two arguments"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	var sumOfSquares float64
 	for _, arg := range args {
 		if arg.Type() != object.INTEGER_OBJ && arg.Type() != object.FLOAT_OBJ {
-			return &object.Error{Message: "Arguments must be numbers"}
+			return &object.Error{Message: "Hoja lazima ziwe namba"}
 		}
 		switch num := arg.(type) {
 		case *object.Integer:
@@ -307,17 +307,17 @@ func hypot(args []object.Object, defs map[string]object.Object) object.Object {
 
 func factorial(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.INTEGER_OBJ {
-		return &object.Error{Message: "Argument must be an integer"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 	n := args[0].(*object.Integer).Value
 	if n < 0 {
-		return &object.Error{Message: "Argument must be a non-negative integer"}
+		return &object.Error{Message: "Hoja lazima iwe a non-negative integer"}
 	}
 	result := int64(1)
 	for i := int64(2); i <= n; i++ {
@@ -328,13 +328,13 @@ func factorial(args []object.Object, defs map[string]object.Object) object.Objec
 
 func round(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 
 	num := args[0].(*object.Float).Value
@@ -343,26 +343,26 @@ func round(args []object.Object, defs map[string]object.Object) object.Object {
 
 func max(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 
 	arg, ok := args[0].(*object.Array)
 	if !ok {
-		return &object.Error{Message: "Argument must be an array"}
+		return &object.Error{Message: "Hoja lazima iwe an array"}
 	}
 
 	if len(arg.Elements) == 0 {
-		return &object.Error{Message: "Array must not be empty"}
+		return &object.Error{Message: "Orodha haipaswi kuwa tupu"}
 	}
 
 	var maxNum float64
 
 	for _, element := range arg.Elements {
 		if element.Type() != object.INTEGER_OBJ && element.Type() != object.FLOAT_OBJ {
-			return &object.Error{Message: "Array elements must be numbers"}
+			return &object.Error{Message: "Vipengee vya orodha lazima viwe namba"}
 		}
 
 		switch num := element.(type) {
@@ -375,7 +375,7 @@ func max(args []object.Object, defs map[string]object.Object) object.Object {
 				maxNum = num.Value
 			}
 		default:
-			return &object.Error{Message: "Array elements must be numbers"}
+			return &object.Error{Message: "Vipengee vya orodha lazima viwe namba"}
 		}
 	}
 
@@ -384,26 +384,26 @@ func max(args []object.Object, defs map[string]object.Object) object.Object {
 
 func min(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 
 	arg, ok := args[0].(*object.Array)
 	if !ok {
-		return &object.Error{Message: "Argument must be an array"}
+		return &object.Error{Message: "Hoja lazima iwe an array"}
 	}
 
 	if len(arg.Elements) == 0 {
-		return &object.Error{Message: "Array must not be empty"}
+		return &object.Error{Message: "Orodha haipaswi kuwa tupu"}
 	}
 
 	minNum := math.MaxFloat64
 
 	for _, element := range arg.Elements {
 		if element.Type() != object.INTEGER_OBJ && element.Type() != object.FLOAT_OBJ {
-			return &object.Error{Message: "Array elements must be numbers"}
+			return &object.Error{Message: "Vipengee vya orodha lazima viwe namba"}
 		}
 
 		switch num := element.(type) {
@@ -416,7 +416,7 @@ func min(args []object.Object, defs map[string]object.Object) object.Object {
 				minNum = num.Value
 			}
 		default:
-			return &object.Error{Message: "Array elements must be numbers"}
+			return &object.Error{Message: "Vipengee vya orodha lazima viwe namba"}
 		}
 	}
 
@@ -425,13 +425,13 @@ func min(args []object.Object, defs map[string]object.Object) object.Object {
 
 func exp(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Exp(num)}
@@ -439,13 +439,13 @@ func exp(args []object.Object, defs map[string]object.Object) object.Object {
 
 func expm1(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Expm1(num)}
@@ -453,13 +453,13 @@ func expm1(args []object.Object, defs map[string]object.Object) object.Object {
 
 func log(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Log(num)}
@@ -467,13 +467,13 @@ func log(args []object.Object, defs map[string]object.Object) object.Object {
 
 func log10(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Log10(num)}
@@ -481,19 +481,19 @@ func log10(args []object.Object, defs map[string]object.Object) object.Object {
 
 func log2(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.INTEGER_OBJ && args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a number"}
+		return &object.Error{Message: "Hoja lazima iwe namba"}
 	}
 
 	arg := extractFloatValue(args[0])
 
 	if arg <= 0 {
-		return &object.Error{Message: "Argument must be greater than 0"}
+		return &object.Error{Message: "Hoja lazima iwe kubwa kuliko 0"}
 	}
 
 	return &object.Float{Value: math.Log2(arg)}
@@ -512,13 +512,13 @@ func extractFloatValue(obj object.Object) float64 {
 
 func log1p(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Log1p(num)}
@@ -526,13 +526,13 @@ func log1p(args []object.Object, defs map[string]object.Object) object.Object {
 
 func cos(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Cos(num)}
@@ -540,13 +540,13 @@ func cos(args []object.Object, defs map[string]object.Object) object.Object {
 
 func sin(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Sin(num)}
@@ -554,13 +554,13 @@ func sin(args []object.Object, defs map[string]object.Object) object.Object {
 
 func tan(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Tan(num)}
@@ -568,13 +568,13 @@ func tan(args []object.Object, defs map[string]object.Object) object.Object {
 
 func acos(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Acos(num)}
@@ -582,13 +582,13 @@ func acos(args []object.Object, defs map[string]object.Object) object.Object {
 
 func asin(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Asin(num)}
@@ -596,13 +596,13 @@ func asin(args []object.Object, defs map[string]object.Object) object.Object {
 
 func atan(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Atan(num)}
@@ -610,13 +610,13 @@ func atan(args []object.Object, defs map[string]object.Object) object.Object {
 
 func cosh(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Cosh(num)}
@@ -624,13 +624,13 @@ func cosh(args []object.Object, defs map[string]object.Object) object.Object {
 
 func sinh(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Sinh(num)}
@@ -638,13 +638,13 @@ func sinh(args []object.Object, defs map[string]object.Object) object.Object {
 
 func tanh(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Tanh(num)}
@@ -652,13 +652,13 @@ func tanh(args []object.Object, defs map[string]object.Object) object.Object {
 
 func acosh(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Acosh(num)}
@@ -666,13 +666,13 @@ func acosh(args []object.Object, defs map[string]object.Object) object.Object {
 
 func asinh(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Asinh(num)}
@@ -680,16 +680,16 @@ func asinh(args []object.Object, defs map[string]object.Object) object.Object {
 
 func atan2(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 2 {
-		return &object.Error{Message: "This function requires exactly two arguments"}
+		return &object.Error{Message: "Undo hili linahitaji hoja mbili tu."}
 	}
 	if args[0].Type() != object.INTEGER_OBJ && args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Arguments must be numbers"}
+		return &object.Error{Message: "Hoja lazima ziwe namba"}
 	}
 	if args[1].Type() != object.INTEGER_OBJ && args[1].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Arguments must be numbers"}
+		return &object.Error{Message: "Hoja lazima ziwe namba"}
 	}
 
 	y := extractFloatValue(args[0])
@@ -700,13 +700,13 @@ func atan2(args []object.Object, defs map[string]object.Object) object.Object {
 
 func atanh(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(defs) != 0 {
-		return &object.Error{Message: "This function doesn't allow definitions"}
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
 	}
 	if len(args) != 1 {
-		return &object.Error{Message: "This function requires exactly one argument"}
+		return &object.Error{Message: "Undo hili linahitaji hoja moja tu"}
 	}
 	if args[0].Type() != object.FLOAT_OBJ {
-		return &object.Error{Message: "Argument must be a float"}
+		return &object.Error{Message: "Hoja lazima iwe desimali"}
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Atanh(num)}
