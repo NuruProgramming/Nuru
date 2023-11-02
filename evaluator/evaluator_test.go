@@ -22,12 +22,25 @@ func TestEvalIntegerExpression(t *testing.T) {
 		{"5 + 5 + 5 + 5 - 10", 10},
 		{"2 * 2 * 2 * 2", 16},
 		{"2 / 2 + 1", 2},
-		{"2**3", 8},
 	}
 
 	for _, tt := range tests {
 		evaluated := testEval(tt.input)
 		testIntegerObject(t, evaluated, tt.expected)
+	}
+}
+
+func TestEvalFloatExpression(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected float64
+	}{
+		{"2**3", 8.0},
+	}
+
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		testFloatObject(t, evaluated, tt.expected)
 	}
 }
 
