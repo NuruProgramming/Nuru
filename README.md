@@ -21,7 +21,7 @@ To get started download the executables from the release page or follow the inst
  - Download the binary:
 
 ```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.15/nuru_Linux_amd64.tar.gz
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Linux_amd64.tar.gz
 ```
 
   - Extract the file to make global available:
@@ -44,13 +44,13 @@ nuru -v
     - For apple silicon mac use:
 
         ```
-        curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.15/nuru_Darwin_arm64.tar.gz
+        curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Darwin_arm64.tar.gz
         ```
 
     - For apple intel mac use:
 
         ```
-        curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.15/nuru_Darwin_amd64.tar.gz
+        curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Darwin_amd64.tar.gz
         ```
 
 - Extract the file to make global available:
@@ -78,7 +78,7 @@ nuru -v
  - Download the binary with this command:
 
 ```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.15/nuru_Android_arm64.tar.gz
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Android_arm64.tar.gz
 ```
  - Extract the file:
 
@@ -99,7 +99,7 @@ nuru -v
 ### Windows
 
 - Executable:
-    - Download the Nuru zip file [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.5.15/nuru_Windows_amd64.zip)
+    - Download the Nuru zip file [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Windows_amd64.zip)
     - Unzip to get the executable
     - Double click the executable
 
