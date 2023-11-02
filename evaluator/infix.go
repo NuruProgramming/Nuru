@@ -219,7 +219,7 @@ func evalIntegerInfixExpression(operator string, left, right object.Object, line
 	case "*":
 		return &object.Integer{Value: leftVal * rightVal}
 	case "**":
-		return &object.Integer{Value: int64(math.Pow(float64(leftVal), float64(rightVal)))}
+		return &object.Float{Value: float64(math.Pow(float64(leftVal), float64(rightVal)))}
 	case "/":
 		x := float64(leftVal) / float64(rightVal)
 		if math.Mod(x, 1) == 0 {
