@@ -1,4 +1,6 @@
-pakeji hisabati{
+tumia hisabati
+
+pakeji hesabu{
     //CONSTRUCTOR METHOD    
     andaa = unda() {}
 
@@ -75,27 +77,25 @@ pakeji hisabati{
 
     //acos(x), calculates the arccosine of a number.
     acos = unda(x) {
-        kama(x < -1 || x > 1) {
-            rudisha 0;
+        kama (x < -1 || x > 1) {
+            rudisha "NaN";
         }
 
-        // Define the precision for the approximation.
-        fanya precision = 0.0000000001;
+        fanya EPSILON = 1*10.0**-10; // Small value for precision
 
-        // Initial guess for the angle in radians (between 0 and π).
-        fanya angle = @.PI() / 4;
+        fanya acosRecursive = unda(guess) {
+            fanya f = cos(guess) - x;
+            fanya fPrime = -sin(guess);
+            fanya nextGuess = guess - f / fPrime;
 
-        wakati(kweli) {
-            fanya cosAngle = @.cos(angle);
-            fanya error = @.abs(cosAngle - x);
-
-            kama(error < precision) {
-                rudisha angle;
+            kama (abs(nextGuess - guess) < EPSILON) {
+                rudisha nextGuess;
             }
 
-            // Update the angle using the Newton-Raphson method.
-            angle -= (cosAngle - x) / (-@.sin(angle));
+            rudisha acosRecursive(nextGuess);
         }
+
+        rudisha acosRecursive(hisabati.PI() / 2); // Initial guess for acos
     }
 
     //acosh(x), calculates the inverse hyperbolic cosine of a number.
@@ -104,90 +104,75 @@ pakeji hisabati{
             rudisha 0;
         }
 
-        rudisha @.log(x + @.sqrt(x * x - 1));
+        rudisha log(x + sqrt(x * x - 1));
     }
 
-    //arcsin(x), calculates the arcsine of a number using the Taylor series.
-    arcsin = unda(x) {
-        kama(x < -1 || x > 1) {
-            rudisha 0;
+    //asin(x), calculates the arcsine of a number using the Newton Method.
+    asin = unda(x) {
+        kama (x < -1 || x > 1) {
+            rudisha "NaN";
         }
 
         fanya maxIterations = 50; // Maximum number of iterations
-        fanya result = 0;
 
-        fanya n = 0;
-        wakati(n < maxIterations) {
-            fanya numerator = (-1) ** n * x ** (2 * n + 1);
-            fanya denominator = @.factorial(2 * n + 1); // You'll need to implement a factorial function
+        fanya newtonAsin = unda(guess, prev, iterations) {
+            fanya next = guess - (sin(guess) - x) / cos(guess);
 
-            result += numerator / denominator;
-            n++;
+            kama (abs(next - prev) < hisabati.EPSILON() || iterations >= maxIterations) {
+                rudisha next;
+            }
+
+            rudisha newtonAsin(next, guess, iterations + 1);
         }
 
-        rudisha result;
+        rudisha newtonAsin(x, 1, 0);
     }
 
-    //arsinh(x), calculates the inverse hyperbolic sine of a number.
-    arsinh = unda(x) {
+
+    //asinh(x), calculates the inverse hyperbolic sine of a number.
+    asinh = unda(x) {
         // Calculate arsinh using the formula: arsinh(x) = ln(x + sqrt(x^2 + 1))
         kama(x >= 0) {
-            rudisha @.log(x + @.sqrt(x * x + 1));
+            rudisha log(x + sqrt(x * x + 1));
         } sivyo {
             // For negative values, arsinh(x) = -arsinh(-x)
-            rudisha - @.log(-x + @.sqrt(x * x + 1));
+            rudisha - log(-x + sqrt(x * x + 1));
         }
     }
 
     //atan(x), calculates the arctangent of a number using the Taylor series.
     atan = unda(x) {
-        kama(x == 0) {
-            rudisha 0;
-        } // arctan(0) is 0
-        kama(x == 1/0) {
-            rudisha @.PI / 2;
-        }
-        kama(x == -1/0) {
-            rudisha - @.PI / 2;
-        } // arctan(-Inf) is -π/2
+        fanya EPSILON = 1*10.0**-10; // Small value for precision
 
-        // Use the Taylor series expansion for arctan(x)
-        // arctan(x) = x - (x^3) / 3 + (x^5) / 5 - (x^7) / 7 + ...
-        fanya n = 3;
-        fanya result = 0;
-        fanya term = x * x;
-        fanya sign = -1;
+        fanya atanRecursive = unda(guess) {
+            fanya f = tan(guess) - x;
+            fanya fPrime = 1 / (cos(guess) * cos(guess));
+            fanya nextGuess = guess - f / fPrime;
 
-        wakati(kweli) {
-            fanya currentTerm = sign * (term / n);
-
-            kama(currentTerm == 0) {
-                vunja
+            kama (abs(nextGuess - guess) < EPSILON) {
+                rudisha nextGuess;
             }
 
-            result += currentTerm;
-            n += 2;
-            sign = -sign;
-            term *= x * x;
+            rudisha atanRecursive(nextGuess);
         }
 
-        rudisha result;
+        rudisha atanRecursive(x); // Initial guess for atan
     }
 
     //atanh(x), calculates the inverse hyperbolic tangent of a number.
     atan2 = unda(y, x) {
         kama(x > 0) {
-            rudisha @.atan(y / x);
+            rudisha atan(y / x);
         } au kama(x < 0 && y >= 0) {
-            rudisha @.atan(y / x) + @.PI;
+            rudisha atan(y / x) + hisabati.PI();
         } au kama(x < 0 && y < 0) {
-            rudisha @.atan(y / x) - @.PI;
+            rudisha atan(y / x) - hisabati.PI();
         } au kama(x == 0 && y > 0) {
-            rudisha @.PI / 2;
+            rudisha hisabati.PI() / 2;
         } au kama(x == 0 && y < 0) {
-            rudisha - @.PI / 2;
+            rudisha - hisabati.PI() / 2;
         } au kama(x == 0 && y == 0) {
-            rudisha NaN; // Undefined
+            rudisha "NaN"; // Undefined
         }
     }
 
@@ -196,7 +181,7 @@ pakeji hisabati{
         kama(x < -1 || x > 1) {
             rudisha 0;
         }
-        rudisha 0.5 * @.log((1 + x) / (1 - x));
+        rudisha 0.5 * log((1.0 + x) / (1.0 - x));
     }
 
     //cbrt(x), calculates the cube root of a number.
@@ -206,9 +191,9 @@ pakeji hisabati{
         }
         
         kama(x >= 0) {
-            rudisha @.root(x, 3);
+            rudisha root(x, 3);
         } sivyo {
-            rudisha - @.root(-x, 3);
+            rudisha - root(-x, 3);
         }
     }
 
@@ -239,71 +224,52 @@ pakeji hisabati{
         }
     }
 
-    //cos(x), calculates the cosine of an angle in radians using the Taylor series.
+    //cos(x), calculates the cosine of an angle.
     cos = unda(x) {
-        // Initialize the result
-        fanya n = 0;
-        fanya terms = 10;
-        fanya result = 0;
-        
-        wakati(n < terms) {
-            // Calculate the numerator and denominator for the nth term
-            fanya numerator = 0;
-            kama(n % 2 == 0) {
-                numerator = x ** (2 * n + 1);
-            } sivyo {
-                numerator = -x ** (2 * n + 1);
-            }
-            andika(@.factorial(2 * n));
-            //fanya denominator = @.factorial(2 * n);
+        fanya result = 1; // Initialize the result
+        fanya term = 1;
 
-            // Add the nth term to the result
-            //result += numerator / denominator;
-
-            n++;
+        kwa i ktk list(2,101,2) {
+            term = (-term * x * x) / (i * (i - 1));
+            result += term;
         }
-
         rudisha result;
     }
 
     //cosh(x), calculates the hyperbolic cosine of a number.
     cosh = unda(x) {
-        fanya eToX = @.exp(x);
-        fanya eToMinusX = @.exp(-x);
+        fanya eToX = exp(x);
+        fanya eToMinusX = exp(-x);
         rudisha(eToX + eToMinusX) / 2;
     }
 
     //exp(x), calculates the value of Euler's number raised to the power of a given number.
-    exp = unda(x, precision = 15) {
+    exp = unda(n) {
         fanya result = 1;
         fanya term = 1;
-        fanya i = 1;
-
-        wakati(i <= precision) {
-            term *= x / i;
-            result += term;
-            i++;
+       
+        kwa i, v ktk list(1,23,1) {
+            term = term*(n/v);
+            result = result + term;
         }
-
 
         rudisha result;
     }
+
 
     //expm1(x), calculates the value of Euler's number raised to the power of a given number minus 1.
     expm1 = unda(x) {
-        fanya epsilon = 1e-15; // A small value to improve accuracy
-        fanya result = 0;
-        fanya term = x;
-        fanya n = 1;
-
-        wakati(@.abs(term) > epsilon) {
-            result += term;
-            n++;
-            term *= x / n;
+        kama (x == -1) {
+            rudisha -0.6321205588285577; // Handling the special case for -1
+        } au kama (x == 0) {
+            rudisha 0; // Handling the special case for 0
+        } au kama (abs(x) < hisabati.EPSILON()) {
+            rudisha x + 0.5 * x * x; // Approximation for very small x
+        } sivyo {
+            rudisha exp(x) - 1;
         }
-
-        rudisha result;
     }
+
 
     //floor(x), rounds down to the largest integer less than or equal to a given number.
     floor = unda(x) {
@@ -321,31 +287,33 @@ pakeji hisabati{
             rudisha acc + value ** 2;
         }
 
-        fanya sumOfSquares = @.reduce(values, exp, 0);
+        fanya sumOfSquares = reduce(values, exp, 0);
 
         // Calculate the square root of the sum of squares
-        fanya result = @.sqrt(sumOfSquares);
+        fanya result = sqrt(sumOfSquares);
 
         rudisha result;
     }
 
     //log(x), calculates the natural logarithm of a number.
     log = unda(x) {
-        kama(x <= 0) {
+        kama (x <= 0) {
+            rudisha "NaN";
+        }
+        kama (x == 1) {
             rudisha 0;
         }
-
-        fanya approx = 0;
-        fanya n = 50;
-        fanya i = 1;
-
-        wakati(i <= n) {
-            approx += (1 / i) * ((x - 1) / (x + 1)) ** (2 * i - 1);
-            i++;
+        kama (x < 0) {
+            rudisha -log(-x);
         }
-
-
-        rudisha 2 * approx;
+        fanya n = 1000; // Number of iterations
+        fanya y = (x - 1) / (x + 1);
+        fanya ySquared = y * y;
+        fanya result = 0;
+        kwa i ktk list(1,n+1,2) {
+            result += (1 / i) * y**i;
+        }
+        rudisha 2 * result;
     }
 
     //log10(x), calculates the base 10 logarithm of a number.
@@ -355,39 +323,18 @@ pakeji hisabati{
         }
 
         // Calculate natural logarithm and divide by the natural logarithm of 10
-        rudisha this.log(x) / this.log(10);
+        rudisha log(x) / log(10.0);
     }
 
     //log1p(x), calculates the natural logarithm of 1 plus the given number.
     log1p = unda(x) {
-        kama(x < -1) {
-            rudisha 0;
+        kama (x <= -1) {
+            rudisha NaN; // Not a Number
+        } au kama (abs(x) < hisabati.EPSILON()) {
+            rudisha x - 0.5 * x * x; // Series expansion for small x
+        } sivyo {
+            rudisha log(1.0 + x);
         }
-
-        kama(x == -1) {
-            rudisha(-Inf);
-        }
-
-        kama(x == Inf) {
-            rudisha Inf;
-        }
-
-        kama(x == 0) {
-            rudisha 0;
-        }
-
-        // Use the formula: ln(1 + x) = x - (x^2)/2 + (x^3)/3 - (x^4)/4 + ...
-        fanya result = 0;
-        fanya term = x;
-        fanya i = 2;
-
-        wakati(@.abs(term) > @.EPSILON) {
-            result += term;
-            term *= -x / i;
-            i++;
-        }
-
-        rudisha result;
     }
 
     //log2(x), calculates the base 2 logarithm of a number.
@@ -410,7 +357,7 @@ pakeji hisabati{
     //max(numbers), finds the maximum value in a list of numbers.
     max = unda(numbers) {
         // Initialize a variable to store the largest number
-        fanya largest = -Inf;
+        fanya largest = 0;
 
         // Iterate through the numbers and update 'largest' kama a larger number is found
         kwa num ktk numbers {
@@ -419,20 +366,20 @@ pakeji hisabati{
             }
         }
 
-        // rudisha the largest number (or -Inf kama there are no parameters)
+        // rudisha the largest number (or 0 kama there are no parameters)
         rudisha largest;
     }
 
     //min(numbers), finds the minimum value in a list of numbers.
     min = unda(numbers) {
-        kama(numbers.length == 0) {
-            rudisha Inf;
+        kama(numbers.idadi() == 0) {
+            rudisha 0;
         }
 
         fanya minVal = numbers[0];
 
         fanya i = 1;
-        wakati(i < numbers.length) {
+        wakati(i < numbers.idadi()) {
             kama(numbers[i] < minVal) {
                 minVal = numbers[i];
             }
@@ -471,36 +418,22 @@ pakeji hisabati{
     }
 
     //sin(x), calculates the sine of an angle in radians using the Taylor series.
-    sin = unda(x, terms = 10) {
-        // Initialize the result
-        fanya n = 0;
-        fanya result = 0;
-
-        wakati(n < terms) {
-            // Calculate the numerator and denominator for the nth term
-            fanya numerator = 0;
-            kama(n % 2 == 0) {
-                numerator = x ** (2 * n + 1);
-            } sivyo {
-                numerator = -x ** (2 * n + 1);
-            }
-
-            fanya denominator = @.factorial(2 * n + 1);
-
-            // Add the nth term to the result
-            result += numerator / denominator;
-
-            n++;
+    sin = unda(x) {
+        fanya result = x; // Initialize the result with the angle
+        fanya term = x;
+        // Using Maclaurin series expansion for sine
+        kwa i ktk list(3,101,2) {
+            term = (-term * x * x) / (i * (i - 1));
+            result += term;
         }
-
         rudisha result;
     }
 
     //sinh(x), calculates the hyperbolic sine of a number.
     sinh = unda(x) {
         // sinh(x) = (e^x - e^(-x)) / 2
-        fanya eToX = @.exp(x);
-        fanya eToMinusX = @.exp(-x);
+        fanya eToX = exp(x);
+        fanya eToMinusX = exp(-x);
         rudisha(eToX - eToMinusX) / 2;
     }
 
@@ -510,16 +443,16 @@ pakeji hisabati{
             rudisha 0;
         }
          kama(x >= 0) {
-            rudisha @.root(x, 2);
+            rudisha root(x, 2);
         } sivyo {
-            rudisha - @.root(-x, 2);
+            rudisha - root(-x, 2);
         }
     }
 
     //tan(x), calculates the tangent of an angle in radians.
     tan = unda(x) {
-        fanya sineX = @.sine(x);
-        fanya cosineX = @.sqrt(1 - sineX * sineX);
+        fanya sineX = sin(x);
+        fanya cosineX = sqrt(1 - sineX * sineX);
 
         kama(cosineX == 0) {
             rudisha 0;
@@ -530,15 +463,9 @@ pakeji hisabati{
 
     //tanh(x), calculates the hyperbolic tangent of a number.
     tanh = unda(x) {
-        kama(x == Inf) {
-            rudisha 1;
-        } au kama(x == -Inf) {
-            rudisha - 1;
-        } sivyo {
-            fanya expX = @.exp(x);
-            fanya expNegX = @.exp(-x);
-            rudisha(expX - expNegX) / (expX + expNegX);
-        }
+        fanya expX = exp(x);
+        fanya expNegX = exp(-x);
+        rudisha(expX - expNegX) / (expX + expNegX);
     }
 
     // utility methods
@@ -561,23 +488,23 @@ pakeji hisabati{
 
     //isNegative(num), checks if a number is negative.
     isNegative = unda(num) {
-        rudisha num < 0;
+        rudisha sign(num)==-1;
     }
 
     //isInteger(num), checks if a number is an integer.
     isInteger = unda(num) {
-        rudisha num == @.floor(num);
+        rudisha num == floor(num);
     }
 
     //getIntegerPart(num), gets the integer part of a number.
     getIntegerPart = unda(num) {
         // Handle negative numbers separately
-        kama(@.isNegative(num)) {
+        kama(isNegative(num)) {
             // For negative numbers, we subtract the absolute value of the fractional part from 1
-            rudisha - (@.ceil(-num) - 1);
+            rudisha - (ceil(-num) - 1);
         } sivyo {
             // For positive numbers, we simply truncate the fractional part
-            rudisha @.floor(num);
+            rudisha floor(num);
         }
     }
 
