@@ -1,30 +1,29 @@
-# Pakeji Hisabati (Math Package)
+# Pakeji Hesabu (Math Package)
 
-Pakeji Hisabati is a math package written in pure Nuru by [VictorKariuki](https://github.com/VictorKariuki).
+Pakeji Hesabu is a math package written in pure Nuru by [VictorKariuki](https://github.com/VictorKariuki).
 
 This package provides various mathematical functions and constants implemented in nuru programming language. It includes methods for `trigonometric functions`, `logarithmic functions`, `array operations`, and `utility functions`.
 
 
 ## Usage
-To use the `pakeji hisabati` package follow the steps below:
+To use the `pakeji hesabu` package follow the steps below:
 
-1. Copy the `hisabati.nr` file and any required third-party package files into the same directory as your project.
+1. Copy the `hesabu.nr` file and any required third-party package files into the same directory as your project.
 
-2. Ensure that the package file names end with the `.nr` extension and match the package names. For example, if the package name is `hisabati`, the corresponding file name should be `hisabati.nr`.
+2. Ensure that the package file names end with the `.nr` extension and match the package names. For example, if the package name is `hesabu`, the corresponding file name should be `hesabu.nr`.
 
-3. You can directly import the `hisabati.nr` package and any required third-party packages in your Nuru code using the `tumia` keyword. For example:
+3. You can directly import the `hesabu.nr` package and any required third-party packages in your Nuru code using the `tumia` keyword. For example:
 
    ```nuru
-   tumia "hisabati"
+   tumia "hesabu"
    ```
    Example of calling the package methods:
    ```nuru
-   andika(hisabati.e())
-
+   andika(hesabu.e())
 ## What is in
 This package covers a wide range of mathematical operations, including `basic arithmetic`, `trigonometry`, `exponential and logarithmic functions`, `rounding and comparison operations`, as well as some `utility and array operations`.
 
-The methods provided in the `hisabati` package can be classified into different categories based on their functionalities. Here is a classification of the methods:
+The methods provided in the `hesabu` package can be classified into different categories based on their functionalities. Here is a classification of the methods:
 
 1. Trigonometric Functions:
    - `cos(x)`
@@ -93,152 +92,161 @@ The methods provided in the `hisabati` package can be classified into different 
 
 1. **abs(namba)**
    - Description: Calculates the absolute value of a number.
-   - Example: `hisabati.abs(-42)` returns `42`.
+   - Example: `hesabu.abs(-42)` returns `42`.
 
 2. **acos(x)**
    - Description: Calculates the arccosine of a number.
-   - Example: `hisabati.acos(0.5)` returns `1.0471975511965979`.
+   - Example: `hesabu.acos(0.5)` returns `1.0471975511965979`.
 
 3. **acosh(x)**
    - Description: Calculates the inverse hyperbolic cosine of a number.
-   - Example: `hisabati.acosh(2)` returns `1.3169578969248166`.
+   - Example: `hesabu.acosh(2)` returns `1.3169578969248166`.
 
-4. **arcsin(x)**
+4. **asin(x)**
    - Description: Calculates the arcsine of a number using the Taylor series.
-   - Example: `hisabati.arcsin(0.5)` returns `0.5235987755982988`.
+   - Example: `hesabu.arcsin(0.5)` returns `0.5235987755982989`.
 
-5. **arsinh(x)**
+5. **asinh(x)**
    - Description: Calculates the inverse hyperbolic sine of a number.
-   - Example: `hisabati.arsinh(2)` returns `1.4436354751788103`.
+   - Example: `hesabu.arsinh(2)` returns `1.4436354751788103`.
 
 6. **atan(x)**
    - Description: Calculates the arctangent of a number using the Taylor series.
-   - Example: `hisabati.atan(1)` returns `0.7853981633974483`.
+   - Example: `hesabu.atan(1)` returns `0.7853981633974485`.
 
 7. **atan2(y, x)**
    - Description: Calculates the arctangent of the quotient of its arguments.
-   - Example: `hisabati.atan2(1, 1)` returns `0.7853981633974483`.
+   - Example: `hesabu.atan2(1, 1)` returns `0.7853981633974483`.
 
 8. **atanh(x)**
    - Description: Calculates the inverse hyperbolic tangent of a number.
-   - Example: `hisabati.atanh(0.5)` returns `0.5493061443340549`.
+   - Example: `hesabu.atanh(0.5)` returns `0.5493061443340549`.
 
 9. **cbrt(x)**
    - Description: Calculates the cube root of a number.
-   - Example: `hisabati.cbrt(8)` returns `2`.
+   - Example: `hesabu.cbrt(8)` returns `2`.
 
 10. **root(x, n)**
     - Description: Calculates the nth root of a number using the Newton-Raphson method.
-    - Example: `hisabati.root(27, 3)` returns `3`.
+    - Example: `hesabu.root(27, 3)` returns `3`.
 
 11. **ceil(x)**
     - Description: Rounds up to the smallest integer greater than or equal to a given number.
-    - Example: `hisabati.ceil(4.3)` returns `5`.
+    - Example: `hesabu.ceil(4.3)` returns `5`.
 
 12. **cos(x)**
     - Description: Calculates the cosine of an angle in radians using the Taylor series.
-    - Example: `hisabati.cos(0)` returns `1`.
+    - Example: `hesabu.cos(5)` returns `0.28366218546322464`.
 
 13. **cosh(x)**
     - Description: Calculates the hyperbolic cosine of a number.
-    - Example: `hisabati.cosh(0)` returns `1`.
+    - Example: `hesabu.cosh(5)` returns `74.20994842490012`.
 
 14. **exp(x)**
     - Description: Calculates the value of Euler's number raised to the power of a given number.
-    - Example: `hisabati.exp(2)` returns `7.38905609893065`.
+    - Example: `hesabu.exp(2)` returns `7.389056098930649`.
 
 15. **expm1(x)**
     - Description: Calculates Euler's number raised to the power of a number minus 1.
-    - Example: `hisabati.expm1(1)` returns `1.718281828459045`.
+    - Example: `hesabu.expm1(1)` returns `1.7182818284590455`.
 
 16. **floor(x)**
     - Description: Rounds down to the largest integer less than or equal to a given number.
-    - Example: `hisabati.floor(4.7)` returns `4`.
+    - Example: `hesabu.floor(4.7)` returns `4`.
 
 17. **hypot(values)**
     - Description: Calculates the square root of the sum of squares of the given values.
-    - Example: `hisabati.hypot([3, 4])` returns `5`.
+    - Example: `hesabu.hypot([3, 4])` returns `5`.
 
 18. **log(x)**
     - Description: Calculates the natural logarithm of a number.
-    - Example: `hisabati.log(1)` returns `0`.
+    - Example: `hesabu.log(2)` returns `0.69314718056`.
 
 19. **log10(x)**
     - Description: Calculates the base 10 logarithm of a number.
-    - Example: `hisabati.log10(100)` returns `2`.
+    - Example: `hesabu.log10(100)` returns `1.9999999999573126`.
 
 20. **log1p(x)**
     - Description: Calculates the natural logarithm of 1 plus the given number.
-    - Example: `hisabati.log1p(1)` returns `0.6931471805599453`.
+    - Example: `hesabu.log1p(1)` returns `0.6931471805599451`.
 
 21. **log2(x)**
     - Description: Calculates the base 2 logarithm of a number.
-    - Example: `hisabati.log2(8)` returns `3`.
+    - Example: `hesabu.log2(8)` returns `3`.
 
 22. **max(numbers)**
     - Description: Finds the maximum value in a list of numbers.
-    - Example: `hisabati.max([4, 2, 9, 5])` returns `9`.
+    - Example: `hesabu.max([4, 2, 9, 5])` returns `9`.
 
 23. **min(numbers)**
     - Description: Finds the minimum value in a list of numbers.
-    - Example: `hisabati.min([4, 2, 9, 5])` returns `2`.
+    - Example: `hesabu.min([4, 2, 9, 5])` returns `2`.
 
 24. **round(x, method)**
     - Description: Rounds a number to the nearest integer using the specified method.
-    - Example: `hisabati.round(4.6, "rpi")` returns `5`.
+    - supported methods:
+        - "rpi" (round to the nearest integer using the principle of rounding half to the nearest even)
+        - "rni" (round to the nearest integer using the principle of rounding half away from zero)
+        - "ri" (round to the nearest integer using the standard rounding method)
+        - An invalid method results in returning NaN (Not a Number)
+    - Example: `hesabu.round(4.6, "rpi")` returns `5`.
 
 25. **sign(x)**
     - Description: Determines the sign of a number.
-    - Example: `hisabati.sign(-5)` returns `-1`.
+    - Example: `hesabu.sign(-5)` returns `-1`.
 
 26. **sin(x)**
     - Description: Calculates the sine of an angle in radians using the Taylor series.
-    - Example: `hisabati.sin(0)` returns `0`.
+    - Example: `hesabu.sin(1)` returns `0.8414709848078965`.
 
 27. **sinh(x)**
     - Description: Calculates the hyperbolic sine of a number.
-    - Example: `hisabati.sinh(0)` returns `0`.
+    - Example: `hesabu.sinh(0)` returns `0`.
 
 28. **sqrt(x)**
     - Description: Calculates the square root of a number.
-    - Example: `hisabati.sqrt(4)` returns `2`.
+    - Example: `hesabu.sqrt(4)` returns `2`.
 
 29. **tan(x)**
     - Description: Calculates the tangent of an angle in radians.
-    - Example: `hisabati.tan(0)` returns `0`.
+    - Example: `hesabu.tan(1)` returns `1.557407724654902`.
 
 30. **tanh(x)**
     - Description: Calculates the hyperbolic tangent of a number.
-    - Example: `hisabati.tanh(0)` returns `0`.
+    - Example: `hesabu.tanh(0)` returns `0`.
 
 31. **factorial(n)**
     - Description: Calculates the factorial of a number.
-    - Example: `hisabati.factorial(5)` returns `120`.
+    - Example: `hesabu.factorial(5)` returns `120`.
 
 32. **isNegative(num)**
     - Description: Checks if a number is negative.
-    - Example: `hisabati.isNegative(-5)` returns `true`.
+    - Example: `hesabu.isNegative(-5)` returns `kweli`.
 
 33. **isInteger(num)**
     - Description: Checks if a number is an integer.
-    - Example: `hisabati.isInteger(4.5)` returns `false`.
+    - Example: `hesabu.isInteger(4.5)` returns `sikweli`.
 
 34. **getIntegerPart(num)**
     - Description: Gets the integer part of a number.
-    - Example: `hisabati.getIntegerPart(4.5)` returns `4`.
+    - Example: `hesabu.getIntegerPart(4.5)` returns `4`.
 
 35. **list(first, last, interval)**
     - Description: Creates a list of numbers with the specified interval between them.
-    - Example: `hisabati.list(1, 5, 1)` returns `[1, 2, 3, 4]`.
+    - Example: `hesabu.list(1, 5, 1)` returns `[1, 2, 3, 4]`.
 
 36. **reduce(iterator, callback, initialValue)**
       - Description: Reduces the elements of an array to a single value using a specified callback function.
-      - Example: `hisabati.reduce([1, 2, 3, 4], (accumulator, currentValue) => accumulator + currentValue, 0)` returns `10`.
+      - Example: `hesabu.reduce([1, 2, 3, 4], [callback function], 0)`
+      ```s
+        fanya callback = unda(accumulator, currentValue){
+            rudisha accumulator + currentValue;
+        }
 
-
+        andika(hesabu.reduce([1, 2, 3, 4], callback, 0)) \\ returns 10.
 ### Contributing
 
-Contributions to the `pakeji hisabati` package are welcome. If you have any improvements or bug fixes, feel free to create a pull request.
+Contributions to the `pakeji hesabu` package are welcome. If you have any improvements or bug fixes, feel free to create a pull request.
 
 ### License
 
