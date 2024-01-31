@@ -2,7 +2,8 @@ package module
 
 import (
 	"math"
-
+	"math/rand"
+	"time"
 	"github.com/AvicennaJr/Nuru/object"
 )
 
@@ -28,6 +29,7 @@ var MathFunctions = map[string]object.ModuleFunction{
 	"cbrt":     cbrt,
 	"root":     root,
 	"hypot":    hypot,
+	"random":	random,
 	"factorial":factorial,
 	"round":	round,
 	"max":		max,
@@ -710,4 +712,19 @@ func atanh(args []object.Object, defs map[string]object.Object) object.Object {
 	}
 	num := args[0].(*object.Float).Value
 	return &object.Float{Value: math.Atanh(num)}
+}
+
+func random(args []object.Object, defs map[string]object.Object) object.Object {
+    if len(defs) != 0 {
+        return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
+    }
+
+    if len(args) != 0 {
+        return &object.Error{Message: "Undo hili halipaswi kupokea hoja."}
+    }
+
+    rand.Seed(time.Now().UnixNano())
+    value := rand.Float64()
+
+    return &object.Float{Value: value}
 }
