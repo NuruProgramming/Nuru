@@ -38,41 +38,36 @@ func main() {
 		help := styles.HelpStyle.Render("💡 Tumia exit() au toka() kuondoka")
 		fmt.Println(lipgloss.JoinVertical(lipgloss.Left, NewLogo, "\n", help))
 		repl.Start()
-		os.Exit(0)
+		return
 	}
 
 	if len(args) == 2 {
-
 		switch args[1] {
 		case "msaada", "-msaada", "--msaada", "help", "-help", "--help", "-h":
 			fmt.Println(Help)
-			os.Exit(0)
 		case "version", "-version", "--version", "-v", "v", "--toleo", "-toleo":
 			fmt.Println(NewLogo)
-			os.Exit(0)
 		case "-docs", "--docs", "-nyaraka", "--nyaraka":
 			repl.Docs()
-			os.Exit(0)
-		}
+		default:
+			file := args[1]
 
-		file := args[1]
+			if strings.HasSuffix(file, "nr") || strings.HasSuffix(file, ".sw") {
+				contents, err := os.ReadFile(file)
+				if err != nil {
+					fmt.Println(styles.ErrorStyle.Render("Error: Nuru imeshindwa kusoma faili: ", args[1]))
+					os.Exit(1)
+				}
 
-		if strings.HasSuffix(file, "nr") || strings.HasSuffix(file, ".sw") {
-			contents, err := os.ReadFile(file)
-			if err != nil {
-				fmt.Println(styles.ErrorStyle.Render("Error: Nuru imeshindwa kusoma faili: ", args[1]))
-				os.Exit(0)
+				repl.Read(string(contents))
+			} else {
+				fmt.Println(styles.ErrorStyle.Render("'"+file+"'", "sii faili sahihi. Tumia faili la '.nr' au '.sw'"))
+				os.Exit(1)
 			}
-
-			repl.Read(string(contents))
-		} else {
-			fmt.Println(styles.ErrorStyle.Render("'"+file+"'", "sii faili sahihi. Tumia faili la '.nr' au '.sw'"))
-			os.Exit(0)
 		}
-
 	} else {
 		fmt.Println(styles.ErrorStyle.Render("Error: Operesheni imeshindikana boss."))
 		fmt.Println(Help)
-		os.Exit(0)
+		os.Exit(1)
 	}
 }
