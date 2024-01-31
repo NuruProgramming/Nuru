@@ -1,5 +1,17 @@
 tumia hisabati
 
+// Mbinu za Kupanga
+//orodhesha(kwanza, mwisho, umbali), huunda orodha ya nambari na umbali uliowekwa kati yao.
+fanya orodhesha = unda(kwanza, mwisho, umbali){
+    fanya orodha = [kwanza];
+    fanya i = kwanza + umbali;
+    wakati(i < mwisho){
+        orodha.sukuma(i);
+        i += umbali;
+    }
+    rudisha orodha;
+}
+
 // Kuanzisha uzani bila mpangilio
 fanya mizani = [
     hisabati.random() * 2 - 1,
@@ -18,6 +30,7 @@ fanya sigmoid = unda(vekta) {
 
 // Derivative ya undo la sigmoid
 fanya sigmoidDerivative  = unda(vekta) {
+    andika("vekta: ",vekta)
     fanya tokeo = [];
     kwa v ktk vekta {
         tokeo.sukuma(v * (1 - v));
@@ -26,9 +39,9 @@ fanya sigmoidDerivative  = unda(vekta) {
     rudisha tokeo;
 }
 
-fanya kuzidishaTumboVekta = unda(tumbo, vekta) {
+fanya kuzidishaMatrikiVekta = unda(matriki, vekta) {
     fanya tokeo = [];
-    kwa row ktk tumbo {
+    kwa row ktk matriki {
         fanya jamii = 0;
         kwa j, kipengee ktk row {
             jamii += kipengee * vekta[j];
@@ -54,53 +67,87 @@ fanya zidishaKwaNukta = unda(safu1, safu2) {
 
 // Songa mbele kupitia mtandao wa neva
 fanya waza = unda(pembejeo, mizani) {
-    fanya jumlaYaUzani = sigmoid(kuzidishaTumboVekta(pembejeo, mizani));
+    fanya jumlaYaUzani = sigmoid(kuzidishaMatrikiVekta(pembejeo, mizani));
     rudisha jumlaYaUzani;
+}
+
+fanya badiliMatriki = unda(matrix) {
+    // Pata idadi ya safu mlalo na safu wima katika matrix asili
+    fanya nambari_ya_safu_mlalo = matrix.idadi();
+    fanya nambari_ya_safu_wima = matrix[0].idadi();
+
+    // Unda matrix mpya na safu mlalo na safu wima zilizobadilishwa
+    fanya matrikiIliyobadili = [];
+
+    // Pita ndani ya safu wima
+    kwa safu_wima_ya, safuW ktk orodhesha(0, nambari_ya_safu_wima, 1){
+        // Anzisha safu mlalo mpya kwa matriki iliyopitishwa
+        fanya transposed_safu_mlalo = [];
+
+        // Pita ndani ya safu mlalo
+        kwa safu_mlalo_ya, safu ktk orodhesha(0, nambari_ya_safu_mlalo, 1){
+            // Sukuma kipengele kwenye safu wima ya sasa na safu mlalo hadi safu iliyopitishwa
+            transposed_safu_mlalo.sukuma(matrix[safu_mlalo_ya][safu_wima_ya]);
+        }
+
+        // Sukuma safu mlalo iliyopitishwa kwenye matriki lililopitishwa
+        matrikiIliyobadili.sukuma(transposed_safu_mlalo);
+    }
+
+    rudisha matrikiIliyobadili;
 }
 
 // Funza mtandao wa neva
 fanya funza = unda(mizani, mafunzoPembejeo, matokeoYaMafunzo, marudioYaMafunzo) {
     fanya kurudia = 0
 
-    andika('mafunzoPembejeo: ');
+    andika('\nmafunzoPembejeo: ');
     andika(mafunzoPembejeo);
 
-    andika('matokeoYaMafunzo: ');
+    andika('\nmatokeoYaMafunzo: ');
     andika(matokeoYaMafunzo);
 
     
+    fanya orodha = orodhesha(0, marudioYaMafunzo, 1)
+    // andika("orodha: ",orodha)
 
-    wakati (kurudia < marudioYaMafunzo) {
-        andika('kurudia: ');
-        andika(kurudia);
+    kwa i ktk orodha{
+        andika('\n\nkurudia: ');
+        andika(i);
        // Pitisha mafunzo yaliyowekwa kupitia mtandao wa neva
         fanya pato = waza(mafunzoPembejeo, mizani);
 
-        andika('pato: ');
+        andika('\npato: ');
         andika(pato);
-        // Kuhesabu kiwango cha makosa
+        
+        // Kuhesabu kiwango cha upungufu
         fanya upungufu = [];
         kwa i, kipengee ktk matokeoYaMafunzo {
             upungufu.sukuma(kipengee - pato[i]);           
         }
 
-        fanya sigmoidDerivative = sigmoidDerivative(pato)
-
-        andika('upungufu: ');
+        andika('\nupungufu: ');
         andika(upungufu);
 
-        andika('sigmoidDerivative tokeo: ');
-        andika(sigmoidDerivative);
+        fanya sigmoidDerivative_ya_pato = sigmoidDerivative(pato)
 
-        fanya zidishaKwaNukta = zidishaKwaNukta(upungufu, sigmoidDerivative);
+        andika('\nsigmoidDerivative tokeo: ');
+        andika(sigmoidDerivative_ya_pato);
 
-        andika('zidishaKwaNukta tokeo: ');
-        andika(zidishaKwaNukta);
+        fanya zidishaKwaNukta_tokeo = zidishaKwaNukta(upungufu, sigmoidDerivative_ya_pato);
 
-        // Kuzidisha makosa kwa pembejeo na upinde rangi ya kitendakazi cha sigmoid
+        andika('\nzidishaKwaNukta tokeo: ');
+        andika(zidishaKwaNukta_tokeo);
+        
+        fanya mafunzoPembejeoYaliyobadili = badiliMatriki(mafunzoPembejeo)
+
+        andika('\nmafunzo pembejeo yaliyobadili: ');
+        andika(mafunzoPembejeoYaliyobadili);
+
+        // Kuzidisha upungufu kwa pembejeo na upinde rangi ya kitendakazi cha sigmoid
         // Uzito mdogo wa ujasiri hurekebishwa zaidi kupitia asili ya kazi
-        fanya marekebisho = kuzidishaTumboVekta(mafunzoPembejeo, zidishaKwaNukta);
-        andika('marekebisho tokeo: ');
+        fanya marekebisho = kuzidishaMatrikiVekta(mafunzoPembejeo, zidishaKwaNukta_tokeo);
+        andika('\nmarekebisho tokeo: ');
         andika(marekebisho);
 
 
@@ -109,16 +156,16 @@ fanya funza = unda(mizani, mafunzoPembejeo, matokeoYaMafunzo, marudioYaMafunzo) 
             mizani[i] = mizani[i] + marekebisho[i];           
         }
 
-        andika('mizani mpya: ');
+        andika('\nmizani mpya: ');
         andika(mizani);
         kurudia++
     }
+
     rudisha mizani;
 }
 
 
-
-andika('Mizani ya Kuanzisha isiyo na mpangilio: ');
+andika('\nMizani ya Kuanzisha isiyo na mpangilio: ');
 andika(mizani);
 
 // Seti ya mafunzo
@@ -128,14 +175,14 @@ fanya matokeoYaMafunzo = [0, 1, 1, 0];
 // Funza mtandao wa neva
 fanya mafunzoMizani = funza(mizani, mafunzoPembejeo, matokeoYaMafunzo, 10000);
 
-andika('Mizani baada ya mafunzo:');
+andika('\nMizani baada ya mafunzo:');
 andika(mafunzoMizani);
 
 // Ingizo la mtumiaji kwa hali mpya
-fanya A = 1;
+fanya A = 0;
 fanya B = 0;
-fanya C = 0;
+fanya C = 1;
 
-andika('Hali mpya: data ya pembejeo = ', A, B, C);
-andika('Data ya pato:');
+andika('\nHali mpya: data ya pembejeo = ', A, B, C);
+andika('\nData ya pato:');
 andika(waza([[A, B, C]], mafunzoMizani));
