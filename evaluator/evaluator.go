@@ -45,7 +45,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return left
 		}
 		right := Eval(node.Right, env)
-		if isError(right) {
+		if isError(right) && right != nil {
 			return right
 		}
 		return evalInfixExpression(node.Operator, left, right, node.Token.Line)
