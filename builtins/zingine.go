@@ -1,11 +1,11 @@
 package builtins
 
 import (
+	"bufio"
 	"fmt"
 	"github.com/AvicennaJr/Nuru/object"
 	"io"
 	"os"
-	"bufio"
 )
 
 func Aina(args ...object.Object) object.Object {

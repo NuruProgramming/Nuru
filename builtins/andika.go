@@ -20,10 +20,10 @@ func Andika(args ...object.Object) object.Object {
 
 		passedType := Aina(args[0]).Inspect()
 		if passedType == "NENO" {
-				nStr := arr[1:]
-				drrr := formatString(arr[0], nStr)
-				fmt.Println(drrr)
-				return nil
+			nStr := arr[1:]
+			drrr := formatString(arr[0], nStr)
+			fmt.Println(drrr)
+			return nil
 		}
 
 		str := strings.Join(arr, " ")
@@ -56,4 +56,3 @@ func formatString(fmt string, vals []string) string {
 	}
 	return newStr.String()
 }
-
