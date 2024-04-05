@@ -14,20 +14,6 @@ type fmtSt struct {
 	Aina    string // The type of the 'replacement' e.g NAMBA
 }
 
-// Struct for associating the format with its corresponding function.
-// Specifier - The format specifier that will be matched against e.g %d
-// Handler - The function that will handle the afore mentioned specifier.
-//
-//	It accepts a flag string e.g +.23 (ignored if there is no need for them)
-//	The value part accepts the `fmtSt` struct which passes the values as specified.
-//	First return is the actual value and the second is the error message in string
-//		format. The error string should be checked first before doing anything with
-//		the returned value.
-type fmtSpec struct {
-	Specifier string
-	Handler   func(flags string, value fmtSt) (string, string)
-}
-
 // Flags passed for easier handling of relevant flags
 // Acceptable flags: [ ., +, !] ('.' has to have proceding integers)
 type fmtFlags struct {
@@ -36,6 +22,16 @@ type fmtFlags struct {
 	PlusFlag bool
 	EXCFlag  bool // Not really a good flag
 }
+
+// Define the common error messages
+
+var (
+	// 'Standard' error messages
+	srf = "Safu mbadala ni chini ya safu halisi"
+	frf = "Siwezi kupata fomati inayofaa"
+	hrf = "Safu halisi ni chini ya safu mbadala"
+	mrf = "Mismatch ya Fomati"
+)
 
 // Andika - Write string to the `stdout` (whatever that is).
 // If an error is encountered, it is returned as early as possible.
@@ -91,6 +87,15 @@ func newError(format string, a ...interface{}) *object.Error {
 	return &object.Error{Message: fmt.Sprintf(format, a...)}
 }
 
+// Define a map where keys are format specifiers and values are handler functions.
+var formatHandlers = map[rune]func(flags fmtFlags, value fmtSt) (string, string){
+	'n': handleNamba,
+	't': handleTungo,
+	'b': handleBuliani,
+	's': handleSafu,
+	'd': handleDesimali,
+}
+
 // Format the string according to predefined characters
 // Takes in a string -> This contains the format that the partern will follow.
 //
@@ -116,47 +121,32 @@ func formatString(fmts string, fmtv []fmtSt) (string, string) {
 	var insideFmt bool
 	var mismatch bool
 
-	// 'Standard' error messages
-	srf := "Safu mbadala ni chini ya safu halisi"
-	frf := "Siwezi kupata fomati inayofaa"
+	lf := len(fmtv)
 
-	// A variable with the acceptable formats and their corresponding functions
-	var fmtsp = []fmtSpec{
-		{"n", handleNamba},
-		{"t", handleTungo},
-		{"b", handleBuliani},
-		{"s", handleSafu},
-		{"d", handleDesimali},
-	}
-
-	// Loop over the passed 'format' text.
-	// At the best case it is O(n) (which is a bad news for long string)
 	for _, char := range fmts {
 		if char == '%' {
 			insideFmt = true
+			mismatch = true
 			continue
 		}
 		if insideFmt {
 			if unicode.IsLetter(char) {
-				if pos >= len(fmtv) {
-					return "", srf
+				if pos >= lf {
+					return "", srf // Check for mismatch in the number of format specifiers and values.
 				}
-				for _, spec := range fmtsp {
-					if char == rune(spec.Specifier[0]) {
-						val, err := spec.Handler(flags.String(), fmtv[pos])
-						if err != "" {
-							return "", err
-						}
-						newStr.WriteString(val)
-						pos++
-						insideFmt = false
-						mismatch = false
-						break
-					}
+				handler, ok := formatHandlers[char]
+				if !ok {
+					return "", frf // Format specifier not found.
 				}
-				if insideFmt { // If no match was found, it's a mismatch
-					mismatch = true
+				ff := setFlags(flags.String())
+				val, err := handler(ff, fmtv[pos])
+				if err != "" {
+					return "", err
 				}
+				newStr.WriteString(val) // Append the formatted value.
+				pos++
+				insideFmt = false
+				mismatch = false
 			} else {
 				flags.WriteRune(char)
 			}
@@ -169,6 +159,9 @@ func formatString(fmts string, fmtv []fmtSt) (string, string) {
 	}
 	if mismatch {
 		return "", frf
+	}
+	if pos < lf {
+		return "", hrf // Check if there are more values than format specifiers.
 	}
 	return newStr.String(), ""
 }
@@ -202,89 +195,63 @@ func setFlags(flags string) fmtFlags {
 		}
 	}
 
-	fr, _ := strconv.ParseInt(dv.String(), 10, 64)
-	ff.DotValue = int(fr)
-
+	if dv.Len() > 0 {
+		ff.DotValue, _ = strconv.Atoi(dv.String())
+	}
 	return ff
 }
 
-func handleNamba(flags string, value fmtSt) (string, string) {
+func handleNamba(flags fmtFlags, value fmtSt) (string, string) {
 	rets := value.Thamani
-	mrf := "Mismatch ya Fomati"
 	aina := "NAMBA"
 	// First check if the type is correct
 	if value.Aina != aina {
 		return "", fmt.Sprintf("%s: %s si %s", mrf, value.Aina, aina)
 	}
 
-	// Check if the flags is empty, if so return the value directly
-	if flags == "" {
-		return value.Thamani, ""
-	}
-
-	// Set the flags and then select the relevant flags
-	fl := setFlags(flags)
-
-	if fl.PlusFlag {
+	if flags.PlusFlag {
 		rets = handlePlus(rets)
 	}
 
 	return rets, ""
 }
 
-func handleDesimali(flags string, value fmtSt) (string, string) {
+func handleDesimali(flags fmtFlags, value fmtSt) (string, string) {
 	rets := value.Thamani
-	mrf := "Mismatch ya Fomati"
 	aina := "DESIMALI"
 	// First check if the type is correct
 	if value.Aina != aina {
 		return "", fmt.Sprintf("%s: %s si %s", mrf, value.Aina, aina)
 	}
 
-	// Check if the flags is empty, if so return the value directly
-	if flags == "" {
-		return value.Thamani, ""
-	}
-
-	// Set the flags and then select the relevant flags
-	fl := setFlags(flags)
-
-	if fl.PlusFlag {
+	if flags.PlusFlag {
 		rets = handlePlus(rets)
 	}
 
-	if fl.DotFlag {
+	if flags.DotFlag {
 		ads := strings.Split(rets, ".")[1]
 		bds := strings.Split(rets, ".")[0]
-		rets = bds + "." + handleDot(fl.DotValue, ads)
+		rets = bds + "." + handleDot(flags.DotValue, ads)
 	}
 
 	return rets, ""
 }
 
-func handleTungo(flags string, value fmtSt) (string, string) {
+func handleTungo(flags fmtFlags, value fmtSt) (string, string) {
 	rets := value.Thamani
-	mrf := "Mismatch ya Fomati"
 	aina := "NENO"
 	// First check if the type is correct
 	if value.Aina != aina {
 		return "", fmt.Sprintf("%s: %s si %s", mrf, value.Aina, aina)
 	}
 
-	// Check if the flags is empty, if so return the value directly
-	if flags == "" {
-		return value.Thamani, ""
-	}
-
-	fl := setFlags(flags)
-	if fl.EXCFlag {
+	if flags.EXCFlag {
 		rets = handleExc(rets)
 	}
 
 	return rets, ""
 }
-func handleBuliani(flags string, value fmtSt) (string, string) {
-	mrf := "Mismatch ya Fomati"
+func handleBuliani(flags fmtFlags, value fmtSt) (string, string) {
 	aina := "BOOLEAN"
 	// First check if the type is correct
 	if value.Aina != aina {
@@ -295,17 +262,11 @@ func handleBuliani(flags string, value fmtSt) (string, string) {
 	return value.Thamani, ""
 }
 
-func handleSafu(flags string, value fmtSt) (string, string) {
-	mrf := "Mismatch ya Fomati"
+func handleSafu(flags fmtFlags, value fmtSt) (string, string) {
 	aina := "ORODHA"
 	// First check if the type is correct
 	if value.Aina != aina {
 		return "", fmt.Sprintf("%s: %s si %s", mrf, value.Aina, aina)
-	}
-
-	// Check if the flags is empty, if so return the value directly
-	if flags == "" {
-		return value.Thamani, ""
 	}
 
 	return value.Thamani, ""
@@ -314,7 +275,7 @@ func handleSafu(flags string, value fmtSt) (string, string) {
 func handlePlus(value string) string {
 	// Check if it already contains a '+' or negative
 	if !(strings.Contains(value, "+") || strings.Contains(value, "-")) {
-		value = "+" + value
+		value = fmt.Sprintf("+%s", value)
 	}
 
 	return value
