@@ -72,29 +72,51 @@ nuru -v
 ```
 
 
+
+
 ### Android (Termux)
 
- - Make sure you have [Termux](https://f-droid.org/repo/com.termux_118.apk) installed.
- - Download the binary with this command:
+To install Nuru on your Android device using Termux, follow these steps:
 
-```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Android_arm64.tar.gz
-```
- - Extract the file:
+1. **Ensure Termux is installed**:
+   - You can download and install [Termux](https://f-droid.org/en/packages/com.termux/).
 
-```
-tar -xzvf nuru_Android_arm64.tar.gz
-```
- - Add it to path:
+2. **Create the target directory**:
+   ```bash
+   mkdir -p /data/data/com.termux/files/usr/share/nuru
+   ```
 
-```
-echo "alias nuru='~/nuru'" >> .bashrc
-```
- - Confirm installation with:
+3. **Download the Nuru package**:
+   ```bash
+   curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Android_arm64.tar.gz
+   ```
 
+4. **Extract the files to the target directory**:
+   ```bash
+   tar -xzvf nuru_Android_arm64.tar.gz -C /data/data/com.termux/files/usr/share/nuru
+   ```
+
+5. **Set up an alias for easy access**:
+   ```bash
+   echo "alias nuru='/data/data/com.termux/files/usr/share/nuru/nuru'" >> ~/.bashrc
+   ```
+
+6. **Reload the .bashrc file to apply the alias**:
+   ```bash
+   source ~/.bashrc
+   ```
+
+7. **Verify the installation**:
+   ```bash
+   nuru -v
+   ```
+
+For a more streamlined installation, you can use the following one-liner:
+
+```bash
+curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Android_arm64.tar.gz && mkdir -p /data/data/com.termux/files/usr/share/nuru && tar -xzvf nuru_Android_arm64.tar.gz -C /data/data/com.termux/files/usr/share/nuru && echo "alias nuru='/data/data/com.termux/files/usr/share/nuru/nuru'" >> ~/.bashrc && source ~/.bashrc && echo "Installation complete.."
 ```
-nuru -v 
-```
+
 
 ### Windows
 
