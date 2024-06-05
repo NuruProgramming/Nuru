@@ -88,7 +88,7 @@ To install Nuru on your Android device using Termux, follow these steps:
 
 3. **Download the Nuru package**:
    ```bash
-   curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Android_arm64.tar.gz
+   curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Android_arm64.tar.gz
    ```
 
 4. **Extract the files to the target directory**:
