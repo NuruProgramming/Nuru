@@ -1,6 +1,6 @@
 package evaluator
 
-import "github.com/AvicennaJr/Nuru/object"
+import "github.com/NuruProgramming/Nuru/object"
 
 func evalMinusPrefixOperatorExpression(right object.Object, line int) object.Object {
 	switch obj := right.(type) {

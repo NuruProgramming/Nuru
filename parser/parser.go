@@ -3,13 +3,12 @@ package parser
 import (
 	"fmt"
 
-	"github.com/AvicennaJr/Nuru/ast"
-	"github.com/AvicennaJr/Nuru/lexer"
-	"github.com/AvicennaJr/Nuru/token"
+	"github.com/NuruProgramming/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/lexer"
+	"github.com/NuruProgramming/Nuru/token"
 )
 
 const (
-	// Think of BODMAS
 	_ int = iota
 	LOWEST
 	ASSIGN      // =
@@ -89,7 +88,6 @@ func (p *Parser) registerPostfix(tokenType token.TokenType, fn postfixParseFn) {
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{l: l, errors: []string{}}
 
-	// Gotta set these niggas
 	p.nextToken()
 	p.nextToken()
 

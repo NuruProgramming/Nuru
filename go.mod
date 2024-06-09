@@ -1,4 +1,4 @@
-module github.com/AvicennaJr/Nuru
+module github.com/NuruProgramming/Nuru
 
 go 1.18
 

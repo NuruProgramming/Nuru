@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"strings"
 
-	"github.com/AvicennaJr/Nuru/token"
+	"github.com/NuruProgramming/Nuru/token"
 )
 
 type Node interface {
 	TokenLiteral() string
-	String() string // to help debug the many errors lmao
+	String() string
 }
 
 type Statement interface {

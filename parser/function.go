@@ -1,8 +1,8 @@
 package parser
 
 import (
-	"github.com/AvicennaJr/Nuru/ast"
-	"github.com/AvicennaJr/Nuru/token"
+	"github.com/NuruProgramming/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/token"
 )
 
 func (p *Parser) parseFunctionLiteral() ast.Expression {

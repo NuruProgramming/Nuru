@@ -3,7 +3,7 @@ package module
 import (
 	"encoding/json"
 
-	"github.com/AvicennaJr/Nuru/object"
+	"github.com/NuruProgramming/Nuru/object"
 )
 
 var JsonFunctions = map[string]object.ModuleFunction{}

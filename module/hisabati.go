@@ -4,54 +4,55 @@ import (
 	"math"
 	"math/rand"
 	"time"
-	"github.com/AvicennaJr/Nuru/object"
+
+	"github.com/NuruProgramming/Nuru/object"
 )
 
 var MathFunctions = map[string]object.ModuleFunction{
-	"PI":      pi,
-	"e":       e,
-	"phi":     phi,
-	"ln10":    ln10,
-	"ln2":     ln2,
-	"log10e":  log10e,
-	"log2e":   log2e,
-	"log2":    log2,
-	"sqrt1_2": sqrt1_2,
-	"sqrt2":   sqrt2,
-	"sqrt3":   sqrt3,
-	"sqrt5":   sqrt5,
-	"EPSILON": epsilon,
-	"abs":      abs,
+	"PI":        pi,
+	"e":         e,
+	"phi":       phi,
+	"ln10":      ln10,
+	"ln2":       ln2,
+	"log10e":    log10e,
+	"log2e":     log2e,
+	"log2":      log2,
+	"sqrt1_2":   sqrt1_2,
+	"sqrt2":     sqrt2,
+	"sqrt3":     sqrt3,
+	"sqrt5":     sqrt5,
+	"EPSILON":   epsilon,
+	"abs":       abs,
 	"sign":      sign,
-	"ceil":     ceil,
-	"floor":    floor,
-	"sqrt":     sqrt,
-	"cbrt":     cbrt,
-	"root":     root,
-	"hypot":    hypot,
-	"random":	random,
-	"factorial":factorial,
-	"round":	round,
-	"max":		max,
-	"min":		min,
-	"exp":		exp,
-	"expm1":	expm1,
-	"log":		log,
-	"log10":	log10,
-	"log1p":	log1p,
-	"cos":  	cos,
-	"sin":  	sin,
-	"tan":  	tan,
-	"acos": 	acos,
-	"asin": 	asin,
-	"atan": 	atan,
-	"cosh":     cosh,
-	"sinh":     sinh,
-	"tanh":     tanh,
-	"acosh":    acosh,
-	"asinh":    asinh,
-	"atanh":    atanh,
-	"atan2":    atan2,
+	"ceil":      ceil,
+	"floor":     floor,
+	"sqrt":      sqrt,
+	"cbrt":      cbrt,
+	"root":      root,
+	"hypot":     hypot,
+	"random":    random,
+	"factorial": factorial,
+	"round":     round,
+	"max":       max,
+	"min":       min,
+	"exp":       exp,
+	"expm1":     expm1,
+	"log":       log,
+	"log10":     log10,
+	"log1p":     log1p,
+	"cos":       cos,
+	"sin":       sin,
+	"tan":       tan,
+	"acos":      acos,
+	"asin":      asin,
+	"atan":      atan,
+	"cosh":      cosh,
+	"sinh":      sinh,
+	"tanh":      tanh,
+	"acosh":     acosh,
+	"asinh":     asinh,
+	"atanh":     atanh,
+	"atan2":     atan2,
 }
 
 var Constants = map[string]object.Object{
@@ -715,16 +716,16 @@ func atanh(args []object.Object, defs map[string]object.Object) object.Object {
 }
 
 func random(args []object.Object, defs map[string]object.Object) object.Object {
-    if len(defs) != 0 {
-        return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
-    }
+	if len(defs) != 0 {
+		return &object.Error{Message: "Undo hili haliruhusu ufafanuzi."}
+	}
 
-    if len(args) != 0 {
-        return &object.Error{Message: "Undo hili halipaswi kupokea hoja."}
-    }
+	if len(args) != 0 {
+		return &object.Error{Message: "Undo hili halipaswi kupokea hoja."}
+	}
 
-    rand.Seed(time.Now().UnixNano())
-    value := rand.Float64()
+	rand.Seed(time.Now().UnixNano())
+	value := rand.Float64()
 
-    return &object.Float{Value: value}
+	return &object.Float{Value: value}
 }

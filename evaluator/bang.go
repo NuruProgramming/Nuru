@@ -1,6 +1,6 @@
 package evaluator
 
-import "github.com/AvicennaJr/Nuru/object"
+import "github.com/NuruProgramming/Nuru/object"
 
 func evalBangOperatorExpression(right object.Object) object.Object {
 	switch right {

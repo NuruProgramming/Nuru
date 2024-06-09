@@ -1,8 +1,8 @@
 package evaluator
 
 import (
-	"github.com/AvicennaJr/Nuru/ast"
-	"github.com/AvicennaJr/Nuru/object"
+	"github.com/NuruProgramming/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/object"
 )
 
 func evalIdentifier(node *ast.Identifier, env *object.Environment) object.Object {

@@ -1,14 +1,14 @@
 <h1 align="center">NURU🔥PROGRAMMING🔥LANGUAGE</h1>
 <p align="center">
-    <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/badge/Nuru-Programming%20Language-yellow"></a>
-    <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/badge/platform-Linux | Windows | Android-green.svg"></a>
-    <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/last-commit/AvicennaJr/Nuru"></a>
+    <a href="https://github.com/NuruProgramming/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/badge/Nuru-Programming%20Language-yellow"></a>
+    <a href="https://github.com/NuruProgramming/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/badge/platform-Linux | Windows | Android-green.svg"></a>
+    <a href="https://github.com/NuruProgramming/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/last-commit/AvicennaJr/Nuru"></a>
 <br>
-    <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/downloads/avicennajr/nuru/total"></a>
-    <a href="https://github.com/AvicennaJr/Nuru/releases"><img alt="Nuru Programming Language" src="https://img.shields.io/github/v/release/avicennajr/nuru?include_prereleases"></a>
-    <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/actions/workflow/status/AvicennaJr/Nuru/tests.yml?style=plastic"></a>
+    <a href="https://github.com/NuruProgramming/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/downloads/avicennajr/nuru/total"></a>
+    <a href="https://github.com/NuruProgramming/Nuru/releases"><img alt="Nuru Programming Language" src="https://img.shields.io/github/v/release/avicennajr/nuru?include_prereleases"></a>
+    <a href="https://github.com/NuruProgramming/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/actions/workflow/status/AvicennaJr/Nuru/tests.yml?style=plastic"></a>
 <br>
-    <a href="https://github.com/AvicennaJr/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/stars/AvicennaJr/Nuru?style=social"></a>
+    <a href="https://github.com/NuruProgramming/Nuru"><img alt="Nuru Programming Language" src="https://img.shields.io/github/stars/AvicennaJr/Nuru?style=social"></a>
 </p>
 A Swahili Programming Language of its kind built from the ground up.
 
@@ -21,7 +21,7 @@ To get started download the executables from the release page or follow the inst
  - Download the binary:
 
 ```
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Linux_amd64.tar.gz
+curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Linux_amd64.tar.gz
 ```
 
   - Extract the file to make global available:
@@ -44,13 +44,13 @@ nuru -v
     - For apple silicon mac use:
 
         ```
-        curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Darwin_arm64.tar.gz
+        curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Darwin_arm64.tar.gz
         ```
 
     - For apple intel mac use:
 
         ```
-        curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Darwin_amd64.tar.gz
+        curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Darwin_amd64.tar.gz
         ```
 
 - Extract the file to make global available:
@@ -114,14 +114,14 @@ To install Nuru on your Android device using Termux, follow these steps:
 For a more streamlined installation, you can use the following one-liner:
 
 ```bash
-curl -O -L https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Android_arm64.tar.gz && mkdir -p /data/data/com.termux/files/usr/share/nuru && tar -xzvf nuru_Android_arm64.tar.gz -C /data/data/com.termux/files/usr/share/nuru && echo "alias nuru='/data/data/com.termux/files/usr/share/nuru/nuru'" >> ~/.bashrc && source ~/.bashrc && echo "Installation complete.."
+curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Android_arm64.tar.gz && mkdir -p /data/data/com.termux/files/usr/share/nuru && tar -xzvf nuru_Android_arm64.tar.gz -C /data/data/com.termux/files/usr/share/nuru && echo "alias nuru='/data/data/com.termux/files/usr/share/nuru/nuru'" >> ~/.bashrc && source ~/.bashrc && echo "Installation complete.."
 ```
 
 
 ### Windows
 
 - Executable:
-    - Download the Nuru zip file [Here](https://github.com/AvicennaJr/Nuru/releases/download/v0.5.16/nuru_Windows_amd64.zip)
+    - Download the Nuru zip file [Here](https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Windows_amd64.zip)
     - Unzip to get the executable
     - Double click the executable
 
@@ -370,7 +370,7 @@ nuru myFile.nr
 
 ## Issues
 
-Kindly open an [Issue](https://github.com/AvicennaJr/Nuru/issues) to make suggestions and anything else.
+Kindly open an [Issue](https://github.com/NuruProgramming/Nuru/issues) to make suggestions and anything else.
 
 ## Contributions
 
