@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/AvicennaJr/Nuru/object"
+	"github.com/NuruProgramming/Nuru/object"
 )
 
 var TimeFunctions = map[string]object.ModuleFunction{}

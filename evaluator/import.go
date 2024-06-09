@@ -2,16 +2,15 @@ package evaluator
 
 import (
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/AvicennaJr/Nuru/ast"
-	"github.com/AvicennaJr/Nuru/lexer"
-	"github.com/AvicennaJr/Nuru/module"
-	"github.com/AvicennaJr/Nuru/object"
-	"github.com/AvicennaJr/Nuru/parser"
+	"github.com/NuruProgramming/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/lexer"
+	"github.com/NuruProgramming/Nuru/module"
+	"github.com/NuruProgramming/Nuru/object"
+	"github.com/NuruProgramming/Nuru/parser"
 )
 
 var searchPaths []string
@@ -62,7 +61,7 @@ func fileExists(file string) bool {
 }
 
 func evaluateFile(file string, env *object.Environment) (*object.Environment, object.Object) {
-	source, err := ioutil.ReadFile(file)
+	source, err := os.ReadFile(file)
 	if err != nil {
 		return nil, &object.Error{Message: fmt.Sprintf("Tumeshindwa kufungua pakeji: %s", file)}
 	}

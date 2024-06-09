@@ -1,7 +1,7 @@
 package parser
 
 import (
-	"github.com/AvicennaJr/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/ast"
 )
 
 func (p *Parser) parseIdentifier() ast.Expression {

@@ -5,8 +5,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/AvicennaJr/Nuru/repl"
-	"github.com/AvicennaJr/Nuru/styles"
+	"github.com/NuruProgramming/Nuru/repl"
+	"github.com/NuruProgramming/Nuru/styles"
 	"github.com/charmbracelet/lipgloss"
 )
 

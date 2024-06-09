@@ -3,12 +3,11 @@ package parser
 import (
 	"fmt"
 
-	"github.com/AvicennaJr/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/ast"
 )
 
 func (p *Parser) parseAssignmentExpression(exp ast.Expression) ast.Expression {
 	switch node := exp.(type) {
-	// temporarily making let keyword optional
 	case *ast.Identifier:
 		e := &ast.Assign{
 			Token: p.curToken,

@@ -4,13 +4,13 @@ import (
 	"math"
 	"strings"
 
-	"github.com/AvicennaJr/Nuru/object"
+	"github.com/NuruProgramming/Nuru/object"
 )
 
 func evalInfixExpression(operator string, left, right object.Object, line int) object.Object {
 	if right == nil {
 		return newError("Mstari %d: Umekosea hapa", line)
-			}
+	}
 	if left == nil {
 		return newError("Mstari %d: Umekosea hapa", line)
 	}

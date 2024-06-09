@@ -3,8 +3,8 @@ package evaluator
 import (
 	"fmt"
 
-	"github.com/AvicennaJr/Nuru/ast"
-	"github.com/AvicennaJr/Nuru/object"
+	"github.com/NuruProgramming/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/object"
 )
 
 var (
@@ -134,7 +134,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return val
 		}
 		return evalPropertyAssignment(node.Name, val, env)
-	case *ast.Assign: // making let temporarily optional as I debug
+	case *ast.Assign:
 		return evalAssign(node, env)
 	case *ast.AssignEqual:
 		return evalAssignEqual(node, env)

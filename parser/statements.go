@@ -3,12 +3,11 @@ package parser
 import (
 	"fmt"
 
-	"github.com/AvicennaJr/Nuru/ast"
-	"github.com/AvicennaJr/Nuru/token"
+	"github.com/NuruProgramming/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/token"
 )
 
 func (p *Parser) parseStatement() ast.Statement {
-	// Remember to add switch statements to the language
 	switch p.curToken.Type {
 	case token.LET:
 		return p.parseLetStatement()

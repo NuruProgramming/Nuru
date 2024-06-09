@@ -3,8 +3,8 @@ package evaluator
 import (
 	"strings"
 
-	"github.com/AvicennaJr/Nuru/ast"
-	"github.com/AvicennaJr/Nuru/object"
+	"github.com/NuruProgramming/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/object"
 )
 
 func evalAssignEqual(node *ast.AssignEqual, env *object.Environment) object.Object {
