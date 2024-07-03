@@ -37,7 +37,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if isError(right) {
 			return right
 		}
-		return evalPrefixExpression(node.Operator, right, node.Token.Line)
+		return evalPrefixExpression(node.Operator, right, node.Token.Line.Start.Line)
 
 	case *ast.InfixExpression:
 		left := Eval(node.Left, env)
@@ -48,7 +48,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if isError(right) && right != nil {
 			return right
 		}
-		return evalInfixExpression(node.Operator, left, right, node.Token.Line)
+		return evalInfixExpression(node.Operator, left, right, node.Token.Line.Start.Line)
 	case *ast.PostfixExpression:
 		return evalPostfixExpression(env, node.Operator, node)
 
@@ -107,7 +107,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if isError(index) {
 			return index
 		}
-		return evalIndexExpression(left, index, node.Token.Line)
+		return evalIndexExpression(left, index, node.Token.Line.Start.Line)
 	case *ast.DictLiteral:
 		return evalDictLiteral(node, env)
 	case *ast.WhileExpression:
@@ -123,7 +123,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 	// case *ast.For:
 	// 	return evalForExpression(node, env)
 	case *ast.ForIn:
-		return evalForInExpression(node, env, node.Token.Line)
+		return evalForInExpression(node, env, node.Token.Line.Start.Line)
 	case *ast.Package:
 		return evalPackage(node, env)
 	case *ast.PropertyExpression:
@@ -155,7 +155,7 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		op := node.Token.Literal
 		if len(op) >= 2 {
 			op = op[:len(op)-1]
-			value = evalInfixExpression(op, left, value, node.Token.Line)
+			value = evalInfixExpression(op, left, value, node.Token.Line.Start.Line)
 			if isError(value) {
 				return value
 			}
@@ -291,7 +291,7 @@ func applyFunction(fn object.Object, args []object.Object, line int) object.Obje
 			return newError("Hamna andaa kiendesha")
 		}
 		node.(*object.Function).Env.Set("@", obj)
-		applyFunction(node, args, fn.Name.Token.Line)
+		applyFunction(node, args, fn.Name.Token.Line.Start.Line)
 		node.(*object.Function).Env.Del("@")
 		return obj
 	default:

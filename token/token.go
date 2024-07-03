@@ -4,10 +4,20 @@ package token
 
 type TokenType string
 
+type Span struct {
+	Start LineInfo
+	End LineInfo
+}
+
+type LineInfo struct {
+	Line, Column int
+}
+
 type Token struct {
 	Type    TokenType
 	Literal string
-	Line    int
+	Filename string
+	Line Span
 }
 
 const (

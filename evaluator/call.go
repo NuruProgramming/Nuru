@@ -31,7 +31,7 @@ func evalCall(node *ast.CallExpression, env *object.Environment) object.Object {
 		return args[0]
 	}
 
-	return applyFunction(function, args, node.Token.Line)
+	return applyFunction(function, args, node.Token.Line.Start.Line)
 }
 
 func evalArgsExpressions(node *ast.CallExpression, fn *object.Function, env *object.Environment) []object.Object {

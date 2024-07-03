@@ -14,7 +14,10 @@ type Lexer struct {
 	line         int
 }
 
+var filename string
+
 func New(input string) *Lexer {
+	filename = "ex.nr"
 	l := &Lexer{input: []rune(input), line: 1}
 	l.readChar()
 	return l
@@ -32,171 +35,179 @@ func (l *Lexer) readChar() {
 }
 
 func (l *Lexer) NextToken() token.Token {
-	var tok token.Token
-	l.skipWhitespace()
-	if l.ch == rune('/') && l.peekChar() == rune('/') {
-		l.skipSingleLineComment()
-		return l.NextToken()
-	}
-	if l.ch == rune('/') && l.peekChar() == rune('*') {
-		l.skipMultiLineComment()
-		return l.NextToken()
-	}
+    var tok token.Token
+    l.skipWhitespace()
 
-	switch l.ch {
-	case rune('='):
-		if l.peekChar() == rune('=') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.EQ, Literal: string(ch) + string(l.ch), Line: l.line}
-		} else {
-			tok = newToken(token.ASSIGN, l.line, l.ch)
-		}
-	case rune(';'):
-		tok = newToken(token.SEMICOLON, l.line, l.ch)
-	case rune('('):
-		tok = newToken(token.LPAREN, l.line, l.ch)
-	case rune(')'):
-		tok = newToken(token.RPAREN, l.line, l.ch)
-	case rune('{'):
-		tok = newToken(token.LBRACE, l.line, l.ch)
-	case rune('}'):
-		tok = newToken(token.RBRACE, l.line, l.ch)
-	case rune(','):
-		tok = newToken(token.COMMA, l.line, l.ch)
-	case rune('+'):
-		if l.peekChar() == rune('=') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.PLUS_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
-		} else if l.peekChar() == rune('+') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.PLUS_PLUS, Literal: string(ch) + string(l.ch), Line: l.line}
-		} else {
-			tok = newToken(token.PLUS, l.line, l.ch)
-		}
-	case rune('-'):
-		if l.peekChar() == rune('=') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.MINUS_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
-		} else if l.peekChar() == rune('-') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.MINUS_MINUS, Literal: string(ch) + string(l.ch), Line: l.line}
-		} else {
-			tok = newToken(token.MINUS, l.line, l.ch)
-		}
-	case rune('!'):
-		if l.peekChar() == rune('=') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.NOT_EQ, Literal: string(ch) + string(l.ch), Line: l.line}
-		} else {
-			tok = newToken(token.BANG, l.line, l.ch)
-		}
-	case rune('/'):
-		if l.peekChar() == rune('=') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.SLASH_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
-		} else {
-			tok = newToken(token.SLASH, l.line, l.ch)
-		}
-	case rune('*'):
-		if l.peekChar() == rune('=') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.ASTERISK_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
-		} else if l.peekChar() == rune('*') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.POW, Literal: string(ch) + string(l.ch), Line: l.line}
-		} else {
-			tok = newToken(token.ASTERISK, l.line, l.ch)
-		}
-	case rune('<'):
-		if l.peekChar() == rune('=') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.LTE, Literal: string(ch) + string(l.ch), Line: l.line}
-		} else {
-			tok = newToken(token.LT, l.line, l.ch)
-		}
-	case rune('>'):
-		if l.peekChar() == rune('=') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.GTE, Literal: string(ch) + string(l.ch), Line: l.line}
-		} else {
-			tok = newToken(token.GT, l.line, l.ch)
-		}
-	case rune('"'):
-		tok.Type = token.STRING
-		tok.Literal = l.readString()
-		tok.Line = l.line
-	case rune('\''):
-		tok = token.Token{Type: token.STRING, Literal: l.readSingleQuoteString(), Line: l.line}
-	case rune('['):
-		tok = newToken(token.LBRACKET, l.line, l.ch)
-	case rune(']'):
-		tok = newToken(token.RBRACKET, l.line, l.ch)
-	case rune(':'):
-		tok = newToken(token.COLON, l.line, l.ch)
-	case rune('@'):
-		tok = newToken(token.AT, l.line, l.ch)
-	case rune('.'):
-		tok = newToken(token.DOT, l.line, l.ch)
-	case rune('&'):
-		if l.peekChar() == rune('&') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.AND, Literal: string(ch) + string(l.ch), Line: l.line}
-		}
-	case rune('|'):
-		if l.peekChar() == rune('|') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.OR, Literal: string(ch) + string(l.ch), Line: l.line}
-		}
-	case rune('%'):
-		if l.peekChar() == rune('=') {
-			ch := l.ch
-			l.readChar()
-			tok = token.Token{Type: token.MODULUS_ASSIGN, Line: l.line, Literal: string(ch) + string(l.ch)}
-		} else {
-			tok = newToken(token.MODULUS, l.line, l.ch)
-		}
-	case 0:
-		tok.Literal = ""
-		tok.Type = token.EOF
-		tok.Line = l.line
-	default:
-		if isLetter(l.ch) {
-			tok.Literal = l.readIdentifier()
-			tok.Type = token.LookupIdent(tok.Literal)
-			tok.Line = l.line
-			return tok
-		} else if isDigit(l.ch) && isLetter(l.peekChar()) {
-			tok.Literal = l.readIdentifier()
-			tok.Type = token.LookupIdent(tok.Literal)
-			tok.Line = l.line
-			return tok
-		} else if isDigit(l.ch) {
-			tok = l.readDecimal()
-			return tok
-		} else {
-			tok = newToken(token.ILLEGAL, l.line, l.ch)
-		}
-	}
+    if l.ch == rune('/') && l.peekChar() == rune('/') {
+        l.skipSingleLineComment()
+        return l.NextToken()
+    }
 
-	l.readChar()
-	return tok
+    if l.ch == rune('/') && l.peekChar() == rune('*') {
+        l.skipMultiLineComment()
+        return l.NextToken()
+    }
+
+    switch l.ch {
+    case rune('='):
+        if l.peekChar() == rune('=') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.EQ, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else {
+            tok = token.Token{Type: token.ASSIGN, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    case rune(';'):
+        tok = token.Token{Type: token.SEMICOLON, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+    case rune('('):
+        tok = token.Token{Type: token.LPAREN, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+    case rune(')'):
+        tok = token.Token{Type: token.RPAREN, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+    case rune('{'):
+        tok = token.Token{Type: token.LBRACE, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+    case rune('}'):
+        tok = token.Token{Type: token.RBRACE, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+    case rune(','):
+        tok = token.Token{Type: token.COMMA, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+    case rune('+'):
+        if l.peekChar() == rune('=') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.PLUS_ASSIGN, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else if l.peekChar() == rune('+') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.PLUS_PLUS, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else {
+            tok = token.Token{Type: token.PLUS, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    case rune('-'):
+        if l.peekChar() == rune('=') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.MINUS_ASSIGN, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else if l.peekChar() == rune('-') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.MINUS_MINUS, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else {
+            tok = token.Token{Type: token.MINUS, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    case rune('!'):
+        if l.peekChar() == rune('=') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.NOT_EQ, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else {
+            tok = token.Token{Type: token.BANG, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    case rune('/'):
+        if l.peekChar() == rune('=') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.SLASH_ASSIGN, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else {
+            tok = token.Token{Type: token.SLASH, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    case rune('*'):
+        if l.peekChar() == rune('=') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.ASTERISK_ASSIGN, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else if l.peekChar() == rune('*') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.POW, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else {
+            tok = token.Token{Type: token.ASTERISK, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    case rune('<'):
+        if l.peekChar() == rune('=') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.LTE, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else {
+            tok = token.Token{Type: token.LT, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    case rune('>'):
+        if l.peekChar() == rune('=') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.GTE, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else {
+            tok = token.Token{Type: token.GT, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    case rune('"'):
+        tok.Type = token.STRING
+        tok.Literal = l.readString()
+        tok.Filename = filename
+        tok.Line = token.Span{}
+    case rune('\''):
+        tok = token.Token{Type: token.STRING, Literal: l.readSingleQuoteString(), Filename: filename, Line: token.Span{}}
+    case rune('['):
+        tok = token.Token{Type: token.LBRACKET, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+    case rune(']'):
+        tok = token.Token{Type: token.RBRACKET, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+    case rune(':'):
+        tok = token.Token{Type: token.COLON, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+    case rune('@'):
+        tok = token.Token{Type: token.AT, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+    case rune('.'):
+        tok = token.Token{Type: token.DOT, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+    case rune('&'):
+        if l.peekChar() == rune('&') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.AND, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    case rune('|'):
+        if l.peekChar() == rune('|') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.OR, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    case rune('%'):
+        if l.peekChar() == rune('=') {
+            ch := l.ch
+            l.readChar()
+            tok = token.Token{Type: token.MODULUS_ASSIGN, Literal: string(ch) + string(l.ch), Filename: filename, Line: token.Span{}}
+        } else {
+            tok = token.Token{Type: token.MODULUS, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    case 0:
+        tok.Literal = ""
+        tok.Type = token.EOF
+        tok.Filename = filename
+        tok.Line = token.Span{}
+    default:
+        if isLetter(l.ch) {
+            tok.Literal = l.readIdentifier()
+            tok.Type = token.LookupIdent(tok.Literal)
+            tok.Filename = filename
+            tok.Line = token.Span{}
+            return tok
+        } else if isDigit(l.ch) && isLetter(l.peekChar()) {
+            tok.Literal = l.readIdentifier()
+            tok.Type = token.LookupIdent(tok.Literal)
+            tok.Filename = filename
+            tok.Line = token.Span{}
+            return tok
+        } else if isDigit(l.ch) {
+            tok = l.readDecimal()
+            tok.Filename = filename
+            return tok
+        } else {
+            tok = token.Token{Type: token.ILLEGAL, Literal: string(l.ch), Filename: filename, Line: token.Span{}}
+        }
+    }
+
+    l.readChar()
+    return tok
 }
 
-func newToken(tokenType token.TokenType, line int, ch rune) token.Token {
-	return token.Token{Type: tokenType, Literal: string(ch), Line: line}
+func newToken(tokenInfo token.Token) token.Token {
+	tokenInfo.Filename = filename
+	return tokenInfo
 }
 
 func (l *Lexer) readIdentifier() string {
@@ -238,9 +249,9 @@ func (l *Lexer) readDecimal() token.Token {
 	if l.ch == '.' && isDigit(l.peekChar()) {
 		l.readChar()
 		fraction := l.readNumber()
-		return token.Token{Type: token.FLOAT, Literal: integer + "." + fraction, Line: l.line}
+		return token.Token{Type: token.FLOAT, Literal: integer + "." + fraction}
 	}
-	return token.Token{Type: token.INT, Literal: integer, Line: l.line}
+	return token.Token{Type: token.INT, Literal: integer}
 }
 
 func (l *Lexer) peekChar() rune {

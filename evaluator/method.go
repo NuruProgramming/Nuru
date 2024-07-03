@@ -20,7 +20,7 @@ func evalMethodExpression(node *ast.MethodExpression, env *object.Environment) o
 	for k, v := range node.Defaults {
 		defs[k] = Eval(v, env)
 	}
-	return applyMethod(obj, node.Method, args, defs, node.Token.Line)
+	return applyMethod(obj, node.Method, args, defs, node.Token.Line.Start.Line)
 }
 
 func applyMethod(obj object.Object, method ast.Expression, args []object.Object, defs map[string]object.Object, l int) object.Object {
