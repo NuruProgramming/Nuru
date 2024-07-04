@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/NuruProgramming/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/errd"
 )
 
 func (p *Parser) parseAssignEqualExpression(exp ast.Expression) ast.Expression {
@@ -27,11 +28,18 @@ func (p *Parser) parseAssignEqualExpression(exp ast.Expression) ast.Expression {
 		return ae
 	default:
 		if node != nil {
-			msg := fmt.Sprintf("Mstari %d:Tulitegemea kupata kitambulishi au array, badala yake tumepata: %s", p.curToken.Line, node.TokenLiteral())
-			p.errors = append(p.errors, msg)
+
+			synErr := &errd.MakosaSintaksia{
+				Ujumbe: fmt.Sprintf("Tulitegemea kupata kitambulishi au array, badala yake tumepata: %s", node.TokenLiteral()),
+				Info:   p.curToken,
+			}
+			synErr.Onyesha()
 		} else {
-			msg := fmt.Sprintf("Mstari %d: Umekosea mkuu", p.curToken.Line)
-			p.errors = append(p.errors, msg)
+			synErr := &errd.MakosaSintaksia{
+				Ujumbe: "Tumejaribu nakini hatujaweza kupata shida",
+				Info:   p.curToken,
+			}
+			synErr.Onyesha()
 		}
 		return nil
 	}

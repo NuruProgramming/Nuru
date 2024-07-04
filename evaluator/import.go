@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
 
 	"github.com/NuruProgramming/Nuru/ast"
 	"github.com/NuruProgramming/Nuru/lexer"
@@ -65,12 +64,10 @@ func evaluateFile(file string, env *object.Environment) (*object.Environment, ob
 	if err != nil {
 		return nil, &object.Error{Message: fmt.Sprintf("Tumeshindwa kufungua pakeji: %s", file)}
 	}
-	l := lexer.New(string(source))
+	l := lexer.New("<stdin>", string(source))
 	p := parser.New(l)
 	program := p.ParseProgram()
-	if len(p.Errors()) != 0 {
-		return nil, &object.Error{Message: fmt.Sprintf("Pakeji %s ina makosa yafuatayo:\n%s", file, strings.Join(p.Errors(), "\n"))}
-	}
+	// There was a nil return here (and errors), this change may cause nil dereference somewhere
 
 	scope := object.NewEnvironment()
 	result := Eval(program, scope)

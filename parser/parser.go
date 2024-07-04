@@ -6,6 +6,7 @@ import (
 	"github.com/NuruProgramming/Nuru/ast"
 	"github.com/NuruProgramming/Nuru/lexer"
 	"github.com/NuruProgramming/Nuru/token"
+	"github.com/NuruProgramming/Nuru/errd"
 )
 
 const (
@@ -66,8 +67,6 @@ type Parser struct {
 	peekToken token.Token
 	prevToken token.Token
 
-	errors []string
-
 	prefixParseFns  map[token.TokenType]prefixParseFn
 	infixParseFns   map[token.TokenType]infixParseFn
 	postfixParseFns map[token.TokenType]postfixParseFn
@@ -86,7 +85,7 @@ func (p *Parser) registerPostfix(tokenType token.TokenType, fn postfixParseFn) {
 }
 
 func New(l *lexer.Lexer) *Parser {
-	p := &Parser{l: l, errors: []string{}}
+	p := &Parser{l: l}
 
 	p.nextToken()
 	p.nextToken()
@@ -181,7 +180,7 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 		p.nextToken()
 		return true
 	} else {
-		p.peekError(t)
+		p.peekError(p.curToken)
 		return false
 	}
 }
@@ -201,15 +200,12 @@ func (p *Parser) curPrecedence() int {
 	return LOWEST
 }
 
-// error messages
-
-func (p *Parser) Errors() []string {
-	return p.errors
+func (p *Parser) peekError(t token.Token) {
+	synErr := &errd.MakosaSintaksia {
+	Ujumbe: fmt.Sprintf("Tulitegemea kupata '%s', badala yake tumepata '%s'", t.Type, p.peekToken.Type),
+	Info: t,
 }
-
-func (p *Parser) peekError(t token.TokenType) {
-	msg := fmt.Sprintf("Mstari %d: Tulitegemea kupata %s, badala yake tumepata %s", p.curToken.Line, t, p.peekToken.Type)
-	p.errors = append(p.errors, msg)
+	synErr.Onyesha()
 }
 
 // parse expressions
@@ -233,7 +229,7 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 	}
 	prefix := p.prefixParseFns[p.curToken.Type]
 	if prefix == nil {
-		p.noPrefixParseFnError(p.curToken.Type)
+		p.noPrefixParseFnError(p.curToken)
 		return nil
 	}
 	leftExp := prefix()
@@ -241,7 +237,7 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 	for !p.peekTokenIs(token.SEMICOLON) && precedence < p.peekPrecedence() {
 		infix := p.infixParseFns[p.peekToken.Type]
 		if infix == nil {
-			p.noInfixParseFnError(p.peekToken.Type)
+			p.noInfixParseFnError(p.peekToken)
 			return nil
 		}
 
@@ -267,9 +263,12 @@ func (p *Parser) parsePrefixExpression() ast.Expression {
 	return expression
 }
 
-func (p *Parser) noPrefixParseFnError(t token.TokenType) {
-	msg := fmt.Sprintf("Mstari %d: Tumeshindwa kuparse %s", p.curToken.Line, t)
-	p.errors = append(p.errors, msg)
+func (p *Parser) noPrefixParseFnError(t token.Token) {
+	synErr := &errd.MakosaSintaksia {
+	Ujumbe: fmt.Sprintf("Tumeshindwa kuparse '%s'", t.Literal),
+	Info: t,
+}
+	synErr.Onyesha()
 }
 
 // infix expressions
@@ -287,9 +286,12 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 	return expression
 }
 
-func (p *Parser) noInfixParseFnError(t token.TokenType) {
-	msg := fmt.Sprintf("Mstari %d: Tumeshindwa kuparse %s", p.curToken.Line, t)
-	p.errors = append(p.errors, msg)
+func (p *Parser) noInfixParseFnError(t token.Token) {
+	synErr := &errd.MakosaSintaksia {
+	Ujumbe: fmt.Sprintf("Tumeshindwa kuparse '%s'", t.Literal),
+	Info: t,
+}
+	synErr.Onyesha()
 }
 
 func (p *Parser) parseGroupedExpression() ast.Expression {

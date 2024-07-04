@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/NuruProgramming/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/errd"
 	"github.com/NuruProgramming/Nuru/token"
 )
 
@@ -67,8 +68,11 @@ func (p *Parser) parseBlockStatement() *ast.BlockStatement {
 
 	for !p.curTokenIs(token.RBRACE) {
 		if p.curTokenIs(token.EOF) {
-			msg := fmt.Sprintf("Mstari %d: Hukufunga Mabano '}'", p.curToken.Line)
-			p.errors = append(p.errors, msg)
+			synErr := &errd.MakosaSintaksia{
+				Ujumbe: fmt.Sprintf("Mstari %d: Hukufunga Mabano '}'", p.curToken.Line),
+				Info:   p.curToken,
+			}
+			synErr.Onyesha()
 			return nil
 		}
 		stmt := p.parseStatement()

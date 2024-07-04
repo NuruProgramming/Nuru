@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/NuruProgramming/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/errd"
 	"github.com/NuruProgramming/Nuru/token"
 )
 
@@ -33,8 +34,11 @@ func (p *Parser) parseSwitchStatement() ast.Expression {
 	for !p.curTokenIs(token.RBRACE) {
 
 		if p.curTokenIs(token.EOF) {
-			msg := fmt.Sprintf("Mstari %d: Haukufunga ENDAPO (SWITCH)", p.curToken.Line)
-			p.errors = append(p.errors, msg)
+			synErr := &errd.MakosaSintaksia{
+				Ujumbe: "Haukufunga ENDAPO (SWITCH)",
+				Info:   p.curToken,
+			}
+			synErr.Onyesha()
 			return nil
 		}
 		tmp := &ast.CaseExpression{Token: p.curToken}
@@ -58,8 +62,11 @@ func (p *Parser) parseSwitchStatement() ast.Expression {
 				}
 			}
 		} else {
-			msg := fmt.Sprintf("Mstari %d: Tulitegemea Kauli IKIWA (CASE) au KAWAIDA (DEFAULT) lakini tumepewa: %s", p.curToken.Line, p.curToken.Type)
-			p.errors = append(p.errors, msg)
+			synErr := &errd.MakosaSintaksia{
+				Ujumbe: fmt.Sprintf("Tulitegemea Kauli IKIWA (CASE) au KAWAIDA (DEFAULT) lakini tumepewa: %s", p.curToken.Type),
+				Info:   p.curToken,
+			}
+			synErr.Onyesha()
 			return nil
 		}
 
@@ -79,8 +86,11 @@ func (p *Parser) parseSwitchStatement() ast.Expression {
 		}
 	}
 	if count > 1 {
-		msg := fmt.Sprintf("Kauli ENDAPO (SWITCH) hua na kauli 'KAWAIDA' (DEFAULT) moja tu! Wewe umeweka %d", count)
-		p.errors = append(p.errors, msg)
+		synErr := &errd.MakosaSintaksia{
+			Ujumbe: fmt.Sprintf("Kauli ENDAPO (SWITCH) hua na kauli 'KAWAIDA' (DEFAULT) moja tu! Wewe umeweka %d", count),
+			Info:   p.curToken,
+		}
+		synErr.Onyesha()
 		return nil
 
 	}

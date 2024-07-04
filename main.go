@@ -59,7 +59,7 @@ func main() {
 					os.Exit(1)
 				}
 
-				repl.Read(string(contents))
+				repl.Read(file, string(contents))
 			} else {
 				fmt.Println(styles.ErrorStyle.Render("'"+file+"'", "sii faili sahihi. Tumia faili la '.nr' au '.sw'"))
 				os.Exit(1)
