@@ -2,11 +2,13 @@ package parser
 
 import (
 	"fmt"
+	"os"
+	"strings"
 
 	"github.com/NuruProgramming/Nuru/ast"
+	"github.com/NuruProgramming/Nuru/errd"
 	"github.com/NuruProgramming/Nuru/lexer"
 	"github.com/NuruProgramming/Nuru/token"
-	"github.com/NuruProgramming/Nuru/errd"
 )
 
 const (
@@ -61,7 +63,8 @@ type (
 )
 
 type Parser struct {
-	l *lexer.Lexer
+	content []string
+	l       *lexer.Lexer
 
 	curToken  token.Token
 	peekToken token.Token
@@ -84,8 +87,10 @@ func (p *Parser) registerPostfix(tokenType token.TokenType, fn postfixParseFn) {
 	p.postfixParseFns[tokenType] = fn
 }
 
-func New(l *lexer.Lexer) *Parser {
+func New(context string, l *lexer.Lexer) *Parser {
 	p := &Parser{l: l}
+
+	p.content = strings.Split(context, "\n")
 
 	p.nextToken()
 	p.nextToken()
@@ -201,11 +206,27 @@ func (p *Parser) curPrecedence() int {
 }
 
 func (p *Parser) peekError(t token.Token) {
-	synErr := &errd.MakosaSintaksia {
-	Ujumbe: fmt.Sprintf("Tulitegemea kupata '%s', badala yake tumepata '%s'", t.Type, p.peekToken.Type),
-	Info: t,
-}
+	synErr := &errd.MakosaSintaksia{
+		Ujumbe:   fmt.Sprintf("Tulitegemea kupata '%s', badala yake tumepata '%s'", t.Type, p.peekToken.Type),
+		Muktadha: p.context(),
+		Info:     t,
+	}
 	synErr.Onyesha()
+}
+
+func (p *Parser) context() string {
+	var muk string
+	var caret string
+	lineContent := p.content[p.curToken.Line.Start.Line-1]
+	if os.Getenv("RANGI") == "0" {
+		caret = "^"
+	} else {
+		caret = fmt.Sprintf("\x1b[%dm%s\x1b[0m", 31, "^")
+	}
+
+	muk = fmt.Sprintf("\t%s\n\t%s%s", lineContent, strings.Repeat(" ", p.curToken.Line.Start.Column-1), caret)
+
+	return muk
 }
 
 // parse expressions
@@ -264,10 +285,11 @@ func (p *Parser) parsePrefixExpression() ast.Expression {
 }
 
 func (p *Parser) noPrefixParseFnError(t token.Token) {
-	synErr := &errd.MakosaSintaksia {
-	Ujumbe: fmt.Sprintf("Tumeshindwa kuparse '%s'", t.Literal),
-	Info: t,
-}
+	synErr := &errd.MakosaSintaksia{
+		Ujumbe: fmt.Sprintf("Tumeshindwa kuparse '%s'", t.Literal),
+		Muktadha: p.context(),
+		Info:   t,
+	}
 	synErr.Onyesha()
 }
 
@@ -287,10 +309,11 @@ func (p *Parser) parseInfixExpression(left ast.Expression) ast.Expression {
 }
 
 func (p *Parser) noInfixParseFnError(t token.Token) {
-	synErr := &errd.MakosaSintaksia {
-	Ujumbe: fmt.Sprintf("Tumeshindwa kuparse '%s'", t.Literal),
-	Info: t,
-}
+	synErr := &errd.MakosaSintaksia{
+		Ujumbe: fmt.Sprintf("Tumeshindwa kuparse '%s'", t.Literal),
+		Muktadha: p.context(),
+		Info:   t,
+	}
 	synErr.Onyesha()
 }
 

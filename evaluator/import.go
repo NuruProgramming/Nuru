@@ -64,8 +64,8 @@ func evaluateFile(file string, env *object.Environment) (*object.Environment, ob
 	if err != nil {
 		return nil, &object.Error{Message: fmt.Sprintf("Tumeshindwa kufungua pakeji: %s", file)}
 	}
-	l := lexer.New("<stdin>", string(source))
-	p := parser.New(l)
+	l := lexer.New(file, string(source))
+	p := parser.New(string(source), l)
 	program := p.ParseProgram()
 	// There was a nil return here (and errors), this change may cause nil dereference somewhere
 

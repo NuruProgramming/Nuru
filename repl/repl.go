@@ -28,7 +28,7 @@ func Read(file, contents string) {
 	env := object.NewEnvironment()
 
 	l := lexer.New(file, contents)
-	p := parser.New(l)
+	p := parser.New(contents, l)
 
 	program := p.ParseProgram()
 
@@ -66,7 +66,7 @@ func (d *dummy) executor(in string) {
 		os.Exit(0)
 	}
 	l := lexer.New("<stdin>", in)
-	p := parser.New(l)
+	p := parser.New(in, l)
 
 	program := p.ParseProgram()
 

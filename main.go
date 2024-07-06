@@ -1,73 +1,148 @@
 package main
 
 import (
+	"cmp"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/NuruProgramming/Nuru/repl"
-	"github.com/NuruProgramming/Nuru/styles"
-	"github.com/charmbracelet/lipgloss"
 )
 
-var (
-	Title = styles.TitleStyle.
-		Render(`
-█░░ █░█ █▀▀ █░█ ▄▀█   █▄█ ▄▀█   █▄░█ █░█ █▀█ █░█
-█▄▄ █▄█ █▄█ █▀█ █▀█   ░█░ █▀█   █░▀█ █▄█ █▀▄ █▄█`)
-	Version = styles.VersionStyle.Render("v0.5.1")
-	Author  = styles.AuthorStyle.Render("by Avicenna")
-	NewLogo = lipgloss.JoinVertical(lipgloss.Center, Title, lipgloss.JoinHorizontal(lipgloss.Center, Author, " | ", Version))
-	Help    = styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
-	%s: Kuanza programu ya Nuru
-	%s: Kuendesha faili la Nuru
-	%s: Kusoma nyaraka za Nuru
-	%s: Kufahamu toleo la Nuru
-`,
-		styles.HelpStyle.Bold(true).Render("nuru"),
-		styles.HelpStyle.Bold(true).Render("nuru jinaLaFile.nr"),
-		styles.HelpStyle.Bold(true).Render("nuru --nyaraka"),
-		styles.HelpStyle.Bold(true).Render("nuru --toleo")))
-)
+type flagsPassed struct {
+	help    bool
+	version bool
+	msaada  bool
+}
+
+type passedArgs struct {
+	flags flagsPassed
+	args  []string
+}
+
+var nuruVersion = "v0.5.1"
 
 func main() {
 
-	args := os.Args
-	if len(args) < 2 {
+	flags, args := parseArgs(os.Args[1:])
 
-		help := styles.HelpStyle.Render("💡 Tumia exit() au toka() kuondoka")
-		fmt.Println(lipgloss.JoinVertical(lipgloss.Left, NewLogo, "\n", help))
+	handleFlags(flags)
+
+	env_val := cmp.Or(os.Getenv("RANGI"), "1")
+	os.Setenv("RANGI", env_val)
+
+	if len(args) <= 0 {
+		pre_text := fmt.Sprintf(`nuru version %s
+tumia toka() ama exit() kundoka.
+`, nuruVersion)
+		fmt.Println(pre_text)
 		repl.Start()
 		return
 	}
 
-	if len(args) == 2 {
-		switch args[1] {
-		case "msaada", "-msaada", "--msaada", "help", "-help", "--help", "-h":
-			fmt.Println(Help)
-		case "version", "-version", "--version", "-v", "v", "--toleo", "-toleo":
-			fmt.Println(NewLogo)
-		case "-docs", "--docs", "-nyaraka", "--nyaraka":
-			repl.Docs()
-		default:
-			file := args[1]
-
-			if strings.HasSuffix(file, "nr") || strings.HasSuffix(file, ".sw") {
-				contents, err := os.ReadFile(file)
-				if err != nil {
-					fmt.Println(styles.ErrorStyle.Render("Error: Nuru imeshindwa kusoma faili: ", args[1]))
-					os.Exit(1)
-				}
-
-				repl.Read(file, string(contents))
-			} else {
-				fmt.Println(styles.ErrorStyle.Render("'"+file+"'", "sii faili sahihi. Tumia faili la '.nr' au '.sw'"))
-				os.Exit(1)
-			}
-		}
-	} else {
-		fmt.Println(styles.ErrorStyle.Render("Error: Operesheni imeshindikana boss."))
-		fmt.Println(Help)
+	var filename = args[0]
+	content, err := os.ReadFile(filename)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Nuru imeshindwa kusoma faili %s\n", args[0])
 		os.Exit(1)
 	}
+	repl.Read(filename, string(content))
+
+}
+
+type msaada_st struct {
+	fupi, refu string
+	msaada     string
+	hatua      func()
+}
+
+func pataMaandishiMsaada() []msaada_st {
+	return []msaada_st{
+		{fupi: "-m", refu: "--msaada", msaada: "Onyesha huu ujumbe", hatua: onyeshaMsaada},
+		{fupi: "-h", refu: "--help", msaada: "Show help message (in swahili)", hatua: onyeshaMsaada},
+		{fupi: "-v", refu: "--version", msaada: "Show version", hatua: version},
+		{fupi: "-t", refu: "--toleo", msaada: "Onyesha toleo", hatua: version},
+		{fupi: "-r", refu: "--hakuna-rangi", msaada: "Usionyeshe rangi", hatua: onyeshaRangi},
+	}
+}
+
+// call the relevant functions or do the neccesary action
+func handleFlags(flags []string) {
+	var found bool
+	for _, flag := range flags {
+		for _, msaada := range pataMaandishiMsaada() {
+			if flag == msaada.fupi || flag == msaada.refu {
+				found = true
+
+				if msaada.hatua != nil {
+					msaada.hatua()
+				} else {
+					fmt.Printf("bendera '%s' imefafanuliwa lakini hakuna hatua yoyote ilitolewa kuitekeleza\n", flag)
+					os.Exit(1)
+				}
+			}
+
+		}
+		if !found {
+			fmt.Printf("'%s' haijafanuliwa kama bendera lakini imepatikana\n", flag)
+			os.Exit(2)
+		}
+	}
+
+}
+
+func onyeshaRangi() {
+	os.Setenv("RANGI", "0")
+}
+
+func onyeshaMsaada() {
+	var pre_text string = fmt.Sprintf("Nuru %s\nUtumiaji [faili] | [chaguzi]\n", nuruVersion)
+	var post_text string = "\nIkiwa kuna hitilafu tafadhali tuma ripoti ya hitilafu (bug report) kwa: https://github.com/NuruProgramming/Nuru/issues"
+	var msaada_v strings.Builder
+	msaada_v.WriteString(pre_text)
+	for _, m := range pataMaandishiMsaada() {
+		msaada_v.WriteString(fmt.Sprintf("%s\t%s\t%s\n", m.fupi, m.refu, m.msaada))
+	}
+
+	msaada_v.WriteString(post_text)
+
+	fmt.Println(msaada_v.String())
+	os.Exit(0)
+}
+
+// Do a simplistic job of going over the args passed and seperating the args from the flags
+func parseArgs(passedArgs []string) ([]string, []string) {
+	var flags []string
+	var args []string
+	for _, arg := range passedArgs {
+		var multiple = regexp.MustCompile(`^-[\w]{2,}$`)
+		if multiple.MatchString(arg) {
+			for _, ml := range arg[1:] {
+				flags = append(flags, fmt.Sprintf("-%s", string(ml)))
+			}
+			continue
+		}
+
+		var arg_r = regexp.MustCompile(`^--?`)
+		if arg_r.MatchString(arg) {
+			flags = append(flags, arg)
+			continue
+		}
+
+		args = append(args, arg)
+	}
+
+	return flags, args
+}
+
+func version() {
+	ver := fmt.Sprintf(`nuru programming %s
+Copyright (C) 2024 Nuru Authors.
+This is free software; see the source for copying conditions.
+There is NO warranty; not even for MERCHANDABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+`, nuruVersion)
+
+	fmt.Println(ver)
+	os.Exit(0)
 }

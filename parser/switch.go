@@ -35,8 +35,9 @@ func (p *Parser) parseSwitchStatement() ast.Expression {
 
 		if p.curTokenIs(token.EOF) {
 			synErr := &errd.MakosaSintaksia{
-				Ujumbe: "Haukufunga ENDAPO (SWITCH)",
-				Info:   p.curToken,
+				Ujumbe:   "Haukufunga ENDAPO (SWITCH)",
+				Muktadha: p.context(),
+				Info:     p.curToken,
 			}
 			synErr.Onyesha()
 			return nil
@@ -63,8 +64,9 @@ func (p *Parser) parseSwitchStatement() ast.Expression {
 			}
 		} else {
 			synErr := &errd.MakosaSintaksia{
-				Ujumbe: fmt.Sprintf("Tulitegemea Kauli IKIWA (CASE) au KAWAIDA (DEFAULT) lakini tumepewa: %s", p.curToken.Type),
-				Info:   p.curToken,
+				Ujumbe:   fmt.Sprintf("Tulitegemea Kauli IKIWA (CASE) au KAWAIDA (DEFAULT) lakini tumepewa: %s", p.curToken.Type),
+				Muktadha: p.context(),
+				Info:     p.curToken,
 			}
 			synErr.Onyesha()
 			return nil
@@ -87,8 +89,9 @@ func (p *Parser) parseSwitchStatement() ast.Expression {
 	}
 	if count > 1 {
 		synErr := &errd.MakosaSintaksia{
-			Ujumbe: fmt.Sprintf("Kauli ENDAPO (SWITCH) hua na kauli 'KAWAIDA' (DEFAULT) moja tu! Wewe umeweka %d", count),
-			Info:   p.curToken,
+			Ujumbe:   fmt.Sprintf("Kauli ENDAPO (SWITCH) hua na kauli 'KAWAIDA' (DEFAULT) moja tu! Wewe umeweka %d", count),
+			Muktadha: p.context(),
+			Info:     p.curToken,
 		}
 		synErr.Onyesha()
 		return nil

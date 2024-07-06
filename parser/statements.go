@@ -69,8 +69,9 @@ func (p *Parser) parseBlockStatement() *ast.BlockStatement {
 	for !p.curTokenIs(token.RBRACE) {
 		if p.curTokenIs(token.EOF) {
 			synErr := &errd.MakosaSintaksia{
-				Ujumbe: fmt.Sprintf("Mstari %d: Hukufunga Mabano '}'", p.curToken.Line),
-				Info:   p.curToken,
+				Ujumbe:   fmt.Sprintf("Mstari %d: Hukufunga Mabano '}'", p.curToken.Line),
+				Muktadha: p.context(),
+				Info:     p.curToken,
 			}
 			synErr.Onyesha()
 			return nil

@@ -142,7 +142,7 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				pg.code = code
 				env := object.NewEnvironment()
 				l := lexer.New("<docs>", pg.code)
-				p := parser.New(l)
+				p := parser.New(pg.code, l)
 				program := p.ParseProgram()
 				evaluated := evaluator.Eval(program, env)
 				if evaluated != nil {
@@ -180,7 +180,7 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					pg.code = code
 					env := object.NewEnvironment()
 					l := lexer.New("<docs>", pg.code)
-					p := parser.New(l)
+					p := parser.New(pg.code, l)
 					program := p.ParseProgram()
 					evaluated := evaluator.Eval(program, env)
 					if evaluated != nil {

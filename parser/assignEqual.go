@@ -30,14 +30,16 @@ func (p *Parser) parseAssignEqualExpression(exp ast.Expression) ast.Expression {
 		if node != nil {
 
 			synErr := &errd.MakosaSintaksia{
-				Ujumbe: fmt.Sprintf("Tulitegemea kupata kitambulishi au array, badala yake tumepata: %s", node.TokenLiteral()),
-				Info:   p.curToken,
+				Ujumbe:   fmt.Sprintf("Tulitegemea kupata kitambulishi au array, badala yake tumepata: %s", node.TokenLiteral()),
+				Muktadha: p.context(),
+				Info:     p.curToken,
 			}
 			synErr.Onyesha()
 		} else {
 			synErr := &errd.MakosaSintaksia{
-				Ujumbe: "Tumejaribu nakini hatujaweza kupata shida",
-				Info:   p.curToken,
+				Ujumbe:   "Tumejaribu nakini hatujaweza kupata shida",
+				Muktadha: p.context(),
+				Info:     p.curToken,
 			}
 			synErr.Onyesha()
 		}
