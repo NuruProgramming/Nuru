@@ -127,9 +127,6 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 				pg.docs.SetContent(str + "\n\n\n\n\n\n")
 
-				if err != nil {
-					panic(err)
-				}
 				pg.fileSelected = true
 				pg.editor.Focus()
 			}
