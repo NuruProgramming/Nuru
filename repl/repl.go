@@ -20,31 +20,6 @@ import (
 )
 
 const PROMPT = ">>> "
-const ERROR_FACE = `
-	███████████████████████████
-	███████▀▀▀░░░░░░░▀▀▀███████
-	████▀░░░░░░░░░░░░░░░░░▀████
-	███│░░░░░░░░░░░░░░░░░░░│███
-	██▌│░░░░░░░░░░░░░░░░░░░│▐██
-	██░└┐░░░░░░░░░░░░░░░░░┌┘░██
-	██░░└┐░░░░░░░░░░░░░░░┌┘░░██
-	██░░┌┘▄▄▄▄▄░░░░░▄▄▄▄▄└┐░░██
-	██▌░│██████▌░░░▐██████│░▐██
-	███░│▐███▀▀░░▄░░▀▀███▌│░███
-	██▀─┘░░░░░░░▐█▌░░░░░░░└─▀██
-	██▄░░░▄▄▄▓░░▀█▀░░▓▄▄▄░░░▄██
-	████▄─┘██▌░░░░░░░▐██└─▄████
-	█████░░▐█─┬┬┬┬┬┬┬─█▌░░█████
-	████▌░░░▀┬┼┼┼┼┼┼┼┬▀░░░▐████
-	█████▄░░░└┴┴┴┴┴┴┴┘░░░▄█████
-	███████▄░░░░░░░░░░░▄███████
-	██████████▄▄▄▄▄▄▄██████████
-	███████████████████████████
-
-  █▄▀ █░█ █▄░█ ▄▀█   █▀ █░█ █ █▀▄ ▄▀█
-  █░█ █▄█ █░▀█ █▀█   ▄█ █▀█ █ █▄▀ █▀█
-
-`
 
 //go:embed docs
 var res embed.FS
@@ -58,8 +33,7 @@ func Read(contents string) {
 	program := p.ParseProgram()
 
 	if len(p.Errors()) != 0 {
-		fmt.Println(styles.ErrorStyle.Italic(false).Render(ERROR_FACE))
-		fmt.Println(styles.ErrorStyle.Italic(false).Render("Kuna Errors Zifuatazo:"))
+		fmt.Println(styles.ErrorStyle.Italic(false).Render("Kuna makosa yafuatayo:"))
 
 		for _, msg := range p.Errors() {
 			fmt.Println("\t" + styles.ErrorStyle.Render(msg))
