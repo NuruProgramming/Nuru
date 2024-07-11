@@ -18,6 +18,16 @@ jobs:
       with:
         go-version: 1.21
       id: go
+    
+    - name: Extract tag
+      id: extract_tag
+      run: echo "TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+
+    - name: Replace __TAG__ in main.go
+      run: sed -i "s/__TAG__/${{ env.TAG }}/g" main.go
+    
+    - name: Replace __TAG__ in makefile
+      run: sed -i "s/__TAG__/${{ env.TAG }}/g" Makefile
 
     - name: Test
       run: go mod tidy && make test

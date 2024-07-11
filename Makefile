@@ -1,4 +1,4 @@
-VERSION=0.5.1
+VERSION=__TAG__
 
 build_linux:
 	@echo 'building linux binary...'

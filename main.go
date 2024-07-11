@@ -17,7 +17,7 @@ var (
  |  \| | | | | '__| | | |
  | |\  | |_| | |  | |_| |
  |_| \_|\__,_|_|   \__,_|`)
-	Version = styles.VersionStyle.Render("v0.5.1")
+	Version = styles.VersionStyle.Render("__TAG__")
 	Author  = styles.AuthorStyle.Render("copyleft 🄯 Nuru Organization")
 	Logo    = lipgloss.JoinVertical(lipgloss.Center, Title, lipgloss.JoinHorizontal(lipgloss.Center, Author, " | ", Version))
 	Help    = lipgloss.JoinVertical(lipgloss.Center, Title, styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
