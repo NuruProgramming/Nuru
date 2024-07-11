@@ -12,42 +12,59 @@ import (
 
 var (
 	Title = styles.TitleStyle.
-		Render(`
-█░░ █░█ █▀▀ █░█ ▄▀█   █▄█ ▄▀█   █▄░█ █░█ █▀█ █░█
-█▄▄ █▄█ █▄█ █▀█ █▀█   ░█░ █▀█   █░▀█ █▄█ █▀▄ █▄█`)
+		Render(`  _   _      🔥            
+ | \ | |_   _ _ __ _   _ 
+ |  \| | | | | '__| | | |
+ | |\  | |_| | |  | |_| |
+ |_| \_|\__,_|_|   \__,_|`)
 	Version = styles.VersionStyle.Render("v0.5.1")
 	Author  = styles.AuthorStyle.Render("copyleft 🄯 Nuru Organization")
-	NewLogo = lipgloss.JoinVertical(lipgloss.Center, Title, lipgloss.JoinHorizontal(lipgloss.Center, Author, " | ", Version))
-	Help    = styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
+	Logo    = lipgloss.JoinVertical(lipgloss.Center, Title, lipgloss.JoinHorizontal(lipgloss.Center, Author, " | ", Version))
+	Help    = lipgloss.JoinVertical(lipgloss.Center, Title, styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
 	%s: Kuanza programu ya Nuru
 	%s: Kuendesha faili la Nuru
 	%s: Kusoma nyaraka za Nuru
 	%s: Kufahamu toleo la Nuru
+	%s: Kupata msaada
 `,
 		styles.HelpStyle.Bold(true).Render("nuru"),
-		styles.HelpStyle.Bold(true).Render("nuru jinaLaFile.nr"),
-		styles.HelpStyle.Bold(true).Render("nuru --nyaraka"),
-		styles.HelpStyle.Bold(true).Render("nuru --toleo")))
+		styles.HelpStyle.Bold(true).Render("nuru jina_la_file.nr"),
+		styles.HelpStyle.Bold(true).Render("nuru -n | --nyaraka"),
+		styles.HelpStyle.Bold(true).Render("nuru -t | --toleo"),
+		styles.HelpStyle.Bold(true).Render("nuru -m | --msaada"))))
+	EnglishHelp = lipgloss.JoinVertical(lipgloss.Center, Title, styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 How to use Nuru:
+	%s: to start the Nuru repl
+	%s: to run a Nuru script
+	%s: to read the Nuru documentation
+	%s: to know the Nuru version
+	%s: to get this help message
+`,
+		styles.HelpStyle.Bold(true).Render("nuru"),
+		styles.HelpStyle.Bold(true).Render("nuru file_name.nr"),
+		styles.HelpStyle.Bold(true).Render("nuru -d | --docs"),
+		styles.HelpStyle.Bold(true).Render("nuru -v | --version"),
+		styles.HelpStyle.Bold(true).Render("nuru -h | --help"))))
 )
 
 func main() {
 
 	args := os.Args
 	if len(args) < 2 {
-
-		help := styles.HelpStyle.Render("💡 Tumia exit() au toka() kuondoka")
-		fmt.Println(lipgloss.JoinVertical(lipgloss.Left, NewLogo, "\n", help))
+		help := styles.HelpStyle.Render("💡 Tumia toka() kuondoka || Use exit() to exit")
+		fmt.Println(lipgloss.JoinVertical(lipgloss.Left, Logo, "\n", help))
 		repl.Start()
 		return
 	}
 
 	if len(args) == 2 {
 		switch args[1] {
-		case "msaada", "-msaada", "--msaada", "help", "-help", "--help", "-h":
+		case "-m", "--msaada":
 			fmt.Println(Help)
-		case "version", "-version", "--version", "-v", "v", "--toleo", "-toleo":
-			fmt.Println(NewLogo)
-		case "-docs", "--docs", "-nyaraka", "--nyaraka":
+		case "-h", "--help":
+			fmt.Println(EnglishHelp)
+		case "-t", "--toleo", "-v", "--version":
+			fmt.Println(Logo)
+		case "-n", "--nyaraka", "-d", "--docs":
 			repl.Docs()
 		default:
 			file := args[1]
@@ -66,7 +83,7 @@ func main() {
 			}
 		}
 	} else {
-		fmt.Println(styles.ErrorStyle.Render("Error: Operesheni imeshindikana boss."))
+		fmt.Println(styles.ErrorStyle.Render("Error: idadi ya bendera sii sahihi"))
 		fmt.Println(Help)
 		os.Exit(1)
 	}
