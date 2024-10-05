@@ -95,6 +95,58 @@ var builtins = map[string]*object.Builtin{
 			return &object.File{Filename: filename, Content: string(file)}
 		},
 	},
+	"mfululizo": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) < 1 || len(args) > 3 {
+				return newError("Samahani, mfululizo inahitaji hoja 1 hadi 3, wewe umeweka %d", len(args))
+			}
+
+			var start, end, step int64
+			var err error
+
+			switch len(args) {
+			case 1:
+				end, err = getIntValue(args[0])
+				if err != nil {
+					return newError("Hoja lazima iwe nambari nzima")
+				}
+				start, step = 0, 1
+			case 2:
+				start, err = getIntValue(args[0])
+				if err != nil {
+					return newError("Hoja ya kwanza lazima iwe nambari nzima")
+				}
+				end, err = getIntValue(args[1])
+				if err != nil {
+					return newError("Hoja ya pili lazima iwe nambari nzima")
+				}
+				step = 1
+			case 3:
+				start, err = getIntValue(args[0])
+				if err != nil {
+					return newError("Hoja ya kwanza lazima iwe nambari nzima")
+				}
+				end, err = getIntValue(args[1])
+				if err != nil {
+					return newError("Hoja ya pili lazima iwe nambari nzima")
+				}
+				step, err = getIntValue(args[2])
+				if err != nil {
+					return newError("Hoja ya tatu lazima iwe nambari nzima")
+				}
+				if step == 0 {
+					return newError("Hatua haiwezi kuwa sifuri")
+				}
+			}
+
+			elements := []object.Object{}
+			for i := start; (step > 0 && i < end) || (step < 0 && i > end); i += step {
+				elements = append(elements, &object.Integer{Value: i})
+			}
+
+			return &object.Array{Elements: elements}
+		},
+	},
 
 	// "jumla": {
 	// 	Fn: func(args ...object.Object) object.Object {
@@ -134,4 +186,13 @@ var builtins = map[string]*object.Builtin{
 	// 		}
 	// 	},
 	// },
+}
+
+func getIntValue(obj object.Object) (int64, error) {
+	switch obj := obj.(type) {
+	case *object.Integer:
+		return obj.Value, nil
+	default:
+		return 0, fmt.Errorf("expected integer, got %T", obj)
+	}
 }
