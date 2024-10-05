@@ -21,7 +21,7 @@ To get started download the executables from the release page or follow the inst
  - Download the binary:
 
 ```
-curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Linux_amd64.tar.gz
+curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Linux_amd64.tar.gz
 ```
 
   - Extract the file to make global available:
@@ -44,13 +44,13 @@ nuru -v
     - For apple silicon mac use:
 
         ```
-        curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Darwin_arm64.tar.gz
+        curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Darwin_arm64.tar.gz
         ```
 
     - For apple intel mac use:
 
         ```
-        curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Darwin_amd64.tar.gz
+        curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Darwin_amd64.tar.gz
         ```
 
 - Extract the file to make global available:
@@ -88,7 +88,7 @@ To install Nuru on your Android device using Termux, follow these steps:
 
 3. **Download the Nuru package**:
    ```bash
-   curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Android_arm64.tar.gz
+   curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Android_arm64.tar.gz
    ```
 
 4. **Extract the files to the target directory**:
@@ -114,14 +114,14 @@ To install Nuru on your Android device using Termux, follow these steps:
 For a more streamlined installation, you can use the following one-liner:
 
 ```bash
-curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Android_arm64.tar.gz && mkdir -p /data/data/com.termux/files/usr/share/nuru && tar -xzvf nuru_Android_arm64.tar.gz -C /data/data/com.termux/files/usr/share/nuru && echo "alias nuru='/data/data/com.termux/files/usr/share/nuru/nuru'" >> ~/.bashrc && source ~/.bashrc && echo "Installation complete.."
+curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Android_arm64.tar.gz && mkdir -p /data/data/com.termux/files/usr/share/nuru && tar -xzvf nuru_Android_arm64.tar.gz -C /data/data/com.termux/files/usr/share/nuru && echo "alias nuru='/data/data/com.termux/files/usr/share/nuru/nuru'" >> ~/.bashrc && source ~/.bashrc && echo "Installation complete.."
 ```
 
 
 ### Windows
 
 - Executable:
-    - Download the Nuru zip file [Here](https://github.com/NuruProgramming/Nuru/releases/download/v0.5.16/nuru_Windows_amd64.zip)
+    - Download the Nuru zip file [Here](https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Windows_amd64.zip)
     - Unzip to get the executable
     - Double click the executable
 
@@ -176,8 +176,8 @@ Nuru supports both single line and multiple line comments as shown below:
 /*
 Multiple
 Line
-Comment 
-*/ 
+Comment
+*/
 ```
 
 ### Arithmetic Operations
@@ -292,7 +292,7 @@ Nuru also supports dictionaries and you can do a lot with them as follows:
 ```
 mtu = {"jina": "Mojo", "kabila": "Mnyakusa"}
 
-// get value from key 
+// get value from key
 andika(mtu["jina"]) // output = Mojo
 
 andika(mtu["kabila"]); // output = Mnyakusa

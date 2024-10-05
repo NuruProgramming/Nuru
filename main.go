@@ -15,7 +15,7 @@ var (
 		Render(`
 █░░ █░█ █▀▀ █░█ ▄▀█   █▄█ ▄▀█   █▄░█ █░█ █▀█ █░█
 █▄▄ █▄█ █▄█ █▀█ █▀█   ░█░ █▀█   █░▀█ █▄█ █▀▄ █▄█`)
-	Version = styles.VersionStyle.Render("v0.5.1")
+	Version = styles.VersionStyle.Render("v0.5.17")
 	Author  = styles.AuthorStyle.Render("by Nuru Org")
 	NewLogo = lipgloss.JoinVertical(lipgloss.Center, Title, lipgloss.JoinHorizontal(lipgloss.Center, Author, " | ", Version))
 	Help    = styles.HelpStyle.Italic(false).Render(fmt.Sprintf(`💡 Namna ya kutumia Nuru:
