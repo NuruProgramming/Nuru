@@ -18,52 +18,17 @@ To get started download the executables from the release page or follow the inst
 
 ### Linux
 
- - Download the binary:
+- Download the binary:
 
 ```
 curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Linux_amd64.tar.gz
 ```
 
-  - Extract the file to make global available:
+- Extract the file to make global available:
 
 ```
 sudo tar -C /usr/local/bin -xzvf nuru_Linux_amd64.tar.gz
 ```
-
- - Confirm installation with:
-
-```
-nuru -v
-```
-
-
-### MacOs ( Apple silicon Mac )
-
- - Download the binary:
-
-    - For apple silicon mac use:
-
-        ```
-        curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Darwin_arm64.tar.gz
-        ```
-
-    - For apple intel mac use:
-
-        ```
-        curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Darwin_amd64.tar.gz
-        ```
-
-- Extract the file to make global available:
-    - For apple silicon mac use:
-
-        ```
-        sudo tar -C /usr/local/bin -xzvf nuru_Darwin_arm64.tar.gz
-        ```
-    - For apple intel mac use:
-
-        ```
-        sudo tar -C /usr/local/bin -xzvf nuru_Darwin_amd64.tar.gz
-        ```
 
 - Confirm installation with:
 
@@ -71,37 +36,76 @@ nuru -v
 nuru -v
 ```
 
+### MacOs ( Apple silicon Mac )
 
+- Download the binary:
 
+  - For apple silicon mac use:
+
+    ```
+    curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Darwin_arm64.tar.gz
+    ```
+
+  - For apple intel mac use:
+
+    ```
+    curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Darwin_amd64.tar.gz
+    ```
+
+- Extract the file to make global available:
+
+  - For apple silicon mac use:
+
+    ```
+    sudo tar -C /usr/local/bin -xzvf nuru_Darwin_arm64.tar.gz
+    ```
+
+  - For apple intel mac use:
+
+    ```
+    sudo tar -C /usr/local/bin -xzvf nuru_Darwin_amd64.tar.gz
+    ```
+
+- Confirm installation with:
+
+```
+nuru -v
+```
 
 ### Android (Termux)
 
 To install Nuru on your Android device using Termux, follow these steps:
 
 1. **Ensure Termux is installed**:
+
    - You can download and install [Termux](https://f-droid.org/en/packages/com.termux/).
 
 2. **Create the target directory**:
+
    ```bash
    mkdir -p /data/data/com.termux/files/usr/share/nuru
    ```
 
 3. **Download the Nuru package**:
+
    ```bash
    curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Android_arm64.tar.gz
    ```
 
 4. **Extract the files to the target directory**:
+
    ```bash
    tar -xzvf nuru_Android_arm64.tar.gz -C /data/data/com.termux/files/usr/share/nuru
    ```
 
 5. **Set up an alias for easy access**:
+
    ```bash
    echo "alias nuru='/data/data/com.termux/files/usr/share/nuru/nuru'" >> ~/.bashrc
    ```
 
 6. **Reload the .bashrc file to apply the alias**:
+
    ```bash
    source ~/.bashrc
    ```
@@ -117,27 +121,33 @@ For a more streamlined installation, you can use the following one-liner:
 curl -O -L https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Android_arm64.tar.gz && mkdir -p /data/data/com.termux/files/usr/share/nuru && tar -xzvf nuru_Android_arm64.tar.gz -C /data/data/com.termux/files/usr/share/nuru && echo "alias nuru='/data/data/com.termux/files/usr/share/nuru/nuru'" >> ~/.bashrc && source ~/.bashrc && echo "Installation complete.."
 ```
 
-
 ### Windows
 
 - Executable:
-    - Download the Nuru zip file [Here](https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Windows_amd64.zip)
-    - Unzip to get the executable
-    - Double click the executable
+
+  - Download the Nuru zip file [Here](https://github.com/NuruProgramming/Nuru/releases/download/v0.5.17/nuru_Windows_amd64.zip)
+  - Unzip to get the executable
+  - Double click the executable
 
 - Nuru Installer
-    > Coming Soon
+  > Coming Soon
 
 ### Building From Source
 
- - Make sure you have golang installed (atleast 1.19.0 and above)
- - Run the following command:
+- Make sure you have golang installed (atleast 1.19.0 and above)
+- Run the following command:
 
 ```
-go build -o nuru main.go
+go build -o nuru .
 ```
- - You can optionally add the binary to $PATH as shown above
- - Confirm installtion with:
+
+- Copy nuru binary to path destination ~/go/bin
+
+```
+cp nuru ~/go/bin
+```
+
+- Confirm installtion with:
 
 ```
 nuru -v
@@ -146,6 +156,7 @@ nuru -v
 ## Syntax At A Glance
 
 **NOTE**
+
 > There is a more detailed documentation of the language [here](https://nuruprogramming.org).
 
 Nuru, although still in its early stage, intends to be a fully functional programming language, and thus it has been baked with many features.
@@ -160,10 +171,13 @@ y = 3;
 
 andika(x*y) // output is 6
 ```
+
 You can also use the `fanya` keyword to define a variabe:
+
 ```
 fanya x = 3
 ```
+
 **Note that `fanya` keyword is OPTIONAL**
 
 ### Comments
@@ -194,15 +208,15 @@ For now Nuru supports `+`, `-`, `/`, `*` and `%`. Nuru also provides precedence 
 
 Nuru has the following types:
 
-Type      | Syntax                                    | Comments
---------- | ----------------------------------------- | -----------------------
-BOOL      | `kweli sikweli`                           | kweli == true, sikweli == false
-INT       | `1, 100, 342, -4`                         | These are signed 64 bit integers
-FLOAT     | `2.3, 4.5. 100.8094`                      | Signed 64 bit floats
-STRING    | `"" "mambo" "habari yako"`                | They can be in double `"` or single `'` quotes
-ARRAY     | `[] [1, 2, 3] [1, "moja", kweli]`         | Arrays can hold any types
-DICT      | `{} {"a": 3, 1: "moja", kweli: 2}`        | Keys can be int, string or bool. Values can be anything
-NULL      | `tupu`                                    | These are nil objects
+| Type   | Syntax                             | Comments                                                |
+| ------ | ---------------------------------- | ------------------------------------------------------- |
+| BOOL   | `kweli sikweli`                    | kweli == true, sikweli == false                         |
+| INT    | `1, 100, 342, -4`                  | These are signed 64 bit integers                        |
+| FLOAT  | `2.3, 4.5. 100.8094`               | Signed 64 bit floats                                    |
+| STRING | `"" "mambo" "habari yako"`         | They can be in double `"` or single `'` quotes          |
+| ARRAY  | `[] [1, 2, 3] [1, "moja", kweli]`  | Arrays can hold any types                               |
+| DICT   | `{} {"a": 3, 1: "moja", kweli: 2}` | Keys can be int, string or bool. Values can be anything |
+| NULL   | `tupu`                             | These are nil objects                                   |
 
 ### Functions
 
@@ -260,6 +274,7 @@ wakati (i > 0) {
 ### Arrays
 
 This is how you initiliaze and perform other array operations in Nuru:
+
 ```
 arr = []
 
@@ -289,6 +304,7 @@ andika(arr[3]) // output = 3
 ### Dictionaries
 
 Nuru also supports dictionaries and you can do a lot with them as follows:
+
 ```
 mtu = {"jina": "Mojo", "kabila": "Mnyakusa"}
 
@@ -321,6 +337,7 @@ andika(mtu) // output = {"jina": "Avicenna", "kabila": "Mnyakusa", "anapoishi": 
 ### For Loops
 
 These can iterate over strings, arrays and dictionaries:
+
 ```
 kwa i ktk "habari" {
     andika(i)
@@ -338,6 +355,7 @@ i
 ### Getting Input From User
 
 In Nuru you can get input from users using the `jaza()` keyword as follows:
+
 ```
 jina = jaza("Unaitwa nani? ") // will prompt for input
 
@@ -349,6 +367,7 @@ andika("Habari yako " + jina)
 ### Using The Intepreter:
 
 You can enter the intepreter by simply running the `nuru` command:
+
 ```
 nuru
 >>> andika("karibu")
@@ -356,10 +375,13 @@ karibu
 >>> 2 + 2
 4
 ```
+
 Kindly Note that everything should be placed in a single line. Here's an example:
+
 ```
 >>> kama (x > y) {andika("X ni kubwa")} sivyo {andika("Y ni kubwa")}
 ```
+
 ### Running From File
 
 To run a Nuru script, write the `nuru` command followed by the name of the file with a `.nr` or `.sw` extension:
@@ -382,7 +404,7 @@ There are documentations for two languages, English and Kiswahili, which are bot
 
 Clone the repo, hack it, make sure all tests are passing then submit a pull request.
 
- > Make sure ALL tests are passing before making a pull request. You can confirm with running `make tests`
+> Make sure ALL tests are passing before making a pull request. You can confirm with running `make tests`
 
 ## Community
 
