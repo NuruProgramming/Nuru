@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strconv"
 	"strings"
 
 	"github.com/NuruProgramming/Nuru/object"
@@ -40,17 +41,21 @@ var builtins = map[string]*object.Builtin{
 		Fn: func(args ...object.Object) object.Object {
 			if len(args) == 0 {
 				fmt.Println("")
-			} else {
-				var arr []string
-				for _, arg := range args {
-					if arg == nil {
-						return newError("Hauwezi kufanya operesheni hii")
-					}
-					arr = append(arr, arg.Inspect())
-				}
-				str := strings.Join(arr, " ")
-				fmt.Println(str)
+				return nil
 			}
+
+			if args[0].Type() != "NENO" {
+				// Try and give a meaningful message instead of this generic error
+				return newError(fmt.Sprintf("chaguo la kwanza linafaa kuwa neno, umepena %s", args[0].Type()))
+			}
+
+			str, err := formatStr(args[0], args[1:])
+			if err != nil {
+				return newError(err.Error())
+			}
+
+			fmt.Printf(str)
+
 			return nil
 		},
 	},
@@ -225,4 +230,82 @@ func getIntValue(obj object.Object) (int64, error) {
 	default:
 		return 0, fmt.Errorf("expected integer, got %T", obj)
 	}
+}
+
+// Format the string like "Hello {0}", jina ...
+func formatStr(format object.Object, options []object.Object) (string, error) {
+	var str strings.Builder
+	var val strings.Builder
+	var check_val bool
+	var opts_len int = len(options)
+
+	type optM struct {
+		val bool
+		obj object.Object
+	}
+
+	var optionsMap = make(map[int]optM, opts_len)
+
+	// convert the options into a map (may not be the most efficient but we are not going fast)
+	for i, optm := range options {
+		optionsMap[i] = optM{val: false, obj: optm}
+	}
+
+	// Now go through the format string and do the replacement(s)
+	// this has approx time complexity of O(n) (bestest case)
+	for _, opt := range format.Inspect() {
+		if opt == '{' {
+			check_val = true
+			continue
+		}
+
+		if check_val && opt == '}' {
+			vstr := strings.TrimSpace(val.String()) // remove accidental spaces
+
+			// check the value and try to convert to int
+			arrv, err := strconv.Atoi(vstr)
+			if err != nil {
+				// return non-cryptic go errors
+				return "", fmt.Errorf(fmt.Sprintf("Ulichopeana si NAMBA, jaribu tena: `%s'", vstr))
+			}
+
+			oVal, exists := optionsMap[arrv]
+
+			if !exists {
+				return "", fmt.Errorf(fmt.Sprintf("Nambari ya chaguo unalolitaka %d ni kubwa kuliko ulizopeana (%d)", arrv, opts_len))
+			}
+
+			str.WriteString(oVal.obj.Inspect())
+			// may be innefficient
+			optionsMap[arrv] = optM{val: true, obj: oVal.obj}
+
+			check_val = false
+			val.Reset()
+			continue
+		}
+
+		if check_val {
+			val.WriteRune(opt)
+			continue
+		}
+
+		str.WriteRune(opt)
+	}
+
+	// Another innefficient loop
+	for _, v := range optionsMap {
+		if !v.val {
+			return "", fmt.Errorf(fmt.Sprintf("Ulipeana hili chaguo (%s) {%s} lakini haukutumia", v.obj.Inspect(), v.obj.Type()))
+		}
+	}
+
+	// !start
+	// Here we can talk about wtf just happened
+	// 3 loops to do just formatting, formatting for codes sake.
+	// it can be done in 2 loops, the last one is just to confirm that you didn't forget anything.
+	// this is not required but a nice syntatic sugar, we are not here for speed, so ergonomics matter instead of speed
+	// finally we can say we are slower than python!, what an achievement
+	// done!
+
+	return str.String(), nil
 }
