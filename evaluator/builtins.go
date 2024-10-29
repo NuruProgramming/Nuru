@@ -148,6 +148,36 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 
+	"badilisha": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 2 {
+				return newError("Samahani, badili inahitaji hoja 2, wewe umeweka %d", len(args))
+			}
+
+			value := args[0]
+			targetType := args[1]
+
+			if targetType.Type() != object.STRING_OBJ {
+				return newError("Aina ya lengo lazima iwe neno")
+			}
+
+			targetTypeStr := targetType.(*object.String).Value
+
+			switch targetTypeStr {
+			case "NAMBA":
+				return convertToInteger(value)
+			case "DESIMALI":
+				return convertToFloat(value)
+			case "NENO":
+				return convertToString(value)
+			case "BOOLEAN":
+				return convertToBoolean(value)
+			default:
+				return newError("Aina isiyojulikana: %s", targetTypeStr)
+			}
+		},
+	},
+
 	// "jumla": {
 	// 	Fn: func(args ...object.Object) object.Object {
 	// 		if len(args) != 1 {
