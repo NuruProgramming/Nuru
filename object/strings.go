@@ -1,7 +1,9 @@
 package object
 
 import (
+	"fmt"
 	"hash/fnv"
+	"strconv"
 	"strings"
 )
 
@@ -39,6 +41,8 @@ func (s *String) Method(method string, args []Object) Object {
 		return s.lower(args)
 	case "gawa":
 		return s.split(args)
+	case "panga":
+		return s.format(args)
 	default:
 		return newError("Samahani, kiendesha hiki hakitumiki na tungo (Neno)")
 	}
@@ -80,4 +84,94 @@ func (s *String) split(args []Object) Object {
 		elements[k] = &String{Value: v}
 	}
 	return &Array{Elements: elements}
+}
+
+func (s *String) format(args []Object) Object {
+	value, err := formatStr(s.Value, args)
+
+	if err != nil {
+		return newError(err.Error())
+	}
+
+	return &String{Value: value}
+}
+
+func formatStr(format string, options []Object) (string, error) {
+	var str strings.Builder
+	var val strings.Builder
+	var check_val bool
+	var opts_len int = len(options)
+
+	var escapeChar bool
+
+	type optM struct {
+		val bool
+		obj Object
+	}
+
+	var optionsMap = make(map[int]optM, opts_len)
+
+	for i, optm := range options {
+		optionsMap[i] = optM{val: false, obj: optm}
+	}
+
+	for _, opt := range format {
+
+		if !escapeChar && opt == '\\' {
+			escapeChar = true
+			continue
+		}
+
+		if opt == '{' && !escapeChar {
+			check_val = true
+			continue
+		}
+
+		if escapeChar {
+			if opt != '{' && opt != '}' {
+				str.WriteRune('\\')
+			}
+			escapeChar = false
+		}
+
+		if check_val && opt == '}' {
+			vstr := strings.TrimSpace(val.String())
+			arrv, err := strconv.Atoi(vstr)
+			if err != nil {
+				return "", fmt.Errorf(fmt.Sprintf("Ulichopeana si NAMBA, jaribu tena: `%s'", vstr))
+			}
+
+			oVal, exists := optionsMap[arrv]
+
+			if !exists {
+				return "", fmt.Errorf(fmt.Sprintf("Nambari ya chaguo unalolitaka %d ni kubwa kuliko ulizopeana (%d)", arrv, opts_len))
+			}
+
+			str.WriteString(oVal.obj.Inspect())
+			optionsMap[arrv] = optM{val: true, obj: oVal.obj}
+
+			check_val = false
+			val.Reset()
+			continue
+		}
+
+		if check_val {
+			val.WriteRune(opt)
+			continue
+		}
+
+		str.WriteRune(opt)
+	}
+
+	if check_val {
+		return "", fmt.Errorf(fmt.Sprintf("Haukufunga '{', tuliokota kabla ya kufika mwisho `%s'", val.String()))
+	}
+
+	for _, v := range optionsMap {
+		if !v.val {
+			return "", fmt.Errorf(fmt.Sprintf("Ulipeana hili chaguo (%s) {%s} lakini haukutumia", v.obj.Inspect(), v.obj.Type()))
+		}
+	}
+
+	return str.String(), nil
 }
