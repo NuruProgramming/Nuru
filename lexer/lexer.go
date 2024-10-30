@@ -168,6 +168,11 @@ func (l *Lexer) NextToken() token.Token {
 		} else {
 			tok = newToken(token.MODULUS, l.line, l.ch)
 		}
+	case rune('#'):
+		if l.peekChar() == rune('!') && l.line == 1 {
+			l.skipSingleLineComment()
+			return l.NextToken()
+		}
 	case 0:
 		tok.Literal = ""
 		tok.Type = token.EOF

@@ -44,6 +44,7 @@ const (
 	ASTERISK_ASSIGN = "*="
 	SLASH_ASSIGN    = "/="
 	MODULUS_ASSIGN  = "%="
+	SHEBANG         = "#!"
 
 	//Delimiters
 	COMMA     = ","
