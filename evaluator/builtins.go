@@ -239,6 +239,9 @@ func formatStr(format object.Object, options []object.Object) (string, error) {
 	var check_val bool
 	var opts_len int = len(options)
 
+	// This is to enable escaping the {} braces if you want them included
+	var escapeChar bool
+
 	type optM struct {
 		val bool
 		obj object.Object
@@ -254,9 +257,22 @@ func formatStr(format object.Object, options []object.Object) (string, error) {
 	// Now go through the format string and do the replacement(s)
 	// this has approx time complexity of O(n) (bestest case)
 	for _, opt := range format.Inspect() {
-		if opt == '{' {
+
+		if !escapeChar && opt == '\\' {
+			escapeChar = true
+			continue
+		}
+
+		if opt == '{' && !escapeChar {
 			check_val = true
 			continue
+		}
+
+		if escapeChar {
+			if opt != '{' && opt != '}' {
+				str.WriteRune('\\')
+			}
+			escapeChar = false
 		}
 
 		if check_val && opt == '}' {
@@ -290,6 +306,11 @@ func formatStr(format object.Object, options []object.Object) (string, error) {
 		}
 
 		str.WriteRune(opt)
+	}
+
+	// A check if they never closed the formatting braces e.g '{0'
+	if check_val {
+		return "", fmt.Errorf(fmt.Sprintf("Haukufunga '{', tuliokota kabla ya kufika mwisho `%s'", val.String()))
 	}
 
 	// Another innefficient loop
