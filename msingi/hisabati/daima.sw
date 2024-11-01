@@ -75,7 +75,7 @@ abs = unda(namba){
 //acos(x), calculates the arccosine of a number.
 acos = unda(x) {
     kama (x < -1 || x > 1) {
-        rudisha "NaN";
+        rudisha tupu;
     }
 
     fanya EPSILON = 1*10.0**-10; // Small value for precision
@@ -107,7 +107,7 @@ acosh = unda(x) {
 //asin(x), calculates the arcsine of a number using the Newton Method.
 asin = unda(x) {
     kama (x < -1 || x > 1) {
-        rudisha "NaN";
+        rudisha "tupu";
     }
 
     fanya maxIterations = 50; // Maximum number of iterations
@@ -169,7 +169,7 @@ atan2 = unda(y, x) {
     } au kama(x == 0 && y < 0) {
         rudisha - hisabati.PI() / 2;
     } au kama(x == 0 && y == 0) {
-        rudisha "NaN"; // Undefined
+        rudisha "tupu"; // Undefined
     }
 }
 
@@ -295,7 +295,7 @@ hypot = unda(values) {
 //log(x), calculates the natural logarithm of a number.
 log = unda(x) {
     kama (x <= 0) {
-        rudisha "NaN";
+        rudisha "tupu";
     }
     kama (x == 1) {
         rudisha 0;
@@ -326,7 +326,7 @@ log10 = unda(x) {
 //log1p(x), calculates the natural logarithm of 1 plus the given number.
 log1p = unda(x) {
     kama (x <= -1) {
-        rudisha NaN; // Not a Number
+        rudisha tupu; // Not a Number
     } au kama (abs(x) < hisabati.EPSILON()) {
         rudisha x - 0.5 * x * x; // Series expansion for small x
     } sivyo {
@@ -399,7 +399,7 @@ round = unda(x, method = "ri") {
             rudisha ceiling(x - 0.5);
         }
     } sivyo {
-        rudisha NaN; // Invalid method
+        rudisha tupu; // Invalid method
     }
 }
 
