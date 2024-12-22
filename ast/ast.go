@@ -617,6 +617,14 @@ func (p *Package) String() string {
 	return out.String()
 }
 
+type NoOp struct {
+	Token token.Token
+}
+
+func (np *NoOp) expressionNode()      {}
+func (np *NoOp) TokenLiteral() string { return np.Token.Literal }
+func (np *NoOp) String() string       { return "??" }
+
 type At struct {
 	Token token.Token
 }

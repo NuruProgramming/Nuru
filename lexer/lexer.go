@@ -33,7 +33,9 @@ func (l *Lexer) readChar() {
 
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
-	l.skipWhitespace()
+	if !(l.ch == '\n' || l.ch == '\r') {
+		l.skipWhitespace()
+	}
 	if l.ch == rune('/') && l.peekChar() == rune('/') {
 		l.skipSingleLineComment()
 		return l.NextToken()
@@ -54,6 +56,8 @@ func (l *Lexer) NextToken() token.Token {
 		}
 	case rune(';'):
 		tok = newToken(token.SEMICOLON, l.line, l.ch)
+	case rune('\n'), rune('\r'):
+		tok = newToken(token.NEWLINE, l.line, l.ch)
 	case rune('('):
 		tok = newToken(token.LPAREN, l.line, l.ch)
 	case rune(')'):

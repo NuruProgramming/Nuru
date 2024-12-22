@@ -77,7 +77,7 @@ const (
 	CASE     = "IKIWA"
 	DEFAULT  = "KAWAIDA"
 	IMPORT   = "TUMIA"
-	PACKAGE  = "PAKEJI"
+	NEWLINE  = "NEWLINE"
 )
 
 var keywords = map[string]TokenType{
@@ -99,7 +99,6 @@ var keywords = map[string]TokenType{
 	"ikiwa":   CASE,
 	"kawaida": DEFAULT,
 	"tumia":   IMPORT,
-	"pakeji":  PACKAGE,
 	"@":       AT,
 }
 

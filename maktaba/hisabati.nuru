@@ -1,0 +1,4 @@
+// Hii ni thamni ya PI
+PI = unda() {
+	rudisha 3.141592653589793
+}

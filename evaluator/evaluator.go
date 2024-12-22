@@ -124,8 +124,6 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 	// 	return evalForExpression(node, env)
 	case *ast.ForIn:
 		return evalForInExpression(node, env, node.Token.Line)
-	case *ast.Package:
-		return evalPackage(node, env)
 	case *ast.PropertyExpression:
 		return evalPropertyExpression(node, env)
 	case *ast.PropertyAssignment:
