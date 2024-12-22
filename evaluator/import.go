@@ -28,7 +28,7 @@ const (
 func evalImport(node *ast.Import, env *object.Environment) object.Object {
 	/*
 		Maktaba yanafuata mkondo wa:
-			mkt => ni maktaba ya kawaida (stdlib)
+			msingi => ni maktaba ya kawaida (stdlib)
 			hapa => ni maktaba haya, tunaanza na faili "nuru.toml" (ama faili ya kisawa)
 			_ => majina mengine ni ya maktaba ya nje
 	*/
@@ -41,13 +41,18 @@ func evalImport(node *ast.Import, env *object.Environment) object.Object {
 		}
 
 		switch vs[0] {
-		case "mkt":
+		case "msingi":
 			loc := mahali_pa_maktaba(MAKTABA_YA_NURU)
-			ss := strings.Split(v.Value, "/")[1:]
 
-			fi__ := filepath.Join(loc)
-			g__ := filepath.Join(ss...)
-			fi := filepath.Join(fi__, g__)
+			ss := strings.Split(v.Value, "/")[1:]
+			fi := filepath.Join(loc, filepath.Join(ss...))
+
+			return evalImportFile(k, &ast.Identifier{Value: fi}, env)
+		case "hapa":
+			loc := mahali_pa_maktaba(MAKTABA_YA_HAPA, node.Token.Filename)
+
+			ss := strings.Split(v.Value, "/")[1:]
+			fi := filepath.Join(loc, filepath.Join(ss...))
 
 			return evalImportFile(k, &ast.Identifier{Value: fi}, env)
 		default:
@@ -59,7 +64,7 @@ func evalImport(node *ast.Import, env *object.Environment) object.Object {
 	return NULL
 }
 
-func mahali_pa_maktaba(mkt maktaba) string {
+func mahali_pa_maktaba(mkt maktaba, mahali ...string) string {
 	switch mkt {
 	case MAKTABA_YA_NURU:
 		loc := os.Getenv("MAKTABA_YA_NURU")
@@ -85,6 +90,25 @@ func mahali_pa_maktaba(mkt maktaba) string {
 		}
 
 		return usr_lib
+	case MAKTABA_YA_HAPA:
+		// Hii tunahitaji kuenda nyuma hadi mahali tutakapo pata faili "nuru.toml"
+		var mkt__ string = mahali[0]
+		var nuru_config string = "nuru.toml"
+
+		// Check if the current dir has "nuru.toml"
+		for {
+			if filepath.Dir(mkt__) ==  mkt__ {
+				break
+			}
+
+			if fileExists(filepath.Join(mkt__, nuru_config)) {
+				return mkt__
+			}
+
+			mkt__ = filepath.Dir(mkt__)
+		}
+
+		return mkt__
 	default:
 		return ""
 	}
@@ -110,7 +134,6 @@ func addSearchPath(path string) {
 
 func findFile(name string) string {
 	basename := fmt.Sprintf("%s.nuru", name)
-	fmt.Println(basename)
 	for _, path := range searchPaths {
 		file := filepath.Join(path, basename)
 		if fileExists(file) {
@@ -131,7 +154,7 @@ func evaluateFile(name, file string, env *object.Environment) (*object.Environme
 		return nil, &object.Error{Message: fmt.Sprintf("Tumeshindwa kufungua pakeji: %s", file)}
 	}
 	l := lexer.New(string(source))
-	p := parser.New(l)
+	p := parser.New(l,file)
 	program := p.ParseProgram()
 	if len(p.Errors()) != 0 {
 		return nil, &object.Error{Message: fmt.Sprintf("Pakeji %s ina makosa yafuatayo:\n%s", file, strings.Join(p.Errors(), "\n"))}

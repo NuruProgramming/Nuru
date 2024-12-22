@@ -71,6 +71,7 @@ type Parser struct {
 	prefixParseFns  map[token.TokenType]prefixParseFn
 	infixParseFns   map[token.TokenType]infixParseFn
 	postfixParseFns map[token.TokenType]postfixParseFn
+	filname string
 }
 
 func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
@@ -85,8 +86,8 @@ func (p *Parser) registerPostfix(tokenType token.TokenType, fn postfixParseFn) {
 	p.postfixParseFns[tokenType] = fn
 }
 
-func New(l *lexer.Lexer) *Parser {
-	p := &Parser{l: l, errors: []string{}}
+func New(l *lexer.Lexer, filename string) *Parser {
+	p := &Parser{l: l, errors: []string{}, filname: filename}
 
 	p.nextToken()
 	p.nextToken()
