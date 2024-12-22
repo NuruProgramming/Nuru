@@ -296,7 +296,13 @@ func applyFunction(fn object.Object, args []object.Object, line int) object.Obje
 		if fn != nil {
 			return newError("Mstari %d: Hiki sio kiendesha: %s", line, fn.Type())
 		} else {
-			return newError("Bro how did you even get here??? Contact language maker asap!")
+			// Commit a484f5ca37d3f38b72f78b00b27a341d4d09a247 introduced a way to trigger this.
+			// My guess is how white spaces are processed.
+			return newError(`Hii ni muundo ambayo programu yako haifai kuwa. Tumejaribu miundo mingine lakini programu yako haieleweki.
+
+Tuma sehemu ya programu ilifananya hii kosa kuonyeshwa hapa:
+https://github.com/nuruprogramming/Nuru/issues
+`)
 		}
 	}
 

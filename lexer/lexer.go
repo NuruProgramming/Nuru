@@ -58,6 +58,7 @@ func (l *Lexer) NextToken() token.Token {
 		tok = newToken(token.SEMICOLON, l.line, l.ch)
 	case rune('\n'), rune('\r'):
 		tok = newToken(token.NEWLINE, l.line, l.ch)
+		l.line++
 	case rune('('):
 		tok = newToken(token.LPAREN, l.line, l.ch)
 	case rune(')'):
