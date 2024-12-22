@@ -49,7 +49,7 @@ func evalImport(node *ast.Import, env *object.Environment) object.Object {
 
 			return evalImportFile(k, &ast.Identifier{Value: fi}, env)
 		case "hapa":
-			loc := mahali_pa_maktaba(MAKTABA_YA_HAPA, node.Token.Filename)
+			loc := mahali_pa_maktaba(MAKTABA_YA_HAPA, node.Filename)
 
 			ss := strings.Split(v.Value, "/")[1:]
 			fi := filepath.Join(loc, filepath.Join(ss...))
@@ -97,7 +97,7 @@ func mahali_pa_maktaba(mkt maktaba, mahali ...string) string {
 
 		// Check if the current dir has "nuru.toml"
 		for {
-			if filepath.Dir(mkt__) ==  mkt__ {
+			if filepath.Dir(mkt__) == mkt__ {
 				break
 			}
 
@@ -154,7 +154,7 @@ func evaluateFile(name, file string, env *object.Environment) (*object.Environme
 		return nil, &object.Error{Message: fmt.Sprintf("Tumeshindwa kufungua pakeji: %s", file)}
 	}
 	l := lexer.New(string(source))
-	p := parser.New(l,file)
+	p := parser.New(l, file)
 	program := p.ParseProgram()
 	if len(p.Errors()) != 0 {
 		return nil, &object.Error{Message: fmt.Sprintf("Pakeji %s ina makosa yafuatayo:\n%s", file, strings.Join(p.Errors(), "\n"))}

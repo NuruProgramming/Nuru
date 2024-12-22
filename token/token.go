@@ -8,7 +8,6 @@ type Token struct {
 	Type    TokenType
 	Literal string
 	Line    int
-	Filename string
 }
 
 const (

@@ -54,7 +54,7 @@ func (p *Parser) parseImport() ast.Expression {
 				jina.WriteString(mhss[len(mhss)-1])
 			}
 			exp.Identifiers[jina.String()] = &ast.Identifier{Value: mhs}
-			exp.Token.Filename = p.filname
+			exp.Filename = p.filename
 
 			mahali.Reset()
 			p.nextToken()
@@ -78,7 +78,7 @@ func (p *Parser) parseImport() ast.Expression {
 		jina.WriteString(mhss[len(mhss)-1])
 	}
 	exp.Identifiers[jina.String()] = &ast.Identifier{Value: mhs}
-	exp.Token.Filename = p.filname
+	exp.Filename = p.filename
 
 	return exp
 }

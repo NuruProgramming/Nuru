@@ -8,6 +8,8 @@ import (
 	"github.com/NuruProgramming/Nuru/lexer"
 )
 
+const input_file string = "<nuru-test>"
+
 func TestLetStatements(t *testing.T) {
 	tests := []struct {
 		input              string
@@ -21,7 +23,7 @@ func TestLetStatements(t *testing.T) {
 
 	for _, tt := range tests {
 		l := lexer.New(tt.input)
-		p := New(l)
+		p := New(l, input_file)
 		program := p.ParseProgram()
 		checkParserErrors(t, p)
 
@@ -93,7 +95,7 @@ func TestReturnStatements(t *testing.T) {
 
 	for _, tt := range tests {
 		l := lexer.New(tt.input)
-		p := New(l)
+		p := New(l, input_file)
 		program := p.ParseProgram()
 		checkParserErrors(t, p)
 
@@ -121,7 +123,7 @@ func TestIdentifierExpression(t *testing.T) {
 	input := "foobar;"
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
@@ -153,7 +155,7 @@ func TestIntergerLiteral(t *testing.T) {
 	input := "5;"
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -194,7 +196,7 @@ func TestParsingPrefixExpressions(t *testing.T) {
 
 	for _, tt := range prefixTests {
 		l := lexer.New(tt.input)
-		p := New(l)
+		p := New(l, input_file)
 		program := p.ParseProgram()
 		checkParserErrors(t, p)
 
@@ -268,7 +270,7 @@ func TestParsingInfixExpressions(t *testing.T) {
 
 	for _, tt := range infixTests {
 		l := lexer.New(tt.input)
-		p := New(l)
+		p := New(l, input_file)
 		program := p.ParseProgram()
 		checkParserErrors(t, p)
 
@@ -400,7 +402,7 @@ func TestOperatorPrecedenceParsing(t *testing.T) {
 
 	for _, tt := range tests {
 		l := lexer.New(tt.input)
-		p := New(l)
+		p := New(l, input_file)
 		program := p.ParseProgram()
 		checkParserErrors(t, p)
 
@@ -508,7 +510,7 @@ func TestBooleanExpression(t *testing.T) {
 	for _, tt := range tests {
 
 		l := lexer.New(tt.input)
-		p := New(l)
+		p := New(l, input_file)
 		program := p.ParseProgram()
 		checkParserErrors(t, p)
 
@@ -537,7 +539,7 @@ func TestIfExpression(t *testing.T) {
 	input := `kama (x < y) { x }`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -581,7 +583,7 @@ func TestIfElseExpression(t *testing.T) {
 	input := `kama (x < y) { x } sivyo { y }`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -640,7 +642,7 @@ func TestFunctionLiteralParsing(t *testing.T) {
 	input := `unda(x, y) {x + y}`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -689,7 +691,7 @@ func TestFunctionParameterParsing(t *testing.T) {
 
 	for _, tt := range tests {
 		l := lexer.New(tt.input)
-		p := New(l)
+		p := New(l, input_file)
 		program := p.ParseProgram()
 		checkParserErrors(t, p)
 
@@ -710,7 +712,7 @@ func TestCallExpressionParsing(t *testing.T) {
 	input := "jumlisha(1, 2 * 3, 4 + 5);"
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -746,7 +748,7 @@ func TestStringLiteralExpression(t *testing.T) {
 	input := `"habari yako"`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -765,7 +767,7 @@ func TestParsingArrayLiterals(t *testing.T) {
 	input := "[1,2*2,3+3]"
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -784,7 +786,7 @@ func TestParsingIndexExpressions(t *testing.T) {
 	input := "myArray[1+1]"
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -807,7 +809,7 @@ func TestParsingDictLiteralsStringKeys(t *testing.T) {
 	input := `{"one": 1, "two": 2, "three": 3}`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -842,7 +844,7 @@ func TestParsingDictLiteralsIntegerKeys(t *testing.T) {
 	input := `{1: 1, 2: 2, 3: 3}`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -877,7 +879,7 @@ func TestParsingDictLiteralsBoolKeys(t *testing.T) {
 	input := `{kweli: 1, sikweli: 2}`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -911,7 +913,7 @@ func TestParsingDictLiteralWithExpressions(t *testing.T) {
 	input := `{"one": 0+1, "two": 100-98, "three": 15/5}`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -958,7 +960,7 @@ func TestParsingEmptyDict(t *testing.T) {
 	input := "{}"
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -977,7 +979,7 @@ func TestWhileLoop(t *testing.T) {
 	input := `wakati ( x > y ) { fanya x = 2 }`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -1026,7 +1028,7 @@ func TestShorthandAssignment(t *testing.T) {
 
 	for _, txt := range input {
 		l := lexer.New(txt)
-		p := New(l)
+		p := New(l, input_file)
 		_ = p.ParseProgram()
 		checkParserErrors(t, p)
 	}
@@ -1036,7 +1038,7 @@ func TestForExpression(t *testing.T) {
 	input := `kwa i, v ktk j {andika(i)}`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	program := p.ParseProgram()
 	checkParserErrors(t, p)
 
@@ -1072,7 +1074,7 @@ func TestParsePostfix(t *testing.T) {
 
 	for _, txt := range input {
 		l := lexer.New(txt)
-		p := New(l)
+		p := New(l, input_file)
 		_ = p.ParseProgram()
 		checkParserErrors(t, p)
 	}
@@ -1086,7 +1088,7 @@ func TestParseDot(t *testing.T) {
 
 	for _, txt := range input {
 		l := lexer.New(txt)
-		p := New(l)
+		p := New(l, input_file)
 		_ = p.ParseProgram()
 		checkParserErrors(t, p)
 	}
@@ -1108,7 +1110,7 @@ func TestParseSwitch(t *testing.T) {
 	`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	_ = p.ParseProgram()
 	checkParserErrors(t, p)
 }
@@ -1120,7 +1122,7 @@ func TestParseImport(t *testing.T) {
 	`
 
 	l := lexer.New(input)
-	p := New(l)
+	p := New(l, input_file)
 	_ = p.ParseProgram()
 	checkParserErrors(t, p)
 }

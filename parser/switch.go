@@ -31,7 +31,7 @@ func (p *Parser) parseSwitchStatement() ast.Expression {
 	p.nextToken()
 
 	for !p.curTokenIs(token.RBRACE) {
-		if p.curTokenIs(token.NEWLINE){
+		if p.curTokenIs(token.NEWLINE) {
 			p.nextToken()
 			continue
 		}

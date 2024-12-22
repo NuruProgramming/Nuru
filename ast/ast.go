@@ -565,6 +565,7 @@ func (me *MethodExpression) String() string {
 
 type Import struct {
 	Token       token.Token
+	Filename    string
 	Identifiers map[string]*Identifier
 }
 

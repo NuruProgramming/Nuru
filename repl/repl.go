@@ -28,7 +28,7 @@ func Read(filename, contents string) {
 	env := object.NewEnvironment()
 
 	l := lexer.New(contents)
-	p := parser.New(l,filename)
+	p := parser.New(l, filename)
 
 	program := p.ParseProgram()
 
