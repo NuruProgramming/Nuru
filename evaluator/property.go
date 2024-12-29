@@ -10,6 +10,7 @@ func evalPropertyExpression(node *ast.PropertyExpression, env *object.Environmen
 	if isError(left) {
 		return left
 	}
+
 	switch left.(type) {
 	case *object.Instance:
 		obj := left.(*object.Instance)
@@ -20,7 +21,8 @@ func evalPropertyExpression(node *ast.PropertyExpression, env *object.Environmen
 	case *object.Package:
 		obj := left.(*object.Package)
 		prop := node.Property.(*ast.Identifier).Value
-		if val, ok := obj.Env.Get(prop); ok {
+
+		if val, ok := obj.Scope.Get(prop); ok {
 			return val
 		}
 		// case *object.Module:
@@ -30,7 +32,7 @@ func evalPropertyExpression(node *ast.PropertyExpression, env *object.Environmen
 		// 		return val()
 		// 	}
 	}
-	return newError("Value %s sii sahihi kwenye %s", node.Property.(*ast.Identifier).Value, left.Inspect())
+	return newError("Thamani %s sii sahihi kwenye %s", node.Property.(*ast.Identifier).Value, left.Inspect())
 }
 
 func evalPropertyAssignment(name *ast.PropertyExpression, val object.Object, env *object.Environment) object.Object {

@@ -624,7 +624,7 @@ type NoOp struct {
 
 func (np *NoOp) expressionNode()      {}
 func (np *NoOp) TokenLiteral() string { return np.Token.Literal }
-func (np *NoOp) String() string       { return "??" }
+func (np *NoOp) String() string       { return "" }
 
 type At struct {
 	Token token.Token
@@ -653,4 +653,4 @@ type PropertyExpression struct {
 
 func (pe *PropertyExpression) expressionNode()      {}
 func (pe *PropertyExpression) TokenLiteral() string { return pe.Token.Literal }
-func (pe *PropertyExpression) String() string       { return "Ngl I'm tired part two" }
+func (pe *PropertyExpression) String() string       { return "Property Expression" }
