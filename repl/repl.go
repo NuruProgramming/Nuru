@@ -24,11 +24,11 @@ const PROMPT = ">>> "
 //go:embed docs
 var res embed.FS
 
-func Read(contents string) {
+func Read(filename, contents string) {
 	env := object.NewEnvironment()
 
 	l := lexer.New(contents)
-	p := parser.New(l)
+	p := parser.New(l, filename)
 
 	program := p.ParseProgram()
 
@@ -74,7 +74,7 @@ func (d *dummy) executor(in string) {
 		os.Exit(0)
 	}
 	l := lexer.New(in)
-	p := parser.New(l)
+	p := parser.New(l, "<nuru-repl>")
 
 	program := p.ParseProgram()
 

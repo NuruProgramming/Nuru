@@ -40,10 +40,6 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object,
 		default:
 			return obj.Method(method.(*ast.Identifier).Value, args)
 		}
-	case *object.Module:
-		if fn, ok := obj.Functions[method.(*ast.Identifier).Value]; ok {
-			return fn(args, defs)
-		}
 	case *object.Instance:
 		if fn, ok := obj.Package.Scope.Get(method.(*ast.Identifier).Value); ok {
 			fn.(*object.Function).Env.Set("@", obj)

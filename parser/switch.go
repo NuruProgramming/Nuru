@@ -31,6 +31,10 @@ func (p *Parser) parseSwitchStatement() ast.Expression {
 	p.nextToken()
 
 	for !p.curTokenIs(token.RBRACE) {
+		if p.curTokenIs(token.NEWLINE) {
+			p.nextToken()
+			continue
+		}
 
 		if p.curTokenIs(token.EOF) {
 			msg := fmt.Sprintf("Mstari %d: Haukufunga ENDAPO (SWITCH)", p.curToken.Line)

@@ -52,14 +52,14 @@ func main() {
 		default:
 			file := args[1]
 
-			if strings.HasSuffix(file, "nr") || strings.HasSuffix(file, ".sw") {
+			if strings.HasSuffix(file, "nr") || strings.HasSuffix(file, ".sw") || strings.HasSuffix(file, ".nuru") {
 				contents, err := os.ReadFile(file)
 				if err != nil {
 					fmt.Println(styles.ErrorStyle.Render("Error: Nuru imeshindwa kusoma faili: ", args[1]))
 					os.Exit(1)
 				}
 
-				repl.Read(string(contents))
+				repl.Read(file, string(contents))
 			} else {
 				fmt.Println(styles.ErrorStyle.Render("'"+file+"'", "sii faili sahihi. Tumia faili la '.nr' au '.sw'"))
 				os.Exit(1)

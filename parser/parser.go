@@ -71,6 +71,7 @@ type Parser struct {
 	prefixParseFns  map[token.TokenType]prefixParseFn
 	infixParseFns   map[token.TokenType]infixParseFn
 	postfixParseFns map[token.TokenType]postfixParseFn
+	filename        string
 }
 
 func (p *Parser) registerPrefix(tokenType token.TokenType, fn prefixParseFn) {
@@ -85,8 +86,8 @@ func (p *Parser) registerPostfix(tokenType token.TokenType, fn postfixParseFn) {
 	p.postfixParseFns[tokenType] = fn
 }
 
-func New(l *lexer.Lexer) *Parser {
-	p := &Parser{l: l, errors: []string{}}
+func New(l *lexer.Lexer, filename string) *Parser {
+	p := &Parser{l: l, errors: []string{}, filename: filename}
 
 	p.nextToken()
 	p.nextToken()
@@ -111,7 +112,7 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerPrefix(token.FOR, p.parseForExpression)
 	p.registerPrefix(token.SWITCH, p.parseSwitchStatement)
 	p.registerPrefix(token.IMPORT, p.parseImport)
-	p.registerPrefix(token.PACKAGE, p.parsePackage)
+	//p.registerPrefix(token.PACKAGE, p.parsePackage)
 	p.registerPrefix(token.AT, p.parseAt)
 
 	p.infixParseFns = make(map[token.TokenType]infixParseFn)
@@ -140,6 +141,8 @@ func New(l *lexer.Lexer) *Parser {
 	p.registerInfix(token.IN, p.parseInfixExpression)
 	p.registerInfix(token.DOT, p.parseMethod)
 
+	p.registerPrefix(token.NEWLINE, p.parseNewline)
+
 	p.postfixParseFns = make(map[token.TokenType]postfixParseFn)
 	p.registerPostfix(token.PLUS_PLUS, p.parsePostfixExpression)
 	p.registerPostfix(token.MINUS_MINUS, p.parsePostfixExpression)
@@ -158,6 +161,10 @@ func (p *Parser) ParseProgram() *ast.Program {
 		p.nextToken()
 	}
 	return program
+}
+
+func (p *Parser) parseNewline() ast.Expression {
+	return &ast.NoOp{Token: p.curToken}
 }
 
 // manage token literals:

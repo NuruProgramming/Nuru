@@ -142,7 +142,7 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				pg.code = code
 				env := object.NewEnvironment()
 				l := lexer.New(pg.code)
-				p := parser.New(l)
+				p := parser.New(l, "nuru-docs")
 				program := p.ParseProgram()
 				if len(p.Errors()) != 0 {
 					pg.output.Style = styles.ErrorStyle.PaddingLeft(3)
@@ -185,7 +185,7 @@ func (pg playground) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 					pg.code = code
 					env := object.NewEnvironment()
 					l := lexer.New(pg.code)
-					p := parser.New(l)
+					p := parser.New(l, "<nuru-docs>")
 					program := p.ParseProgram()
 					if len(p.Errors()) != 0 {
 						pg.output.Style = styles.ErrorStyle.PaddingLeft(3)
