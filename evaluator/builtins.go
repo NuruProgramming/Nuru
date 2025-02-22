@@ -177,6 +177,24 @@ var builtins = map[string]*object.Builtin{
 			}
 		},
 	},
+	"namba": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("Samahani, namba inahitaji hoja 1, wewe umeweka %d", len(args))
+			}
+			value := args[0]
+			return convertToInteger(value)
+		},
+	},
+	"tungo": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("Samahani, tungo inahitaji hoja 1, wewe umeweka %d", len(args))
+			}
+			value := args[0]
+			return convertToString(value)
+		},
+	},
 
 	// "jumla": {
 	// 	Fn: func(args ...object.Object) object.Object {
