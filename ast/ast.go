@@ -119,6 +119,15 @@ func (il *IntegerLiteral) expressionNode()      {}
 func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
 func (il *IntegerLiteral) String() string       { return il.Token.Literal }
 
+type HexadecimalLiteral struct {
+	Token token.Token
+	Value int64
+}
+
+func (hl *HexadecimalLiteral) expressionNode()      {}
+func (hl *HexadecimalLiteral) TokenLiteral() string { return hl.Token.Literal }
+func (hl *HexadecimalLiteral) String() string       { return hl.Token.Literal }
+
 type PrefixExpression struct {
 	Token    token.Token
 	Operator string

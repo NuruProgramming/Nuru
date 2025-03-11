@@ -8,6 +8,7 @@ type ObjectType string
 
 const (
 	INTEGER_OBJ      = "NAMBA"
+	HEX_OBJ          = "HEXADESIMALI"
 	FLOAT_OBJ        = "DESIMALI"
 	BOOLEAN_OBJ      = "BOOLEAN"
 	NULL_OBJ         = "TUPU"
