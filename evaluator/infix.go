@@ -104,8 +104,7 @@ func evalInfixExpression(operator string, left, right object.Object, line int) o
 func isNumber(number object.Object) bool {
 		switch number.(type) {
 			case *object.Integer,  *object.Hexadecimal:
-			default:
-				return false
+				return true
 		}
 
 	return true
