@@ -237,54 +237,6 @@ func getFloatValue(val object.Object) (float64, error) {
 	return 0.0, fmt.Errorf("Si desimali")
 }
 
-func evalFloatIntegerInfixExpression(operator string, left, right object.Object, line int) object.Object {
-	var leftVal, rightVal float64
-	if left.Type() == object.FLOAT_OBJ {
-		leftVal = left.(*object.Float).Value
-		rightVal = float64(right.(*object.Integer).Value)
-	} else {
-		leftVal = float64(left.(*object.Integer).Value)
-		rightVal = right.(*object.Float).Value
-	}
-
-	var val float64
-	switch operator {
-	case "+":
-		val = leftVal + rightVal
-	case "-":
-		val = leftVal - rightVal
-	case "*":
-		val = leftVal * rightVal
-	case "**":
-		val = math.Pow(float64(leftVal), float64(rightVal))
-	case "/":
-		val = leftVal / rightVal
-	case "%":
-		val = math.Mod(leftVal, rightVal)
-	case "<":
-		return nativeBoolToBooleanObject(leftVal < rightVal)
-	case "<=":
-		return nativeBoolToBooleanObject(leftVal <= rightVal)
-	case ">":
-		return nativeBoolToBooleanObject(leftVal > rightVal)
-	case ">=":
-		return nativeBoolToBooleanObject(leftVal >= rightVal)
-	case "==":
-		return nativeBoolToBooleanObject(leftVal == rightVal)
-	case "!=":
-		return nativeBoolToBooleanObject(leftVal != rightVal)
-	default:
-		return newError("Mstari %d: Operesheni Haieleweki: %s %s %s",
-			line, left.Type(), operator, right.Type())
-	}
-
-	if math.Mod(val, 1) == 0 {
-		return &object.Integer{Value: int64(val)}
-	} else {
-		return &object.Float{Value: val}
-	}
-}
-
 func evalStringInfixExpression(operator string, left, right object.Object, line int) object.Object {
 
 	leftVal := left.(*object.String).Value
@@ -331,46 +283,6 @@ func evalFloatInfixExpression(operator string, left, right object.Object, line i
 		return &object.Float{Value: math.Pow(float64(leftVal), float64(rightVal))}
 	case "/":
 		return &object.Float{Value: leftVal / rightVal}
-	case "<":
-		return nativeBoolToBooleanObject(leftVal < rightVal)
-	case "<=":
-		return nativeBoolToBooleanObject(leftVal <= rightVal)
-	case ">":
-		return nativeBoolToBooleanObject(leftVal > rightVal)
-	case ">=":
-		return nativeBoolToBooleanObject(leftVal >= rightVal)
-	case "==":
-		return nativeBoolToBooleanObject(leftVal == rightVal)
-	case "!=":
-		return nativeBoolToBooleanObject(leftVal != rightVal)
-	default:
-		return newError("Mstari %d: Operesheni Haieleweki: %s %s %s",
-			line, left.Type(), operator, right.Type())
-	}
-}
-
-func evalIntegerInfixExpression(operator string, left, right object.Object, line int) object.Object {
-	leftVal := left.(*object.Integer).Value
-	rightVal := right.(*object.Integer).Value
-
-	switch operator {
-	case "+":
-		return &object.Integer{Value: leftVal + rightVal}
-	case "-":
-		return &object.Integer{Value: leftVal - rightVal}
-	case "*":
-		return &object.Integer{Value: leftVal * rightVal}
-	case "**":
-		return &object.Float{Value: float64(math.Pow(float64(leftVal), float64(rightVal)))}
-	case "/":
-		x := float64(leftVal) / float64(rightVal)
-		if math.Mod(x, 1) == 0 {
-			return &object.Integer{Value: int64(x)}
-		} else {
-			return &object.Float{Value: x}
-		}
-	case "%":
-		return &object.Integer{Value: leftVal % rightVal}
 	case "<":
 		return nativeBoolToBooleanObject(leftVal < rightVal)
 	case "<=":
