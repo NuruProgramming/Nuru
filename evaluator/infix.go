@@ -69,16 +69,16 @@ func evalInfixExpression(operator string, left, right object.Object, line int) o
 		rightVal := right.(*object.String).Value
 		return &object.String{Value: strings.Repeat(rightVal, int(leftVal))}
 
-	case (left.Type() == object.INTEGER_OBJ || left.Type() == object.HEX_OBJ) && (right.Type() == object.INTEGER_OBJ || right.Type() == object.HEX_OBJ):
+	case isNumber(left) && isNumber(right):
 		return evalNumberInfixExpression(operator, left, right, line)
 
 	case left.Type() == object.FLOAT_OBJ && right.Type() == object.FLOAT_OBJ:
 		return evalFloatInfixExpression(operator, left, right, line)
 
-	case (left.Type() == object.INTEGER_OBJ || left.Type() == object.HEX_OBJ) && right.Type() == object.FLOAT_OBJ:
+	case isNumber(left) && right.Type() == object.FLOAT_OBJ:
 		return evalFloatInfixExpr(operator, left, right, line)
 
-	case left.Type() == object.FLOAT_OBJ && (right.Type() == object.INTEGER_OBJ || right.Type() == object.HEX_OBJ):
+	case left.Type() == object.FLOAT_OBJ && isNumber(right):
 		return evalFloatInfixExpr(operator, left, right, line)
 
 	case operator == "==":
@@ -97,6 +97,18 @@ func evalInfixExpression(operator string, left, right object.Object, line int) o
 		return newError("Mstari %d: Operesheni Haieleweki: %s %s %s",
 			line, left.Type(), operator, right.Type())
 	}
+}
+
+// This are types that can be categorized as a number.
+// Hexadecimal, Integer and other types except Float can be consided number
+func isNumber(number object.Object) bool {
+		switch number.(type) {
+			case *object.Integer,  *object.Hexadecimal:
+			default:
+				return false
+		}
+
+	return true
 }
 
 func evalNumberInfixExpression(operator string, left, right object.Object, line int) object.Object {
