@@ -90,3 +90,18 @@ func today(args []object.Object, defs map[string]object.Object) object.Object {
 	return &object.String{Value: dateStr}
 }
 
+func after(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(defs) != 0 || len(args) != 1 {
+		return &object.Error{Message: "tunahitaji hoja moja tu kwenye baada_ya"}
+	}
+
+	secondsStr := args[0].Inspect()
+	seconds, err := strconv.Atoi(secondsStr)
+	if err != nil {
+		return &object.Error{Message: "hoja lazima iwe namba"}
+	}
+
+	future := time.Now().Add(time.Duration(seconds) * time.Second)
+	return &object.Time{TimeValue: future.Format("15:04:05 02-01-2006")}
+}
+
