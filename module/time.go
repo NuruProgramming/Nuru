@@ -132,3 +132,13 @@ func diff(args []object.Object, defs map[string]object.Object) object.Object {
 	return &object.Integer{Value: int64(diff)}
 }
 
+func init() {
+	TimeFunctions["hasahivi"] = now
+	TimeFunctions["lala"] = sleep
+	TimeFunctions["tangu"] = since
+	TimeFunctions["leo"] = today
+	TimeFunctions["baada_ya"] = after
+	TimeFunctions["tofauti"] = diff
+}
+
+
