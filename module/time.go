@@ -105,3 +105,30 @@ func after(args []object.Object, defs map[string]object.Object) object.Object {
 	return &object.Time{TimeValue: future.Format("15:04:05 02-01-2006")}
 }
 
+func diff(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(defs) != 0 || len(args) != 2 {
+		return &object.Error{Message: "tunahitaji hoja mbili kwenye tofauti"}
+	}
+
+	parseTime := func(o object.Object) (time.Time, error) {
+		switch v := o.(type) {
+		case *object.Time:
+			return time.Parse("15:04:05 02-01-2006", v.TimeValue)
+		case *object.String:
+			return time.Parse("15:04:05 02-01-2006", v.Value)
+		default:
+			return time.Time{}, fmt.Errorf("aina batili")
+		}
+	}
+
+	t1, err1 := parseTime(args[0])
+	t2, err2 := parseTime(args[1])
+
+	if err1 != nil || err2 != nil {
+		return &object.Error{Message: "tofauti inahitaji nyakati halali mbili"}
+	}
+
+	diff := t1.Sub(t2).Seconds()
+	return &object.Integer{Value: int64(diff)}
+}
+
