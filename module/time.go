@@ -80,3 +80,13 @@ func since(args []object.Object, defs map[string]object.Object) object.Object {
 
 	return &object.Integer{Value: int64(durationInSeconds)}
 }
+
+func today(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) != 0 || len(defs) != 0 {
+		return &object.Error{Message: "hatuhitaji hoja kwenye leo"}
+	}
+
+	dateStr := time.Now().Format("02-01-2006")
+	return &object.String{Value: dateStr}
+}
+
