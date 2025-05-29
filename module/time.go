@@ -17,6 +17,7 @@ func init() {
 	TimeFunctions["leo"] = today
 	TimeFunctions["baada_ya"] = after
 	TimeFunctions["tofauti"] = diff
+	TimeFunctions["ongeza"] = addTime
 }
 
 func now(args []object.Object, defs map[string]object.Object) object.Object {
@@ -136,4 +137,55 @@ func diff(args []object.Object, defs map[string]object.Object) object.Object {
 }
 
 
+func addTime(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) != 1 {
+		return &object.Error{Message: "ongeza inahitaji wakati mmoja wa kuanzia"}
+	}
 
+	baseTimeObj := args[0]
+	baseTime, err := func() (time.Time, error) {
+		switch t := baseTimeObj.(type) {
+		case *object.Time:
+			return time.Parse("15:04:05 02-01-2006", t.TimeValue)
+		case *object.String:
+			return time.Parse("15:04:05 02-01-2006", t.Value)
+		default:
+			return time.Time{}, fmt.Errorf("aina ya wakati sio sahihi")
+		}
+	}()
+	if err != nil {
+		return &object.Error{Message: "wakati uliotolewa sio sahihi"}
+	}
+
+	secs := getInt(defs["sekunde"])
+	mins := getInt(defs["dakika"])
+	hours := getInt(defs["masaa"])
+	days := getInt(defs["siku"])
+	weeks := getInt(defs["wiki"])
+	months := getInt(defs["miezi"])
+	years := getInt(defs["miaka"])
+
+	result := baseTime.
+		Add(time.Second * time.Duration(secs)).
+		Add(time.Minute * time.Duration(mins)).
+		Add(time.Hour * time.Duration(hours)).
+		AddDate(years, months, days+(weeks*7))
+
+	return &object.Time{TimeValue: result.Format("15:04:05 02-01-2006")}
+}
+
+func getInt(obj object.Object) int {
+	if obj == nil {
+		return 0
+	}
+	switch o := obj.(type) {
+	case *object.Integer:
+		return int(o.Value)
+	case *object.String:
+		n, err := strconv.Atoi(o.Value)
+		if err == nil {
+			return n
+		}
+	}
+	return 0
+}

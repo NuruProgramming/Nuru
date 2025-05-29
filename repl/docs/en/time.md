@@ -87,24 +87,7 @@ tofauti = muda.tofauti(saa2, saa1) // 30
 
 ---
 
-### `saa(muda)`
-
-Extracts and returns an object with the hour (`saa`), minute (`dakika`), and second (`sekunde`) from a `muda` or string.
-
-```so
-tumia muda
-
-sasa = muda.hasahivi()
-
-vipimo = muda.saa(sasa)
-// vipimo.saa
-// vipimo.dakika
-// vipimo.sekunde
-```
-
----
-
-### `ongeza(...)` *(planned method)*
+### `ongeza(...)`
 
 To add time to a `muda` object. You will be able to specify fields like `siku`, `saa`, `dakika`, `sekunde`, etc. Example:
 
