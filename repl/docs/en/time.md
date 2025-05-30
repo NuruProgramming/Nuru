@@ -89,7 +89,9 @@ tofauti = muda.tofauti(saa2, saa1) // 30
 
 ### `ongeza(...)`
 
-To add time to a `muda` object. You will be able to specify fields like `siku`, `saa`, `dakika`, `sekunde`, etc. Example:
+To add time to a `muda` object. You must specify at least one of the following fields `sekunde`, `dakika`, `masaa`, `siku`, `wiki`, `miezi`, `miaka`.
+
+Example:
 
 ```so
 tumia muda
