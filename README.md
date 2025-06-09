@@ -390,6 +390,28 @@ To run a Nuru script, write the `nuru` command followed by the name of the file 
 nuru myFile.nr
 ```
 
+## Script-Relative Paths: `__FILE__` and `__DIR__`
+
+Nuru now supports script-relative path variables for improved portability and developer experience:
+
+- `__FILE__`: The absolute path to the currently executing script file.
+- `__DIR__`: The absolute directory containing the currently executing script file.
+
+These variables are injected automatically when running a script file (not in the REPL). They are useful for loading resources, configuration, or data files relative to the script location.
+
+**Example:**
+
+```nuru
+andika("Script absolute path: " + __FILE__)
+andika("Script directory: " + __DIR__)
+
+ita njia kutoka "njia"
+sibling = njia.unganisha(__DIR__, "sibling.txt")
+andika("Sibling file path: " + sibling)
+```
+
+See `examples/script_relative_path_example.nr` for a full example.
+
 ## Issues
 
 Kindly open an [Issue](https://github.com/NuruProgramming/Nuru/issues) to make suggestions and anything else.

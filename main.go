@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/NuruProgramming/Nuru/analysis"
@@ -103,7 +104,22 @@ func main() {
 					os.Exit(1)
 				}
 
-				repl.Read(string(contents))
+				absPath, err := filepath.Abs(file)
+				if err != nil {
+					absPath = file // fallback
+				}
+				dirPath := absPath
+				if idx := strings.LastIndex(absPath, string(os.PathSeparator)); idx != -1 {
+					dirPath = absPath[:idx]
+				} else {
+					dirPath = "."
+				}
+
+				env := object.NewEnvironment()
+				env.Set("__FILE__", &object.String{Value: absPath})
+				env.Set("__DIR__", &object.String{Value: dirPath})
+
+				repl.ReadWithEnv(string(contents), env)
 			} else {
 				fmt.Println(styles.ErrorStyle.Render("'"+file+"'", "sii faili sahihi. Tumia faili la '.nr' au '.sw'"))
 				os.Exit(1)

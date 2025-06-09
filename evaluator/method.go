@@ -42,7 +42,14 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object,
 			return obj.Method(method.(*ast.Identifier).Value, args)
 		}
 	case *object.Dict:
-		switch method.(*ast.Identifier).Value {
+		methodName := method.(*ast.Identifier).Value
+		hashKey := (&object.String{Value: methodName}).HashKey()
+		if pair, ok := obj.Pairs[hashKey]; ok {
+			if builtin, ok := pair.Value.(*object.Builtin); ok {
+				return builtin.Fn(args...)
+			}
+		}
+		switch methodName {
 		case "idadi":
 			return &object.Integer{Value: int64(len(obj.Pairs))}
 		case "fungua":
@@ -57,9 +64,8 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object,
 				return NULL
 			}
 			return newError("Samahani, hoja sii sahihi")
-		default:
-			return newError("Samahani, Dict haina method %s", method.(*ast.Identifier).Value)
 		}
+		return newError("Samahani, Dict haina method %s", methodName)
 	case *object.Module:
 		if fn, ok := obj.Functions[method.(*ast.Identifier).Value]; ok {
 			return fn(args, defs)
