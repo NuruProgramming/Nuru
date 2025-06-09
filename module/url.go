@@ -17,6 +17,12 @@ func init() {
 	URLFunctions["tengeneza"] = formatURL                // Format URL objects to strings
 	URLFunctions["tatua"] = resolveURL                   // Resolve URLs
 	URLFunctions["URLSearchParams"] = newURLSearchParams // For query string manipulation
+	URLFunctions["kimbiaNjia"] = kimbiaNjia              // Path escape
+	URLFunctions["tatuaNjia"] = tatuaNjia                // Path unescape
+	URLFunctions["kimbiaHoja"] = kimbiaHoja              // Query escape
+	URLFunctions["tatuaHoja"] = tatuaHoja                // Query unescape
+	URLFunctions["kamusiKwaHoja"] = kamusiKwaHoja        // Dict to query string
+	URLFunctions["hojaKwaKamusi"] = hojaKwaKamusi        // Query string to dict
 }
 
 // parseURL parses a URL string and returns a URL object
@@ -784,4 +790,117 @@ func addURLSearchParamsMethods(paramsObj *object.Dict) {
 			return paramsObj
 		},
 	})
+}
+
+// Path escape (Go: PathEscape)
+func kimbiaNjia(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) < 1 {
+		return &object.Error{Message: "KimbiaNjia inahitaji hoja ya kwanza (njia)"}
+	}
+	str, ok := args[0].(*object.String)
+	if !ok {
+		return &object.Error{Message: "Hoja ya kwanza lazima iwe neno la njia"}
+	}
+	return &object.String{Value: url.PathEscape(str.Value)}
+}
+
+// Path unescape (Go: PathUnescape)
+func tatuaNjia(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) < 1 {
+		return &object.Error{Message: "TatuaNjia inahitaji hoja ya kwanza (njia)"}
+	}
+	str, ok := args[0].(*object.String)
+	if !ok {
+		return &object.Error{Message: "Hoja ya kwanza lazima iwe neno la njia"}
+	}
+	res, err := url.PathUnescape(str.Value)
+	if err != nil {
+		return &object.Error{Message: "Hitilafu kutatua njia: " + err.Error()}
+	}
+	return &object.String{Value: res}
+}
+
+// Query escape (Go: QueryEscape)
+func kimbiaHoja(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) < 1 {
+		return &object.Error{Message: "KimbiaHoja inahitaji hoja ya kwanza (hoja)"}
+	}
+	str, ok := args[0].(*object.String)
+	if !ok {
+		return &object.Error{Message: "Hoja ya kwanza lazima iwe neno la hoja"}
+	}
+	return &object.String{Value: url.QueryEscape(str.Value)}
+}
+
+// Query unescape (Go: QueryUnescape)
+func tatuaHoja(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) < 1 {
+		return &object.Error{Message: "TatuaHoja inahitaji hoja ya kwanza (hoja)"}
+	}
+	str, ok := args[0].(*object.String)
+	if !ok {
+		return &object.Error{Message: "Hoja ya kwanza lazima iwe neno la hoja"}
+	}
+	res, err := url.QueryUnescape(str.Value)
+	if err != nil {
+		return &object.Error{Message: "Hitilafu kutatua hoja: " + err.Error()}
+	}
+	return &object.String{Value: res}
+}
+
+// Dict to query string (kamusi -> hoja)
+func kamusiKwaHoja(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) < 1 {
+		return &object.Error{Message: "KamusiKwaHoja inahitaji hoja ya kwanza (kamusi)"}
+	}
+	dict, ok := args[0].(*object.Dict)
+	if !ok {
+		return &object.Error{Message: "Hoja ya kwanza lazima iwe kamusi"}
+	}
+	values := url.Values{}
+	for _, pair := range dict.Pairs {
+		key, ok := pair.Key.(*object.String)
+		if !ok {
+			continue
+		}
+		switch v := pair.Value.(type) {
+		case *object.String:
+			values.Add(key.Value, v.Value)
+		case *object.Array:
+			for _, elem := range v.Elements {
+				values.Add(key.Value, elem.Inspect())
+			}
+		default:
+			values.Add(key.Value, v.Inspect())
+		}
+	}
+	return &object.String{Value: values.Encode()}
+}
+
+// Query string to dict (hoja -> kamusi)
+func hojaKwaKamusi(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) < 1 {
+		return &object.Error{Message: "HojaKwaKamusi inahitaji hoja ya kwanza (hoja)"}
+	}
+	str, ok := args[0].(*object.String)
+	if !ok {
+		return &object.Error{Message: "Hoja ya kwanza lazima iwe neno la hoja"}
+	}
+	parsed, err := url.ParseQuery(str.Value)
+	if err != nil {
+		return &object.Error{Message: "Hitilafu kuchanganua hoja: " + err.Error()}
+	}
+	result := &object.Dict{Pairs: make(map[object.HashKey]object.DictPair)}
+	for key, values := range parsed {
+		if len(values) == 1 {
+			result.Set(&object.String{Value: key}, &object.String{Value: values[0]})
+		} else {
+			arr := &object.Array{Elements: []object.Object{}}
+			for _, v := range values {
+				arr.Elements = append(arr.Elements, &object.String{Value: v})
+			}
+			result.Set(&object.String{Value: key}, arr)
+		}
+	}
+	return result
 }
