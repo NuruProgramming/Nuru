@@ -31,24 +31,19 @@ func decode(args []object.Object, defs map[string]object.Object) object.Object {
 
 	input := args[0].(*object.String).Value
 
-	if parseFloatObj, ok := defs["parse_float"]; ok {
-		if _, ok := parseFloatObj.(*object.Function); ok {
-			// In a real implementation, we would use this function
-			// But for now, we keep the default behavior
-		}
-	}
+	var parseFloatFn object.Object = nil
+	var parseIntFn object.Object = nil
+	var objectHookFn object.Object = nil
 
-	if parseIntObj, ok := defs["parse_int"]; ok {
-		if _, ok := parseIntObj.(*object.Function); ok {
-			// In a real implementation, we would use this function
-			// But for now, we keep the default behavior
+	if defs != nil {
+		if pf, ok := defs["parse_float"]; ok {
+			parseFloatFn = pf
 		}
-	}
-
-	if objectHookObj, ok := defs["object_hook"]; ok {
-		if _, ok := objectHookObj.(*object.Function); ok {
-			// In a real implementation, we would use this function
-			// But for now, we keep the default behavior
+		if pi, ok := defs["parse_int"]; ok {
+			parseIntFn = pi
+		}
+		if oh, ok := defs["object_hook"]; ok {
+			objectHookFn = oh
 		}
 	}
 
@@ -58,38 +53,71 @@ func decode(args []object.Object, defs map[string]object.Object) object.Object {
 		return &object.Error{Message: fmt.Sprintf("Hitilafu kuchanganua JSON: %s", err)}
 	}
 
-	return convertWhateverToObject(i)
+	return convertWhateverToObjectWithHooks(i, parseFloatFn, parseIntFn, objectHookFn)
 }
 
-func convertWhateverToObject(i interface{}) object.Object {
+// Helper: like convertWhateverToObject, but supports hooks for parse_float, parse_int, object_hook
+func convertWhateverToObjectWithHooks(i interface{}, parseFloatFn, parseIntFn, objectHookFn object.Object) object.Object {
 	switch v := i.(type) {
 	case map[string]interface{}:
 		dict := &object.Dict{}
 		dict.Pairs = make(map[object.HashKey]object.DictPair)
-
-		for k, v := range v {
+		for k, v2 := range v {
+			val := convertWhateverToObjectWithHooks(v2, parseFloatFn, parseIntFn, objectHookFn)
 			pair := object.DictPair{
 				Key:   &object.String{Value: k},
-				Value: convertWhateverToObject(v),
+				Value: val,
 			}
 			dict.Pairs[pair.Key.(object.Hashable).HashKey()] = pair
 		}
-
+		// If object_hook is provided, call it
+		if objectHookFn != nil {
+			if fn, ok := objectHookFn.(*object.Function); ok {
+				// Call the hook with the dict as argument
+				result := callFunction(fn, []object.Object{dict})
+				if result != nil {
+					return result
+				}
+			}
+		}
 		return dict
 	case []interface{}:
 		list := &object.Array{}
 		for _, e := range v {
-			list.Elements = append(list.Elements, convertWhateverToObject(e))
+			list.Elements = append(list.Elements, convertWhateverToObjectWithHooks(e, parseFloatFn, parseIntFn, objectHookFn))
 		}
-
 		return list
 	case string:
 		return &object.String{Value: v}
 	case int64:
+		if parseIntFn != nil {
+			if fn, ok := parseIntFn.(*object.Function); ok {
+				result := callFunction(fn, []object.Object{&object.Integer{Value: v}})
+				if result != nil {
+					return result
+				}
+			}
+		}
 		return &object.Integer{Value: v}
 	case float64:
 		if v == float64(int64(v)) {
+			if parseIntFn != nil {
+				if fn, ok := parseIntFn.(*object.Function); ok {
+					result := callFunction(fn, []object.Object{&object.Integer{Value: int64(v)}})
+					if result != nil {
+						return result
+					}
+				}
+			}
 			return &object.Integer{Value: int64(v)}
+		}
+		if parseFloatFn != nil {
+			if fn, ok := parseFloatFn.(*object.Function); ok {
+				result := callFunction(fn, []object.Object{&object.Float{Value: v}})
+				if result != nil {
+					return result
+				}
+			}
 		}
 		return &object.Float{Value: v}
 	case bool:
@@ -100,6 +128,17 @@ func convertWhateverToObject(i interface{}) object.Object {
 	return &object.Null{}
 }
 
+// Helper to call a Nuru function from Go
+// EvaluatorCallback is a function type for evaluating Nuru code
+var EvaluatorCallback func(*object.Function, []object.Object) object.Object
+
+// Helper to call a Nuru function from Go
+func callFunction(fn *object.Function, args []object.Object) object.Object {
+	if EvaluatorCallback == nil {
+		return nil
+	}
+	return EvaluatorCallback(fn, args)
+}
 func encode(args []object.Object, defs map[string]object.Object) object.Object {
 	if len(args) < 1 {
 		return &object.Error{Message: "enkodi inahitaji hoja ya kwanza (object)"}
