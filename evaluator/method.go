@@ -10,16 +10,17 @@ func evalMethodExpression(node *ast.MethodExpression, env *object.Environment) o
 	if isError(obj) {
 		return obj
 	}
+
 	args := evalExpressions(node.Arguments, env)
 	if len(args) == 1 && isError(args[0]) {
 		return args[0]
 	}
 
 	defs := make(map[string]object.Object)
-
 	for k, v := range node.Defaults {
 		defs[k] = Eval(v, env)
 	}
+
 	return applyMethod(obj, node.Method, args, defs, node.Token.Line)
 }
 
@@ -39,6 +40,25 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object,
 			return filter(obj, args)
 		default:
 			return obj.Method(method.(*ast.Identifier).Value, args)
+		}
+	case *object.Dict:
+		switch method.(*ast.Identifier).Value {
+		case "idadi":
+			return &object.Integer{Value: int64(len(obj.Pairs))}
+		case "fungua":
+			if len(args) != 1 {
+				return newError("Samahani, tunahitaji Hoja 1, wewe umeweka %d", len(args))
+			}
+			if hashable, ok := args[0].(object.Hashable); ok {
+				hashKey := hashable.HashKey()
+				if pair, ok := obj.Pairs[hashKey]; ok {
+					return pair.Value
+				}
+				return NULL
+			}
+			return newError("Samahani, hoja sii sahihi")
+		default:
+			return newError("Samahani, Dict haina method %s", method.(*ast.Identifier).Value)
 		}
 	case *object.Module:
 		if fn, ok := obj.Functions[method.(*ast.Identifier).Value]; ok {
@@ -106,4 +126,71 @@ func filter(a *object.Array, args []object.Object) object.Object {
 		}
 	}
 	return &newArr
+}
+
+func applyArrayMethod(method string, obj *object.Array, args []object.Object, env *object.Environment) object.Object {
+	switch method {
+	case "ramani":
+		return ramani(obj, args)
+	case "punguza":
+		return punguza(obj, args)
+	default:
+		return newError("Samahani, hoja sii sahihi")
+	}
+}
+
+func ramani(a *object.Array, args []object.Object) object.Object {
+	if len(args) != 1 && args[0].Type() != object.FUNCTION_OBJ {
+		return newError("Samahani, hoja sii sahihi")
+	}
+
+	fn, ok := args[0].(*object.Function)
+	if !ok {
+		return newError("Samahani, hoja sii sahihi")
+	}
+	env := object.NewEnvironment()
+
+	// Create a new reference-counted array
+	newArr := &object.Array{Elements: []object.Object{}}
+	object.GlobalRefCounter.TrackObject(newArr)
+
+	for _, obj := range a.Elements {
+		env.Set(fn.Parameters[0].Value, obj)
+		r := Eval(fn.Body, env)
+		if o, ok := r.(*object.ReturnValue); ok {
+			r = o.Value
+		}
+
+		// Retain the new element
+		object.Retain(r)
+		newArr.Elements = append(newArr.Elements, r)
+	}
+	return newArr
+}
+
+func punguza(a *object.Array, args []object.Object) object.Object {
+	if len(args) != 1 && args[0].Type() != object.FUNCTION_OBJ {
+		return newError("Samahani, hoja sii sahihi")
+	}
+
+	fn, ok := args[0].(*object.Function)
+	if !ok {
+		return newError("Samahani, hoja sii sahihi")
+	}
+	env := object.NewEnvironment()
+
+	// Create a new reference-counted array
+	newArr := &object.Array{Elements: []object.Object{}}
+	object.GlobalRefCounter.TrackObject(newArr)
+
+	for _, obj := range a.Elements {
+		env.Set(fn.Parameters[0].Value, obj)
+		cond := Eval(fn.Body, env)
+		if cond.Inspect() == "kweli" {
+			// Retain the element being added to the new array
+			object.Retain(obj)
+			newArr.Elements = append(newArr.Elements, obj)
+		}
+	}
+	return newArr
 }

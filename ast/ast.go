@@ -645,3 +645,30 @@ type PropertyExpression struct {
 func (pe *PropertyExpression) expressionNode()      {}
 func (pe *PropertyExpression) TokenLiteral() string { return pe.Token.Literal }
 func (pe *PropertyExpression) String() string       { return "Ngl I'm tired part two" }
+
+// TryCatchExpression represents a try-catch statement in Nuru
+type TryCatchExpression struct {
+	Token      token.Token // The 'jaribu' token
+	TryBlock   *BlockStatement
+	Identifier string // The error identifier (optional)
+	CatchBlock *BlockStatement
+}
+
+func (tce *TryCatchExpression) expressionNode()      {}
+func (tce *TryCatchExpression) TokenLiteral() string { return tce.Token.Literal }
+func (tce *TryCatchExpression) String() string {
+	var out bytes.Buffer
+
+	out.WriteString("jaribu ")
+	out.WriteString(tce.TryBlock.String())
+
+	if tce.Identifier != "" {
+		out.WriteString(" shika " + tce.Identifier + " ")
+	} else {
+		out.WriteString(" bila ")
+	}
+
+	out.WriteString(tce.CatchBlock.String())
+
+	return out.String()
+}

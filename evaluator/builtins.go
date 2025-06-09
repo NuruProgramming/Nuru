@@ -7,6 +7,8 @@ import (
 	"os"
 	"strings"
 
+	"encoding/base64"
+
 	"github.com/NuruProgramming/Nuru/object"
 )
 
@@ -196,44 +198,114 @@ var builtins = map[string]*object.Builtin{
 		},
 	},
 
-	// "jumla": {
-	// 	Fn: func(args ...object.Object) object.Object {
-	// 		if len(args) != 1 {
-	// 			return newError("Hoja hazilingani, tunahitaji=1, tumepewa=%d", len(args))
-	// 		}
+	// Garbage collection functions
+	"safishaMemori": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 0 {
+				return newError("Samahani, safishaMemori haihitaji hoja, wewe umeweka %d", len(args))
+			}
+			object.RunGC()
+			return &object.Null{}
+		},
+	},
+	"takwimuMemori": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 0 {
+				return newError("Samahani, takwimuMemori haihitaji hoja, wewe umeweka %d", len(args))
+			}
+			object.PrintObjectStats()
+			return &object.Integer{Value: int64(object.GetObjectCount())}
+		},
+	},
+	"kumbukumbaDhaifu": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("Samahani, kumbukumbaDhaifu inahitaji hoja 1, wewe umeweka %d", len(args))
+			}
+			return object.NewWeakReference(args[0])
+		},
+	},
+	"takwimuMemoriKwa": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("Samahani, takwimuMemoriKwa inahitaji hoja 1, wewe umeweka %d", len(args))
+			}
 
-	// 		switch arg := args[0].(type) {
-	// 		case *object.Array:
+			if args[0].Type() != object.DICT_OBJ {
+				return newError("Samahani, takwimuMemoriKwa inahitaji kamusi")
+			}
 
-	// 			var sums float64
-	// 			for _, num := range arg.Elements {
+			// Create a new dict to hold object stats
+			result := &object.Dict{Pairs: make(map[object.HashKey]object.DictPair)}
 
-	// 				if num.Type() != object.INTEGER_OBJ && num.Type() != object.FLOAT_OBJ {
-	// 					return newError("Samahani namba tu zinahitajika")
-	// 				} else {
-	// 					if num.Type() == object.INTEGER_OBJ {
-	// 						no, _ := strconv.Atoi(num.Inspect())
-	// 						floatnum := float64(no)
-	// 						sums += floatnum
-	// 					} else if num.Type() == object.FLOAT_OBJ {
-	// 						no, _ := strconv.ParseFloat(num.Inspect(), 64)
-	// 						sums += no
-	// 					}
+			// Get total count
+			totalCount := object.GetObjectCount()
+			totalKey := &object.String{Value: "jumla"}
+			totalValue := &object.Integer{Value: int64(totalCount)}
+			totalHash, _ := totalKey.HashKey(), true
+			result.Pairs[totalHash] = object.DictPair{Key: totalKey, Value: totalValue}
 
-	// 				}
-	// 			}
+			// Get type counts - use the provided function instead of accessing internal fields
+			stats := getTypeCountStats()
 
-	// 			if math.Mod(sums, 1) == 0 {
-	// 				return &object.Integer{Value: int64(sums)}
-	// 			}
+			// Add type counts to result dict
+			for objType, count := range stats {
+				typeKey := &object.String{Value: string(objType)}
+				typeValue := &object.Integer{Value: int64(count)}
+				typeHash, _ := typeKey.HashKey(), true
+				result.Pairs[typeHash] = object.DictPair{Key: typeKey, Value: typeValue}
+			}
 
-	// 			return &object.Float{Value: float64(sums)}
+			return result
+		},
+	},
 
-	// 		default:
-	// 			return newError("Samahani, hii function haitumiki na %s", args[0].Type())
-	// 		}
-	// 	},
-	// },
+	// Base64 encoding/decoding functions
+	"kodeBase64": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("Samahani, kodeBase64 inahitaji hoja 1, wewe umeweka %d", len(args))
+			}
+
+			var data []byte
+
+			switch arg := args[0].(type) {
+			case *object.String:
+				data = []byte(arg.Value)
+			case *object.Byte:
+				data = arg.Value
+			default:
+				return newError("Samahani, kodeBase64 inatumika na Neno au Byte tu, umeweka %s", args[0].Type())
+			}
+
+			// Just return the encoded string directly
+			encoded := base64.StdEncoding.EncodeToString(data)
+			return &object.String{Value: encoded}
+		},
+	},
+
+	"katuaBase64": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) != 1 {
+				return newError("Samahani, katuaBase64 inahitaji hoja 1, wewe umeweka %d", len(args))
+			}
+
+			if args[0].Type() != object.STRING_OBJ {
+				return newError("Samahani, katuaBase64 inatumika na Neno pekee, umeweka %s", args[0].Type())
+			}
+
+			encoded := args[0].(*object.String).Value
+
+			// Decode and return the string directly
+			data, err := base64.StdEncoding.DecodeString(encoded)
+			if err != nil {
+				// Create a proper Error object that can be caught by try-catch
+				return &object.Error{Message: fmt.Sprintf("Shida wakati wa kuondoa usimbaji Base64: %s", err.Error())}
+			}
+
+			return &object.String{Value: string(data)}
+		},
+	},
 }
 
 func getIntValue(obj object.Object) (int64, error) {
@@ -243,4 +315,9 @@ func getIntValue(obj object.Object) (int64, error) {
 	default:
 		return 0, fmt.Errorf("expected integer, got %T", obj)
 	}
+}
+
+// getTypeCountStats returns a map of object types to their counts
+func getTypeCountStats() map[object.ObjectType]int {
+	return object.GetTypeStats()
 }

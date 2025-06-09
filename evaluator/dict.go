@@ -28,5 +28,19 @@ func evalDictLiteral(node *ast.DictLiteral, env *object.Environment) object.Obje
 		pairs[hashed] = object.DictPair{Key: key, Value: value}
 	}
 
-	return &object.Dict{Pairs: pairs}
+	// Create a new dictionary with reference counting
+	dict := &object.Dict{
+		Pairs: pairs,
+	}
+
+	// Track the dictionary in the reference counter
+	object.GlobalRefCounter.TrackObject(dict)
+
+	// Increment reference counts for all keys and values
+	for _, pair := range pairs {
+		object.Retain(pair.Key)
+		object.Retain(pair.Value)
+	}
+
+	return dict
 }

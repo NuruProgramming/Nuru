@@ -78,6 +78,8 @@ const (
 	DEFAULT  = "KAWAIDA"
 	IMPORT   = "TUMIA"
 	PACKAGE  = "PAKEJI"
+	TRY      = "JARIBU"
+	CATCH    = "SHIKA"
 )
 
 var keywords = map[string]TokenType{
@@ -101,6 +103,9 @@ var keywords = map[string]TokenType{
 	"tumia":   IMPORT,
 	"pakeji":  PACKAGE,
 	"@":       AT,
+	"jaribu":  TRY,
+	"shika":   CATCH,
+	"bila":    CATCH, // Allow both 'shika' and 'bila' for CATCH
 }
 
 func LookupIdent(ident string) TokenType {

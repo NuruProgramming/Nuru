@@ -97,7 +97,19 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		if len(elements) == 1 && isError(elements[0]) {
 			return elements[0]
 		}
-		return &object.Array{Elements: elements}
+
+		// Create a new array with reference counting
+		array := &object.Array{Elements: elements}
+
+		// Track the array in the reference counter
+		object.GlobalRefCounter.TrackObject(array)
+
+		// Increment reference counts for all elements
+		for _, elem := range elements {
+			object.Retain(elem)
+		}
+
+		return array
 	case *ast.IndexExpression:
 		left := Eval(node.Left, env)
 		if isError(left) {
@@ -120,8 +132,6 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalSwitchStatement(node, env)
 	case *ast.Null:
 		return NULL
-	// case *ast.For:
-	// 	return evalForExpression(node, env)
 	case *ast.ForIn:
 		return evalForInExpression(node, env, node.Token.Line)
 	case *ast.Package:
@@ -138,7 +148,6 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 		return evalAssign(node, env)
 	case *ast.AssignEqual:
 		return evalAssignEqual(node, env)
-
 	case *ast.AssignmentExpression:
 		left := Eval(node.Left, env)
 		if isError(left) {
@@ -187,19 +196,16 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 				if isError(key) {
 					return key
 				}
-				if hashKey, ok := key.(object.Hashable); ok {
-					hashed := hashKey.HashKey()
-					hash.Pairs[hashed] = object.DictPair{Key: key, Value: value}
-				} else {
-					return newError("Hauwezi kufanya operesheni hii na %T", key)
+				_, ok := key.(object.Hashable)
+				if !ok {
+					return newError("Aina hii haiwezi kuwa mfunguo")
 				}
-			} else {
-				return newError("%T haifanyi operesheni hii", obj)
+				hash.Set(key, value)
 			}
-		} else {
-			return newError("Tumia neno kama kibadala, sio %T", left)
 		}
-
+		return value
+	case *ast.TryCatchExpression:
+		return evalTryCatchExpression(node, env)
 	}
 
 	return nil
@@ -331,79 +337,45 @@ func evalContinue(node *ast.Continue) object.Object {
 	return CONTINUE
 }
 
-// func evalForExpression(fe *ast.For, env *object.Environment) object.Object {
-// 	obj, ok := env.Get(fe.Identifier)
-// 	defer func() { // stay safe and not reassign an existing variable
-// 		if ok {
-// 			env.Set(fe.Identifier, obj)
-// 		}
-// 	}()
-// 	val := Eval(fe.StarterValue, env)
-// 	if isError(val) {
-// 		return val
-// 	}
-
-// 	env.Set(fe.StarterName.Value, val)
-
-// 	// err := Eval(fe.Starter, env)
-// 	// if isError(err) {
-// 	// 	return err
-// 	// }
-// 	for {
-// 		evaluated := Eval(fe.Condition, env)
-// 		if isError(evaluated) {
-// 			return evaluated
-// 		}
-// 		if !isTruthy(evaluated) {
-// 			break
-// 		}
-// 		res := Eval(fe.Block, env)
-// 		if isError(res) {
-// 			return res
-// 		}
-// 		if res.Type() == object.BREAK_OBJ {
-// 			break
-// 		}
-// 		if res.Type() == object.CONTINUE_OBJ {
-// 			err := Eval(fe.Closer, env)
-// 			if isError(err) {
-// 				return err
-// 			}
-// 			continue
-// 		}
-// 		if res.Type() == object.RETURN_VALUE_OBJ {
-// 			return res
-// 		}
-// 		err := Eval(fe.Closer, env)
-// 		if isError(err) {
-// 			return err
-// 		}
-// 	}
-// 	return NULL
-// }
-
 func loopIterable(next func() (object.Object, object.Object), env *object.Environment, fi *ast.ForIn) object.Object {
-	k, v := next()
-	for k != nil && v != nil {
-		env.Set(fi.Key, k)
-		env.Set(fi.Value, v)
-		res := Eval(fi.Block, env)
-		if isError(res) {
-			return res
+	// Get the first key-value pair
+	key, value := next()
+
+	// Continue as long as both key and value are not nil
+	for key != nil && value != nil {
+		// Set the key and value in the environment
+		// Only set the key if it's not the special "_" case
+		if fi.Key != "_" {
+			env.Set(fi.Key, key)
 		}
-		if res != nil {
-			if res.Type() == object.BREAK_OBJ {
-				break
-			}
-			if res.Type() == object.CONTINUE_OBJ {
-				k, v = next()
+		env.Set(fi.Value, value)
+
+		// Evaluate the block statement
+		result := Eval(fi.Block, env)
+
+		// Handle errors and control flow statements
+		if isError(result) {
+			return result
+		}
+
+		if result != nil {
+			switch result.Type() {
+			case object.BREAK_OBJ:
+				// Exit the loop immediately
+				return NULL
+			case object.CONTINUE_OBJ:
+				// Skip to the next iteration
+				key, value = next()
 				continue
-			}
-			if res.Type() == object.RETURN_VALUE_OBJ {
-				return res
+			case object.RETURN_VALUE_OBJ:
+				// Propagate the return value
+				return result
 			}
 		}
-		k, v = next()
+
+		// Advance to the next key-value pair
+		key, value = next()
 	}
+
 	return NULL
 }

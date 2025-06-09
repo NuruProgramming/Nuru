@@ -25,38 +25,101 @@ func evalInfixExpression(operator string, left, right object.Object, line int) o
 	case operator == "+" && left.Type() == object.DICT_OBJ && right.Type() == object.DICT_OBJ:
 		leftVal := left.(*object.Dict).Pairs
 		rightVal := right.(*object.Dict).Pairs
-		pairs := make(map[object.HashKey]object.DictPair)
+
+		// Create a new reference-counted dictionary
+		result := &object.Dict{Pairs: make(map[object.HashKey]object.DictPair)}
+		object.GlobalRefCounter.TrackObject(result)
+
+		// Copy pairs from left dictionary
 		for k, v := range leftVal {
-			pairs[k] = v
+			// Retain references for the new dictionary
+			object.Retain(v.Key)
+			object.Retain(v.Value)
+			result.Pairs[k] = v
 		}
+
+		// Copy pairs from right dictionary
 		for k, v := range rightVal {
-			pairs[k] = v
+			// If key already exists in result, release old value
+			if oldPair, exists := result.Pairs[k]; exists {
+				object.Release(oldPair.Value)
+			}
+
+			// Retain references for the new dictionary
+			object.Retain(v.Key)
+			object.Retain(v.Value)
+			result.Pairs[k] = v
 		}
-		return &object.Dict{Pairs: pairs}
+
+		return result
 
 	case operator == "+" && left.Type() == object.ARRAY_OBJ && right.Type() == object.ARRAY_OBJ:
 		leftVal := left.(*object.Array).Elements
 		rightVal := right.(*object.Array).Elements
-		elements := append(leftVal, rightVal...)
-		return &object.Array{Elements: elements}
+
+		// Create a new reference-counted array
+		result := &object.Array{Elements: make([]object.Object, 0, len(leftVal)+len(rightVal))}
+		object.GlobalRefCounter.TrackObject(result)
+
+		// Copy elements from left array
+		for _, elem := range leftVal {
+			object.Retain(elem)
+			result.Elements = append(result.Elements, elem)
+		}
+
+		// Copy elements from right array
+		for _, elem := range rightVal {
+			object.Retain(elem)
+			result.Elements = append(result.Elements, elem)
+		}
+
+		return result
 
 	case operator == "*" && left.Type() == object.ARRAY_OBJ && right.Type() == object.INTEGER_OBJ:
 		leftVal := left.(*object.Array).Elements
 		rightVal := int(right.(*object.Integer).Value)
-		elements := leftVal
-		for i := rightVal; i > 1; i-- {
-			elements = append(elements, leftVal...)
+
+		// If multiplier is zero or negative, return empty array
+		if rightVal <= 0 {
+			return &object.Array{Elements: []object.Object{}}
 		}
-		return &object.Array{Elements: elements}
+
+		// Create a new reference-counted array with sufficient capacity
+		result := &object.Array{Elements: make([]object.Object, 0, len(leftVal)*rightVal)}
+		object.GlobalRefCounter.TrackObject(result)
+
+		// Add repeated elements
+		for i := 0; i < rightVal; i++ {
+			for _, elem := range leftVal {
+				object.Retain(elem)
+				result.Elements = append(result.Elements, elem)
+			}
+		}
+
+		return result
 
 	case operator == "*" && left.Type() == object.INTEGER_OBJ && right.Type() == object.ARRAY_OBJ:
 		leftVal := int(left.(*object.Integer).Value)
 		rightVal := right.(*object.Array).Elements
-		elements := rightVal
-		for i := leftVal; i > 1; i-- {
-			elements = append(elements, rightVal...)
+
+		// If multiplier is zero or negative, return empty array
+		if leftVal <= 0 {
+			return &object.Array{Elements: []object.Object{}}
 		}
-		return &object.Array{Elements: elements}
+
+		// Create a new reference-counted array with sufficient capacity
+		result := &object.Array{Elements: make([]object.Object, 0, len(rightVal)*leftVal)}
+		object.GlobalRefCounter.TrackObject(result)
+
+		// Add repeated elements
+		for i := 0; i < leftVal; i++ {
+			for _, elem := range rightVal {
+				object.Retain(elem)
+				result.Elements = append(result.Elements, elem)
+			}
+		}
+
+		return result
 
 	case operator == "*" && left.Type() == object.STRING_OBJ && right.Type() == object.INTEGER_OBJ:
 		leftVal := left.(*object.String).Value

@@ -6,24 +6,50 @@ import (
 )
 
 func evalForInExpression(fie *ast.ForIn, env *object.Environment, line int) object.Object {
+	// Evaluate the iterable expression
 	iterable := Eval(fie.Iterable, env)
-	existingKeyIdentifier, okk := env.Get(fie.Key) // again, stay safe
+	if isError(iterable) {
+		return iterable
+	}
+
+	// Check if the iterable is nil
+	if iterable == nil {
+		return newError("Mstari %d: Hakuna kitu cha kutengeneza loop nalo", line)
+	}
+
+	// Save existing variables with same names to restore them later
+	var existingKeyIdentifier object.Object
+	var okk bool
+
+	// Only save and restore the key variable if it's not the special "_" case
+	if fie.Key != "_" {
+		existingKeyIdentifier, okk = env.Get(fie.Key)
+	}
+
 	existingValueIdentifier, okv := env.Get(fie.Value)
-	defer func() { // restore them later on
-		if okk {
+
+	// Set up deferred function to restore environment
+	defer func() {
+		if okk && fie.Key != "_" {
 			env.Set(fie.Key, existingKeyIdentifier)
 		}
 		if okv {
 			env.Set(fie.Value, existingValueIdentifier)
 		}
 	}()
+
+	// Check if the object implements Iterable interface and process accordingly
 	switch i := iterable.(type) {
 	case object.Iterable:
+		// Reset the iterator and set up deferred reset
+		i.Reset()
 		defer func() {
 			i.Reset()
 		}()
 		return loopIterable(i.Next, env, fie)
 	default:
-		return newError("Mstari %d: Huwezi kufanya operesheni hii na %s", line, i.Type())
+		// Return a more descriptive error message
+		return newError("Mstari %d: Samahani, '%s' haiwezi kutumiwa na 'kwa...ktk'. Unahitaji kutumia array, kamusi, au neno",
+			line, iterable.Type())
 	}
 }

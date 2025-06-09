@@ -62,31 +62,60 @@ func (p *Parser) parseForExpression() ast.Expression {
 
 func (p *Parser) parseForInExpression(initialExpression *ast.For) ast.Expression {
 	expression := &ast.ForIn{Token: initialExpression.Token}
+	
+	// Ensure we're at an identifier
 	if !p.curTokenIs(token.IDENT) {
+		p.peekError(token.IDENT)
 		return nil
 	}
+	
+	// Get the first identifier (could be key or value)
 	val := p.curToken.Literal
 	var key string
+	
+	// Move to the next token
 	p.nextToken()
+	
+	// Check if we have a comma, which indicates a key-value pair
 	if p.curTokenIs(token.COMMA) {
 		p.nextToken()
 		if !p.curTokenIs(token.IDENT) {
+			p.peekError(token.IDENT)
 			return nil
 		}
+		// First identifier becomes the key, second becomes the value
 		key = val
 		val = p.curToken.Literal
 		p.nextToken()
+	} else {
+		// In single variable mode, we set key to "_" (unused)
+		// This allows iterations like: kwa item ktk array { ... }
+		key = "_"
 	}
+	
+	// Set the key and value in the expression
 	expression.Key = key
 	expression.Value = val
+	
+	// Check for the "ktk" (IN) token
 	if !p.curTokenIs(token.IN) {
+		p.peekError(token.IN)
 		return nil
 	}
+	
+	// Move past the IN token
 	p.nextToken()
+	
+	// Parse the iterable expression
 	expression.Iterable = p.parseExpression(LOWEST)
+	
+	// Check for the opening brace
 	if !p.expectPeek(token.LBRACE) {
 		return nil
 	}
+	
+	// Parse the block statement
 	expression.Block = p.parseBlockStatement()
+	
 	return expression
 }

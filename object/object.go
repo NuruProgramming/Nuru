@@ -28,6 +28,9 @@ const (
 	PACKAGE_OBJ      = "PAKEJI"
 	INSTANCE         = "PAKEJI"
 	AT               = "@"
+	WEAK_REF_OBJ     = "KUMBUKUMBU"
+	ENVIRONMENT_OBJ  = "MAZINGIRA"
+	BASE64_OBJ       = "BASE64"
 )
 
 type Object interface {
@@ -48,6 +51,37 @@ type Hashable interface {
 type Iterable interface {
 	Next() (Object, Object)
 	Reset()
+}
+
+// WeakReference holds a reference to an object without preventing garbage collection
+type WeakReference struct {
+	Target Object // Target object
+}
+
+func (w *WeakReference) Type() ObjectType { return WEAK_REF_OBJ }
+func (w *WeakReference) Inspect() string {
+	if w.Target == nil {
+		return "tupu (kumbukumbu dhaifu)"
+	}
+	return fmt.Sprintf("kumbukumbu dhaifu: %s", w.Target.Inspect())
+}
+
+// NewWeakReference creates a new weak reference to an object
+func NewWeakReference(target Object) *WeakReference {
+	return &WeakReference{Target: target}
+}
+
+// GetTarget safely retrieves the target object, returns NULL if the target has been collected
+func (w *WeakReference) GetTarget() Object {
+	if w.Target == nil {
+		return &Null{}
+	}
+	return w.Target
+}
+
+// ClearTarget explicitly clears the target reference
+func (w *WeakReference) ClearTarget() {
+	w.Target = nil
 }
 
 func newError(format string, a ...interface{}) *Error {
