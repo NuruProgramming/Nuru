@@ -44,7 +44,7 @@ andika("kitenga: " + njia.kitenga())
 andika("kigawaji: " + njia.kigawaji())
 
 // 13. glob: Globbing (wildcard matching)
-andika("glob (all .nr files): " + tungo(njia.glob("./*.nr")))
+andika("glob (all .nr files): " + tungo(njia.glob("examples/*.nr")))
 
 // 14. posix/win32: Use POSIX or Windows path rules
 posix_path = njia.posix()
