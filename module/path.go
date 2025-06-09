@@ -9,6 +9,26 @@ import (
 	"github.com/NuruProgramming/Nuru/object"
 )
 
+// glob returns an array of file paths matching a pattern (wildcards)
+func glob(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) < 1 {
+		return &object.Error{Message: "Glob inahitaji hoja ya kwanza (pattern ya njia)"}
+	}
+	patternStr, ok := args[0].(*object.String)
+	if !ok {
+		return &object.Error{Message: "Hoja ya kwanza lazima iwe neno la pattern"}
+	}
+	matches, err := filepath.Glob(patternStr.Value)
+	if err != nil {
+		return &object.Error{Message: fmt.Sprintf("Hitilafu kwenye glob: %s", err)}
+	}
+	arr := &object.Array{Elements: make([]object.Object, len(matches))}
+	for i, m := range matches {
+		arr.Elements[i] = &object.String{Value: m}
+	}
+	return arr
+}
+
 var PathFunctions = map[string]object.ModuleFunction{}
 
 func init() {
@@ -26,6 +46,7 @@ func init() {
 	PathFunctions["kitenga"] = separator   // path.sep
 	PathFunctions["posix"] = posixObject   // path.posix - returns a path object using POSIX rules
 	PathFunctions["win32"] = win32Object   // path.win32 - returns a path object using Windows rules
+	PathFunctions["glob"] = glob           // path.glob - returns array of matching paths
 }
 
 // basename returns the last part of a path, similar to the Unix basename command
@@ -428,6 +449,12 @@ func createPathModuleObject(usePosix bool) object.Object {
 				return &object.String{Value: "/"}
 			}
 			return &object.String{Value: "\\"}
+		},
+	})
+
+	pathModule.Set(&object.String{Value: "glob"}, &object.Builtin{
+		Fn: func(args ...object.Object) object.Object {
+			return glob(args, nil)
 		},
 	})
 

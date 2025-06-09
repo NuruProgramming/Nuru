@@ -49,6 +49,26 @@ func Read(contents string) {
 
 }
 
+func ReadWithEnv(contents string, env *object.Environment) {
+	l := lexer.New(contents)
+	p := parser.New(l)
+
+	program := p.ParseProgram()
+
+	if len(p.Errors()) != 0 {
+		fmt.Println(styles.ErrorStyle.Italic(false).Render("Kuna Errors Zifuatazo:"))
+		for _, msg := range p.Errors() {
+			fmt.Println("\t" + styles.ErrorStyle.Render(msg))
+		}
+	}
+	evaluated := evaluator.Eval(program, env)
+	if evaluated != nil {
+		if evaluated.Type() != object.NULL_OBJ {
+			fmt.Println(styles.ReplStyle.Render(evaluated.Inspect()))
+		}
+	}
+}
+
 func Start() {
 	env := object.NewEnvironment()
 
