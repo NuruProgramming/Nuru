@@ -22,13 +22,14 @@ func evalPropertyExpression(node *ast.PropertyExpression, env *object.Environmen
 		prop := node.Property.(*ast.Identifier).Value
 		if val, ok := obj.Env.Get(prop); ok {
 			return val
+			}
+	case *object.Dict:
+		dict := left.(*object.Dict)
+		prop := node.Property.(*ast.Identifier).Value
+		key := &object.String{Value: prop}
+		if val, ok := dict.Get(key); ok {
+			return val
 		}
-		// case *object.Module:
-		// 	mod := left.(*object.Module)
-		// 	prop := node.Property.(*ast.Identifier).Value
-		// 	if val, ok := mod.Properties[prop]; ok {
-		// 		return val()
-		// 	}
 	}
 	return newError("Value %s sii sahihi kwenye %s", node.Property.(*ast.Identifier).Value, left.Inspect())
 }
