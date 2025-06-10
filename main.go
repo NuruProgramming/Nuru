@@ -7,6 +7,8 @@ import (
 	"strings"
 
 	"github.com/NuruProgramming/Nuru/analysis"
+	"github.com/NuruProgramming/Nuru/evaluator"
+	"github.com/NuruProgramming/Nuru/module"
 	"github.com/NuruProgramming/Nuru/object"
 	"github.com/NuruProgramming/Nuru/repl"
 	"github.com/NuruProgramming/Nuru/styles"
@@ -52,6 +54,30 @@ func main() {
 		} else {
 			args = append(args, arg)
 		}
+	}
+
+	// Ensure module.EvaluatorCallback is set for Go-to-Nuru calls (e.g., HTTP server)
+	module.EvaluatorCallback = func(fn *object.Function, args []object.Object) object.Object {
+		// Use the function's environment to call evaluator.Eval
+		// Create a new environment with the function's closure
+		env := object.NewEnclosedEnvironment(fn.Env)
+		// Bind parameters
+		for i, param := range fn.Parameters {
+			if i < len(args) {
+				env.Set(param.Value, args[i])
+			} else if def, ok := fn.Defaults[param.Value]; ok {
+				val := evaluator.Eval(def, env)
+				env.Set(param.Value, val)
+			} else {
+				env.Set(param.Value, evaluator.NULL)
+			}
+		}
+		// Evaluate the function body
+		result := evaluator.Eval(fn.Body, env)
+		if ret, ok := result.(*object.ReturnValue); ok {
+			return ret.Value
+		}
+		return result
 	}
 
 	// Now process the main command
