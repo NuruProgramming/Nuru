@@ -183,6 +183,8 @@ func (l *Lexer) NextToken() token.Token {
 			tok.Type = token.LookupIdent(tok.Literal)
 			tok.Line = l.line
 			return tok
+		} else if isDigit(l.ch) && l.ch == '0' && isLetter(l.peekChar()) {
+			return l.readOtherSystems()
 		} else if isDigit(l.ch) && isLetter(l.peekChar()) {
 			tok.Literal = l.readIdentifier()
 			tok.Type = token.LookupIdent(tok.Literal)
@@ -198,6 +200,33 @@ func (l *Lexer) NextToken() token.Token {
 
 	l.readChar()
 	return tok
+}
+
+func (l *Lexer) readOtherSystems() token.Token {
+	var sys_token token.Token
+
+	switch l.peekChar() {
+	case rune('x'), rune('X'):
+		sys_token = l.readHexadecimal()
+	default:
+		l.readChar()
+		sys_token = newToken(token.ILLEGAL, l.line, l.ch)
+	}
+
+	return sys_token
+}
+
+func (l *Lexer) readHexadecimal() token.Token {
+	l.readChar() // 0
+	l.readChar() // x
+
+	position := l.position
+
+	for isDigit(l.ch) || isLetter(l.ch) {
+		l.readChar()
+	}
+
+	return token.Token{Type: token.HEXADESIMALI, Literal: string(l.input[position:l.position]), Line: l.line}
 }
 
 func newToken(tokenType token.TokenType, line int, ch rune) token.Token {

@@ -15,10 +15,11 @@ const (
 	EOF     = "MWISHO"
 
 	// Identifiers + literals
-	IDENT  = "KITAMBULISHI"
-	INT    = "NAMBA"
-	STRING = "NENO"
-	FLOAT  = "DESIMALI"
+	IDENT        = "KITAMBULISHI"
+	INT          = "NAMBA"
+	STRING       = "NENO"
+	FLOAT        = "DESIMALI"
+	HEXADESIMALI = "HEXADESIMALI"
 
 	// Operators
 	ASSIGN          = "="
