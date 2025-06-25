@@ -18,4 +18,3 @@ func (p *Pointer) Inspect() string {
 	}
 	return fmt.Sprintf("Pointer(addr=%p, value=%s)", p.Ref, p.Ref.Inspect())
 }
-
