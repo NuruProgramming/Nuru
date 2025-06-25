@@ -26,6 +26,7 @@ const (
 	MINUS           = "-"
 	BANG            = "!"
 	ASTERISK        = "*"
+	AMPERSAND       = "&"
 	POW             = "**"
 	SLASH           = "/"
 	MODULUS         = "%"
