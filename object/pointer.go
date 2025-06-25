@@ -14,7 +14,7 @@ func (p *Pointer) Type() ObjectType {
 
 func (p *Pointer) Inspect() string {
 	if p.Ref == nil {
-		return "Pointer(addr=nil, value=nil)"
+		return "Pointer(anwani=nil, thamani=nil)"
 	}
-	return fmt.Sprintf("Pointer(addr=%p, value=%s)", p.Ref, p.Ref.Inspect())
+	return fmt.Sprintf("Pointer(anwani=%p, thamani=%s)", p.Ref, p.Ref.Inspect())
 }
