@@ -2,6 +2,7 @@ package evaluator
 
 import (
 	"math"
+	"math/big"
 	"strings"
 
 	"github.com/NuruProgramming/Nuru/object"
@@ -133,6 +134,11 @@ func evalInfixExpression(operator string, left, right object.Object, line int) o
 
 	case left.Type() == object.INTEGER_OBJ && right.Type() == object.INTEGER_OBJ:
 		return evalIntegerInfixExpression(operator, left, right, line)
+
+	case (left.Type() == object.BIG_INTEGER_OBJ || right.Type() == object.BIG_INTEGER_OBJ) &&
+		(left.Type() == object.INTEGER_OBJ || left.Type() == object.BIG_INTEGER_OBJ) &&
+		(right.Type() == object.INTEGER_OBJ || right.Type() == object.BIG_INTEGER_OBJ):
+		return evalBigIntegerInfixExpression(operator, left, right, line)
 
 	case left.Type() == object.FLOAT_OBJ && right.Type() == object.FLOAT_OBJ:
 		return evalFloatInfixExpression(operator, left, right, line)
@@ -307,6 +313,65 @@ func evalIntegerInfixExpression(operator string, left, right object.Object, line
 		return nativeBoolToBooleanObject(leftVal == rightVal)
 	case "!=":
 		return nativeBoolToBooleanObject(leftVal != rightVal)
+	default:
+		return newError("Mstari %d: Operesheni Haieleweki: %s %s %s",
+			line, left.Type(), operator, right.Type())
+	}
+}
+
+func toBigInt(obj object.Object) *big.Int {
+	switch o := obj.(type) {
+	case *object.Integer:
+		return big.NewInt(o.Value)
+	case *object.BigInteger:
+		if o.Value == nil {
+			return new(big.Int)
+		}
+		return new(big.Int).Set(o.Value)
+	}
+	return nil
+}
+
+func evalBigIntegerInfixExpression(operator string, left, right object.Object, line int) object.Object {
+	L := toBigInt(left)
+	R := toBigInt(right)
+	if L == nil || R == nil {
+		return newError("Mstari %d: Haieleweki: %s %s %s", line, left.Type(), operator, right.Type())
+	}
+	switch operator {
+	case "+":
+		return &object.BigInteger{Value: new(big.Int).Add(L, R)}
+	case "-":
+		return &object.BigInteger{Value: new(big.Int).Sub(L, R)}
+	case "*":
+		return &object.BigInteger{Value: new(big.Int).Mul(L, R)}
+	case "/":
+		if R.Sign() == 0 {
+			return newError("Mstari %d: Gawio na sifuri", line)
+		}
+		return &object.BigInteger{Value: new(big.Int).Quo(L, R)}
+	case "%":
+		if R.Sign() == 0 {
+			return newError("Mstari %d: Gawio na sifuri", line)
+		}
+		return &object.BigInteger{Value: new(big.Int).Rem(L, R)}
+	case "**":
+		if R.Sign() < 0 {
+			return newError("Mstari %d: Namba ya nguvu lazima iwe si hasi kwa namba kubwa", line)
+		}
+		return &object.BigInteger{Value: new(big.Int).Exp(L, R, nil)}
+	case "<":
+		return nativeBoolToBooleanObject(L.Cmp(R) < 0)
+	case "<=":
+		return nativeBoolToBooleanObject(L.Cmp(R) <= 0)
+	case ">":
+		return nativeBoolToBooleanObject(L.Cmp(R) > 0)
+	case ">=":
+		return nativeBoolToBooleanObject(L.Cmp(R) >= 0)
+	case "==":
+		return nativeBoolToBooleanObject(L.Cmp(R) == 0)
+	case "!=":
+		return nativeBoolToBooleanObject(L.Cmp(R) != 0)
 	default:
 		return newError("Mstari %d: Operesheni Haieleweki: %s %s %s",
 			line, left.Type(), operator, right.Type())

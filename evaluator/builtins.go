@@ -157,6 +157,8 @@ var builtins = map[string]*object.Builtin{
 				return convertToString(value)
 			case "BOOLEAN":
 				return convertToBoolean(value)
+			case "NAMBA_KUBWA":
+				return convertToBigInteger(value)
 			default:
 				return newError("Aina isiyojulikana: %s", targetTypeStr)
 			}

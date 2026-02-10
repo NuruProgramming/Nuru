@@ -182,6 +182,10 @@ func Release(obj Object) {
 	if refObj, ok := obj.(RefCountable); ok {
 		count := refObj.DecRefCount()
 		if count == 0 {
+			// Release any references held by the object (e.g. Iterator holds collection)
+			if it, ok := obj.(*Iterator); ok {
+				it.ReleaseCollection()
+			}
 			// The object is no longer referenced, remove it from tracking
 			GlobalRefCounter.mutex.Lock()
 			delete(GlobalRefCounter.objects, obj)

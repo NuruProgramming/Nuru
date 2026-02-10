@@ -74,3 +74,9 @@ Output:
 8
 9 
 ```
+
+## Big integers (NAMBA_KUBWA)
+
+For whole numbers larger than the 64-bit integer range, use **namba kubwa** (big integers). Create them with **badilisha**(value, **"NAMBA_KUBWA"**) (value can be a string of digits or an integer) or with the **hisabati** module: `tumia hisabati` then `hisabati.namba_kubwa(neno_au_namba)`.
+
+Arithmetic and comparison (+, -, *, /, %, **, <, <=, >, >=, ==, !=) work between big integers and between big integers and normal integers. **mfululizo** and array indices use 64-bit integers only. Convert a big integer to a string with **badilisha**(x, **"NENO"**); to a 64-bit integer with **badilisha**(x, **"NAMBA"**) (fails if the value does not fit).

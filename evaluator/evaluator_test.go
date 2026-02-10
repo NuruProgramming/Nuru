@@ -1128,3 +1128,115 @@ func TestTimeModule(t *testing.T) {
 		t.Errorf("Wrong time value: got=%v", err)
 	}
 }
+
+func TestCStyleFor(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected int64
+	}{
+		{
+			`kwa i = 0; i < 3; i = i + 1 { }; i`,
+			3,
+		},
+		{
+			`j = 0; kwa i = 0; i < 5; i = i + 1 { j = j + 1 }; j`,
+			5,
+		},
+		{
+			`out = 0; kwa i = 0; i < 4; i = i + 1 { kama (i == 2) { vunja }; out = out + 1 }; out`,
+			2,
+		},
+		{
+			`out = 0; kwa i = 0; i < 5; i = i + 1 { kama (i == 2) { endelea }; out = out + 1 }; out`,
+			4,
+		},
+	}
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		testIntegerObject(t, evaluated, tt.expected)
+	}
+	// Return value: last expression in block, or NULL on break
+	last := testEval(`kwa i = 0; i < 2; i = i + 1 { i * 10 }; tupu`)
+	if last != NULL {
+		t.Errorf("expected NULL after loop with no explicit value, got %v", last)
+	}
+	lastVal := testEval(`kwa i = 0; i < 2; i = i + 1 { i }; 99`)
+	testIntegerObject(t, lastVal, 99)
+}
+
+func TestBigInteger(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{`badilisha("99999999999999999999", "NAMBA_KUBWA")`, "99999999999999999999"},
+		{`badilisha("100", "NAMBA_KUBWA") + badilisha("200", "NAMBA_KUBWA")`, "300"},
+		{`a = badilisha("10", "NAMBA_KUBWA"); b = badilisha("3", "NAMBA_KUBWA"); a * b`, "30"},
+		{`a = badilisha("100", "NAMBA_KUBWA"); a == badilisha("100", "NAMBA_KUBWA")`, "kweli"},
+		{`badilisha(badilisha("42", "NAMBA_KUBWA"), "NENO")`, "42"},
+		{`badilisha(5, "NAMBA_KUBWA")`, "5"},
+	}
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		if isError(evaluated) {
+			t.Errorf("input %q: error %s", tt.input, evaluated.Inspect())
+			continue
+		}
+		got := evaluated.Inspect()
+		if got != tt.expected {
+			t.Errorf("input %q: want %q, got %q", tt.input, tt.expected, got)
+		}
+	}
+	// Dict key with BigInteger
+	got := testEval(`k = badilisha(1, "NAMBA_KUBWA"); kamusi = {k: "moja"}; kamusi[badilisha(1, "NAMBA_KUBWA")]`)
+	if s, ok := got.(*object.String); !ok || s.Value != "moja" {
+		t.Errorf("BigInteger as dict key: got %v", got)
+	}
+}
+
+func TestIteratorAndForIn(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{
+			`orodha = [1, 2, 3]
+			output = ""
+			kwa i, x ktk orodha.kitanzi() {
+				output += badilisha(x, "NENO")
+			}
+			output`,
+			"123",
+		},
+		{
+			`it = [10, 20].kitanzi()
+			output = ""
+			kwa _, v ktk it {
+				output += badilisha(v, "NENO")
+			}
+			output`,
+			"1020",
+		},
+		{
+			`a = [1, 2]
+			it1 = a.kitanzi()
+			it2 = a.kitanzi()
+			out = ""
+			kwa _, v ktk it1 { out += badilisha(v, "NENO") }
+			out += "|"
+			kwa _, v ktk it2 { out += badilisha(v, "NENO") }
+			out`,
+			"12|12",
+		},
+	}
+	for _, tt := range tests {
+		evaluated := testEval(tt.input)
+		s, ok := evaluated.(*object.String)
+		if !ok {
+			t.Fatalf("expected string, got %T: %s", evaluated, evaluated.Inspect())
+		}
+		if s.Value != tt.expected {
+			t.Errorf("input %q: want %q, got %q", tt.input, tt.expected, s.Value)
+		}
+	}
+}

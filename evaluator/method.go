@@ -52,6 +52,8 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object,
 		switch methodName {
 		case "idadi":
 			return &object.Integer{Value: int64(len(obj.Pairs))}
+		case "kitanzi":
+			return object.NewDictIterator(obj)
 		case "fungua":
 			if len(args) != 1 {
 				return newError("Samahani, tunahitaji Hoja 1, wewe umeweka %d", len(args))

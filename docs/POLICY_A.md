@@ -110,7 +110,7 @@ After Policy A migration, the **global builtins** are:
 - `namba` – convert to integer
 - `tungo` – convert to string
 
-File open, Base64, and runtime/memory are in **faili**, **crypto**, and **mfumo** respectively.
+File open, Base64, and runtime/memory are in **faili**, **crypto**, and **mfumo** respectively. Big integers (namba kubwa) are created via **badilisha**(x, **"NAMBA_KUBWA"**) or **hisabati.namba_kubwa**.
 
 ---
 

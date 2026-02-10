@@ -130,4 +130,22 @@ b = a.chuja(unda(x){
 andika(b) // [2, 4]
 ```
 
+### kitanzi()
+
+kitanzi() returns an iterator over the array. You can use the iterator with `kwa ... ktk` to loop without changing the array’s own position. Multiple iterators over the same array each have their own position:
+
+```s
+a = [1, 2, 3]
+it = a.kitanzi()
+kwa i, x ktk it {
+    andika(i, x)
+}
+
+// Two iterators over the same array
+it1 = a.kitanzi()
+it2 = a.kitanzi()
+kwa _, v ktk it1 { andika(v) }
+kwa _, v ktk it2 { andika(v) }
+```
+
 With this information, you can now effectively work with arrays in Nuru, making it easy to manipulate collections of data in your programs.

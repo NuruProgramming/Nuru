@@ -336,7 +336,7 @@ andika(mtu) // output = {"jina": "Avicenna", "kabila": "Mnyakusa", "anapoishi": 
 
 ### For Loops
 
-These can iterate over strings, arrays and dictionaries:
+These can iterate over strings, arrays and dictionaries (and iterators from **.kitanzi()**). You can also use a C-style for loop: **kwa** *var* **=** *start* **;** *condition* **;** *update* **{** ... **}**.
 
 ```
 kwa i ktk "habari" {
@@ -350,6 +350,8 @@ a
 r
 i
 */
+
+kwa i = 0; i < 3; i = i + 1 { andika(i) }  // 0, 1, 2
 ```
 
 ### Getting Input From User

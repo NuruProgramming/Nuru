@@ -1064,6 +1064,31 @@ func TestForExpression(t *testing.T) {
 	}
 }
 
+func TestCStyleForExpression(t *testing.T) {
+	input := `kwa i = 0; i < 10; i = i + 1 { andika(i) }`
+	l := lexer.New(input)
+	p := New(l)
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+	if len(program.Statements) != 1 {
+		t.Fatalf("program.Body does not contain 1 statement. got=%d", len(program.Statements))
+	}
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] is not ast.ExpressionStatement. got=%T", program.Statements[0])
+	}
+	exp, ok := stmt.Expression.(*ast.For)
+	if !ok {
+		t.Fatalf("stmt.Expression is not ast.For. got=%T", stmt.Expression)
+	}
+	if exp.Identifier != "i" {
+		t.Errorf("exp.Identifier not 'i'. got=%s", exp.Identifier)
+	}
+	if exp.Condition == nil || exp.Closer == nil || exp.Block == nil {
+		t.Errorf("C-style for missing Condition, Closer, or Block")
+	}
+}
+
 func TestParsePostfix(t *testing.T) {
 	input := []string{
 		"a = 5; a++;",

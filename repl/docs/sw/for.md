@@ -119,6 +119,28 @@ kwa i, v ktk majina {
 2 - haruna
 ```
 
+## Viitanzi (kitanzi)
+
+Safu, kamusi, na tungo zina method **kitanzi()** inayorudisha kitanzi. Unaweza kutumia kitanzi na `kwa ... ktk` kama vile mkusanyo. Viitanzi vinashika nafasi yake, hivyo unaweza kuwa na viitanzi viwili juu ya mkusanyo mmoja:
+
+```s
+a = [1, 2, 3]
+it = a.kitanzi()
+kwa _, v ktk it {
+    andika(v)
+}
+```
+
+## Kitanzi cha kwa (C-style)
+
+Unaweza kuandika kitanzi cha kwa kilicho na sehemu tatu: **kwa** *kigezo* **=** *anza* **;** *sharti* **;** *sasisha* **{** *block* **}**. Kigezo kinawekwa *anza*, kisha kila mzunguko *sharti* inakaguliwa; ikiwa kweli, *block* inatekelezwa, kisha *sasisha* inakokotwa (mara nyingi ni assignment kama `i = i + 1`). Kigezo kinabaki kwenye scope ya nje baada ya kitanzi.
+
+```s
+kwa i = 0; i < 5; i = i + 1 {
+    andika(i)
+}
+```
+
 ## Vunja na Endelea
 
 ### Vunja

@@ -34,6 +34,8 @@ aina(2) // Output: "NAMBA"
 aina("Nuru") // Output: "NENO"
 ```
 
+**badilisha**(value, type) supports the type **"NAMBA_KUBWA"** to create or convert to a big integer (for values beyond 64-bit range). See [Numbers](numbers.md#big-integers-namba_kubwa).
+
 To open a file, use the **faili** module: `tumia faili` then `faili.fungua(path)` or `faili.fungua(path, "r")`. See the [Files](files.md) documentation.
 
 ## Base64 encoding and decoding

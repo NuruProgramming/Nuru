@@ -53,6 +53,7 @@ var MathFunctions = map[string]object.ModuleFunction{
 	"asinh":     asinh,
 	"atanh":     atanh,
 	"atan2":     atan2,
+	"namba_kubwa": nambaKubwa,
 }
 
 var Constants = map[string]object.Object{
@@ -728,4 +729,24 @@ func random(args []object.Object, defs map[string]object.Object) object.Object {
 	value := rand.Float64()
 
 	return &object.Float{Value: value}
+}
+
+func nambaKubwa(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) != 1 {
+		return &object.Error{Message: "namba_kubwa inahitaji hoja 1: neno au namba"}
+	}
+	switch v := args[0].(type) {
+	case *object.String:
+		bi, ok := object.NewBigIntegerFromString(v.Value)
+		if !ok {
+			return &object.Error{Message: "namba_kubwa: neno si namba halali: " + v.Value}
+		}
+		return bi
+	case *object.Integer:
+		return object.NewBigIntegerFromInt64(v.Value)
+	case *object.BigInteger:
+		return v
+	default:
+		return &object.Error{Message: "namba_kubwa inahitaji neno au namba, umeweka: " + args[0].Inspect()}
+	}
 }

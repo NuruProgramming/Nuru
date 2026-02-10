@@ -467,6 +467,12 @@ type For struct {
 	Block        *BlockStatement
 }
 
+func (f *For) expressionNode()      {}
+func (f *For) TokenLiteral() string { return f.Token.Literal }
+func (f *For) String() string {
+	return "kwa " + f.Identifier + " = ... ; ... ; ... { }"
+}
+
 type ForIn struct {
 	Token    token.Token
 	Key      string

@@ -151,6 +151,8 @@ func (a *Array) Method(method string, args []Object) Object {
 		return a.filter(args)
 	case "tafuta":
 		return a.find(args)
+	case "kitanzi":
+		return NewArrayIterator(a)
 	case "sukumaKamaRef": // New method to add an element as a weak reference
 		return a.pushAsWeakRef(args)
 	// Methods like ramani and punguza require access to the evaluator environment

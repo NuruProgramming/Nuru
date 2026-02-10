@@ -43,6 +43,8 @@ func (s *String) Method(method string, args []Object) Object {
 		return s.split(args)
 	case "panga":
 		return s.format(args)
+	case "kitanzi":
+		return NewStringIterator(s)
 	default:
 		return newError("Samahani, kiendesha hiki hakitumiki na tungo (Neno)")
 	}

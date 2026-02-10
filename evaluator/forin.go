@@ -41,6 +41,10 @@ func evalForInExpression(fie *ast.ForIn, env *object.Environment, line int) obje
 	// Check if the object implements Iterable interface and process accordingly
 	switch i := iterable.(type) {
 	case object.Iterable:
+		// If iterable is an Iterator (from .kitanzi()), release it when done so it can release the collection
+		if _, ok := iterable.(*object.Iterator); ok {
+			defer object.Release(iterable)
+		}
 		// Reset the iterator and set up deferred reset
 		i.Reset()
 		defer func() {
@@ -49,7 +53,7 @@ func evalForInExpression(fie *ast.ForIn, env *object.Environment, line int) obje
 		return loopIterable(i.Next, env, fie)
 	default:
 		// Return a more descriptive error message
-		return newError("Mstari %d: Samahani, '%s' haiwezi kutumiwa na 'kwa...ktk'. Unahitaji kutumia array, kamusi, au neno",
+		return newError("Mstari %d: Samahani, '%s' haiwezi kutumiwa na 'kwa...ktk'. Unahitaji kutumia orodha, kamusi, neno, au kitanzi",
 			line, iterable.Type())
 	}
 }

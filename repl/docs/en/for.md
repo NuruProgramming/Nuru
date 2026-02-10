@@ -1,6 +1,6 @@
 # For Loops in Nuru
 
-For loops are a fundamental control structure in Nuru, used for iterating over iterable objects such as strings, arrays, and dictionaries. This page covers the syntax and usage of for loops in Nuru, including key-value pair iteration, and the use of break and continue statements.
+For loops are a fundamental control structure in Nuru, used for iterating over iterable objects such as strings, arrays, dictionaries, and iterators (kitanzi). This page covers the syntax and usage of for loops in Nuru, including key-value pair iteration, and the use of break and continue statements.
 
 ## Basic Syntax
 To create a for loop, use the kwa keyword followed by a temporary identifier (such as i or v) and the iterable object. Enclose the loop body in curly braces {}. Here's an example with a string:
@@ -125,6 +125,31 @@ Output:
 1 - asha
 2 - haruna
 ```
+
+## Iterators (kitanzi)
+
+Arrays, dictionaries, and strings have a **kitanzi()** method that returns an iterator. You can use an iterator with `kwa ... ktk` the same way as the collection. Iterators keep their own position, so you can have multiple iterators over the same collection, or reuse one collection in nested loops:
+
+```s
+a = [1, 2, 3]
+it = a.kitanzi()
+kwa _, v ktk it {
+    andika(v)
+}
+```
+
+## C-style for loop
+
+You can write a classic three-part for loop with **kwa** *variable* **=** *start* **;** *condition* **;** *update* **{** *block* **}**. The loop variable is set to *start*, then on each iteration the *condition* is checked; if true, the *block* runs, then *update* is evaluated (often an assignment like `i = i + 1`), and the loop repeats. The variable lives in the outer scope, so it remains after the loop.
+
+```s
+kwa i = 0; i < 5; i = i + 1 {
+    andika(i)
+}
+// i is 5 after the loop
+```
+
+You can use **vunja** and **endelea** inside the block; **vunja** exits the loop and returns tupu, **endelea** skips to the update and next iteration.
 
 ## Break (Vunja) and Continue (Endelea)
 
