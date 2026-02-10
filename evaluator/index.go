@@ -8,6 +8,10 @@ func evalIndexExpression(left, index object.Object, line int) object.Object {
 		return evalArrayIndexExpression(left, index)
 	case left.Type() == object.ARRAY_OBJ && index.Type() != object.INTEGER_OBJ:
 		return newError("Mstari %d: Tafadhali tumia number, sio: %s", line, index.Type())
+	case left.Type() == object.TUPLE_OBJ && index.Type() == object.INTEGER_OBJ:
+		return evalTupleIndexExpression(left, index)
+	case left.Type() == object.TUPLE_OBJ && index.Type() != object.INTEGER_OBJ:
+		return newError("Mstari %d: Tafadhali tumia number, sio: %s", line, index.Type())
 	case left.Type() == object.DICT_OBJ:
 		return evalDictIndexExpression(left, index, line)
 	default:
@@ -25,6 +29,16 @@ func evalArrayIndexExpression(array, index object.Object) object.Object {
 	}
 
 	return arrayObject.Elements[idx]
+}
+
+func evalTupleIndexExpression(tuple, index object.Object) object.Object {
+	tupleObj := tuple.(*object.Tuple)
+	idx := index.(*object.Integer).Value
+	max := int64(len(tupleObj.Elements) - 1)
+	if idx < 0 || idx > max {
+		return NULL
+	}
+	return tupleObj.Elements[idx]
 }
 
 func evalDictIndexExpression(dict, index object.Object, line int) object.Object {

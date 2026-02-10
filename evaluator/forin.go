@@ -53,7 +53,7 @@ func evalForInExpression(fie *ast.ForIn, env *object.Environment, line int) obje
 		return loopIterable(i.Next, env, fie)
 	default:
 		// Return a more descriptive error message
-		return newError("Mstari %d: Samahani, '%s' haiwezi kutumiwa na 'kwa...ktk'. Unahitaji kutumia orodha, kamusi, neno, au kitanzi",
+		return newError("Mstari %d: Samahani, '%s' haiwezi kutumiwa na 'kwa...ktk'. Unahitaji kutumia orodha, kamusi, neno, seti, jozi, au kitanzi",
 			line, iterable.Type())
 	}
 }

@@ -16,6 +16,22 @@ func init() {
 	ReFunctions["vikundi"] = reVikundi         // submatch (groups)
 	ReFunctions["badilisha"] = reBadilisha     // replace all
 	ReFunctions["gawa"] = reGawa               // split by pattern
+	ReFunctions["tayari"] = reTayari           // compile pattern, return compiled regex object
+}
+
+func reTayari(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) != 1 {
+		return reError("tayari inahitaji hoja 1 (pattern), umeweka %d", len(args))
+	}
+	pat, ok := args[0].(*object.String)
+	if !ok {
+		return reError("tayari: pattern lazima iwe neno")
+	}
+	re, err := regexp.Compile(pat.Value)
+	if err != nil {
+		return reError("tayari: pattern si sahihi: %s", err.Error())
+	}
+	return &object.CompiledRegex{Re: re}
 }
 
 func reError(format string, a ...interface{}) *object.Error {

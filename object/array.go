@@ -2,6 +2,7 @@ package object
 
 import (
 	"bytes"
+	"sort"
 	"strings"
 )
 
@@ -153,6 +154,12 @@ func (a *Array) Method(method string, args []Object) Object {
 		return a.find(args)
 	case "kitanzi":
 		return NewArrayIterator(a)
+	case "geuza":
+		return a.geuza(args)
+	case "panga":
+		return a.panga(args)
+	case "gawa":
+		return a.gawa(args)
 	case "sukumaKamaRef": // New method to add an element as a weak reference
 		return a.pushAsWeakRef(args)
 	// Methods like ramani and punguza require access to the evaluator environment
@@ -240,6 +247,48 @@ func (a *Array) find(args []Object) Object {
 		}
 	}
 	return &Null{}
+}
+
+func (a *Array) geuza(args []Object) Object {
+	if len(args) != 0 {
+		return newError("Samahani, geuza inahitaji hoja 0, wewe umeweka %d", len(args))
+	}
+	for i, j := 0, len(a.Elements)-1; i < j; i, j = i+1, j-1 {
+		a.Elements[i], a.Elements[j] = a.Elements[j], a.Elements[i]
+	}
+	return a
+}
+
+func (a *Array) panga(args []Object) Object {
+	if len(args) != 0 {
+		return newError("Samahani, panga inahitaji hoja 0, wewe umeweka %d", len(args))
+	}
+	sort.Slice(a.Elements, func(i, j int) bool {
+		return a.Elements[i].Inspect() < a.Elements[j].Inspect()
+	})
+	return a
+}
+
+func (a *Array) gawa(args []Object) Object {
+	if len(args) != 1 {
+		return newError("Samahani, gawa inahitaji hoja 1 (ukubwa), wewe umeweka %d", len(args))
+	}
+	n, ok := args[0].(*Integer)
+	if !ok || n.Value < 1 {
+		return newError("Samahani, ukubwa lazima uwe namba chanya")
+	}
+	size := int(n.Value)
+	var chunks []Object
+	for i := 0; i < len(a.Elements); i += size {
+		end := i + size
+		if end > len(a.Elements) {
+			end = len(a.Elements)
+		}
+		chunk := make([]Object, end-i)
+		copy(chunk, a.Elements[i:end])
+		chunks = append(chunks, &Array{Elements: chunk})
+	}
+	return &Array{Elements: chunks}
 }
 
 // NewArray creates a new reference-counted array

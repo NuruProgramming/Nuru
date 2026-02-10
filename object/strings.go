@@ -45,6 +45,16 @@ func (s *String) Method(method string, args []Object) Object {
 		return s.format(args)
 	case "kitanzi":
 		return NewStringIterator(s)
+	case "ondoaNafasi":
+		return s.trim(args)
+	case "anzaNa":
+		return s.anzaNa(args)
+	case "ishiaNa":
+		return s.ishiaNa(args)
+	case "ina":
+		return s.ina(args)
+	case "badilishaNeno":
+		return s.badilishaNeno(args)
 	default:
 		return newError("Samahani, kiendesha hiki hakitumiki na tungo (Neno)")
 	}
@@ -96,6 +106,61 @@ func (s *String) format(args []Object) Object {
 	}
 
 	return &String{Value: value}
+}
+
+func (s *String) trim(args []Object) Object {
+	if len(args) != 0 {
+		return newError("Samahani, ondoaNafasi inahitaji hoja 0, wewe umeweka %d", len(args))
+	}
+	return &String{Value: strings.TrimSpace(s.Value)}
+}
+
+func (s *String) anzaNa(args []Object) Object {
+	if len(args) != 1 {
+		return newError("Samahani, anzaNa inahitaji hoja 1 (kiambishi), wewe umeweka %d", len(args))
+	}
+	prefix, ok := args[0].(*String)
+	if !ok {
+		return newError("Samahani, kiambishi lazima kiwe neno")
+	}
+	return &Boolean{Value: strings.HasPrefix(s.Value, prefix.Value)}
+}
+
+func (s *String) ishiaNa(args []Object) Object {
+	if len(args) != 1 {
+		return newError("Samahani, ishiaNa inahitaji hoja 1 (kiambishi), wewe umeweka %d", len(args))
+	}
+	suffix, ok := args[0].(*String)
+	if !ok {
+		return newError("Samahani, kiambishi lazima kiwe neno")
+	}
+	return &Boolean{Value: strings.HasSuffix(s.Value, suffix.Value)}
+}
+
+func (s *String) ina(args []Object) Object {
+	if len(args) != 1 {
+		return newError("Samahani, ina inahitaji hoja 1 (neno), wewe umeweka %d", len(args))
+	}
+	sub, ok := args[0].(*String)
+	if !ok {
+		return newError("Samahani, neno lazima liwe tungo")
+	}
+	return &Boolean{Value: strings.Contains(s.Value, sub.Value)}
+}
+
+func (s *String) badilishaNeno(args []Object) Object {
+	if len(args) != 2 {
+		return newError("Samahani, badilishaNeno inahitaji hoja 2 (zamani, mpya), wewe umeweka %d", len(args))
+	}
+	oldS, ok := args[0].(*String)
+	if !ok {
+		return newError("Samahani, hoja ya kwanza lazima iwe neno")
+	}
+	newS, ok := args[1].(*String)
+	if !ok {
+		return newError("Samahani, hoja ya pili lazima iwe neno")
+	}
+	return &String{Value: strings.ReplaceAll(s.Value, oldS.Value, newS.Value)}
 }
 
 func formatStr(format string, options []Object) (string, error) {

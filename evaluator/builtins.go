@@ -182,6 +182,39 @@ var builtins = map[string]*object.Builtin{
 			return convertToString(value)
 		},
 	},
+	"seta": {
+		Fn: func(args ...object.Object) object.Object {
+			s := object.NewSet()
+			if len(args) == 1 {
+				if arr, ok := args[0].(*object.Array); ok {
+					for _, elem := range arr.Elements {
+						if res := s.Add(elem); isError(res) {
+							return res
+						}
+					}
+					return s
+				}
+			}
+			for _, elem := range args {
+				if res := s.Add(elem); isError(res) {
+					return res
+				}
+			}
+			return s
+		},
+	},
+	"jozi": {
+		Fn: func(args ...object.Object) object.Object {
+			if len(args) == 1 {
+				if arr, ok := args[0].(*object.Array); ok {
+					elems := make([]object.Object, len(arr.Elements))
+					copy(elems, arr.Elements)
+					return object.NewTuple(elems)
+				}
+			}
+			return object.NewTuple(args)
+		},
+	},
 }
 
 func getIntValue(obj object.Object) (int64, error) {

@@ -11,6 +11,8 @@ const (
 	iteratorKindArray = iota
 	iteratorKindDict
 	iteratorKindString
+	iteratorKindSet
+	iteratorKindTuple
 )
 
 type Iterator struct {
@@ -88,6 +90,24 @@ func (it *Iterator) Next() (Object, Object) {
 			pair := it.dictMap[k]
 			it.idx++
 			return pair.Key, pair.Value
+		}
+		return nil, nil
+	case iteratorKindSet:
+		se := it.collection.(*Set)
+		if it.idx < len(se.order) {
+			key := &Integer{Value: int64(it.idx)}
+			val := se.order[it.idx]
+			it.idx++
+			return key, val
+		}
+		return nil, nil
+	case iteratorKindTuple:
+		tup := it.collection.(*Tuple)
+		if it.idx < len(tup.Elements) {
+			key := &Integer{Value: int64(it.idx)}
+			val := tup.Elements[it.idx]
+			it.idx++
+			return key, val
 		}
 		return nil, nil
 	}

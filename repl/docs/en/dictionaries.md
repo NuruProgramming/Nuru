@@ -104,4 +104,30 @@ baiskeli
 chakula
 ```
 
+## Dict methods
+
+### funguo()
+
+Returns an array of all keys (sorted by key string form). No arguments.
+
+```s
+k = {"a": 1, "b": 2}; k.funguo()  // ["a", "b"]
+```
+
+### maana()
+
+Returns an array of all values in the same order as funguo(). No arguments.
+
+```s
+k = {"a": 1, "b": 2}; k.maana()  // [1, 2]
+```
+
+### vikundi()
+
+Returns an array of [key, value] pairs (each pair is a two-element array), in the same order as funguo(). No arguments.
+
+```s
+k = {"x": 10}; k.vikundi()  // [["x", 10]]
+```
+
 With this knowledge, you can now effectively use dictionaries in Nuru to store and manage key-value pairs, offering a flexible way to organize and access data in your programs.

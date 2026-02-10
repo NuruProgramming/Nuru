@@ -18,8 +18,25 @@ func (t *Time) Method(method string, args []Object, defs map[string]Object) Obje
 		return t.add(args, defs)
 	case "tangu":
 		return t.since(args, defs)
+	case "panga":
+		return t.panga(args)
 	}
 	return nil
+}
+
+func (t *Time) panga(args []Object) Object {
+	if len(args) != 1 {
+		return newError("Samahani, panga inahitaji hoja 1 (muundo), wewe umeweka %d", len(args))
+	}
+	layout, ok := args[0].(*String)
+	if !ok {
+		return newError("Samahani, muundo lazima uwe neno")
+	}
+	parsed, err := time.Parse("15:04:05 02-01-2006", t.TimeValue)
+	if err != nil {
+		return newError("Samahani, thamani ya muda si sahihi")
+	}
+	return &String{Value: parsed.Format(layout.Value)}
 }
 
 func (t *Time) add(args []Object, defs map[string]Object) Object {

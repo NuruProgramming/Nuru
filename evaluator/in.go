@@ -14,6 +14,8 @@ func evalInExpression(left, right object.Object, line int) object.Object {
 		return evalInArrayExpression(left, right)
 	case *object.Dict:
 		return evalInDictExpression(left, right, line)
+	case *object.Set:
+		return evalInSetExpression(left, right)
 	default:
 		return FALSE
 	}
@@ -78,4 +80,8 @@ func evalInArrayExpression(left, right object.Object) object.Object {
 		}
 	}
 	return FALSE
+}
+
+func evalInSetExpression(left, right object.Object) object.Object {
+	return nativeBoolToBooleanObject(right.(*object.Set).Has(left))
 }

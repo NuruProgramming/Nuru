@@ -1111,6 +1111,48 @@ func TestStringMethods(t *testing.T) {
 	}
 }
 
+func TestNewMethods(t *testing.T) {
+	// String: ondoaNafasi, anzaNa, ishiaNa, ina, badilishaNeno
+	testIntegerObject(t, testEval(`"  hi  ".ondoaNafasi().idadi()`), 2)
+	testBooleanObject(t, testEval(`"habari".anzaNa("ha")`), true)
+	testBooleanObject(t, testEval(`"habari".ishiaNa("ri")`), true)
+	testBooleanObject(t, testEval(`"habari".ina("bar")`), true)
+	if s := testEval(`"a1b2".badilishaNeno("1", "X")`); s.Inspect() != "aXb2" {
+		t.Errorf("badilishaNeno: got %s", s.Inspect())
+	}
+	// Array: geuza, panga, gawa
+	arr := testEval(`a = [1, 2, 3]; a.geuza(); a`)
+	if a, ok := arr.(*object.Array); !ok || len(a.Elements) != 3 || a.Elements[0].Inspect() != "3" {
+		t.Errorf("geuza: got %v", arr)
+	}
+	arr2 := testEval(`a = [3, 1, 2]; a.panga(); a`)
+	if a, ok := arr2.(*object.Array); !ok || a.Inspect() != "[1, 2, 3]" {
+		t.Errorf("panga: got %v", arr2)
+	}
+	chunks := testEval(`[1, 2, 3, 4, 5].gawa(2)`)
+	if a, ok := chunks.(*object.Array); !ok || len(a.Elements) != 3 {
+		t.Errorf("gawa(2): want 3 chunks, got %v", chunks)
+	}
+	// Dict: funguo, maana, vikundi
+	keys := testEval(`k = {"a": 1, "b": 2}; k.funguo()`)
+	if a, ok := keys.(*object.Array); !ok || len(a.Elements) != 2 {
+		t.Errorf("funguo: got %v", keys)
+	}
+	vals := testEval(`k = {"a": 1, "b": 2}; k.maana()`)
+	if a, ok := vals.(*object.Array); !ok || len(a.Elements) != 2 {
+		t.Errorf("maana: got %v", vals)
+	}
+	pairs := testEval(`k = {"x": 10}; k.vikundi()`)
+	if a, ok := pairs.(*object.Array); !ok || len(a.Elements) != 1 {
+		t.Errorf("vikundi: got %v", pairs)
+	}
+	// Time: panga (format)
+	tm := testEval("tumia muda\nm = muda.hasahivi()\nm.panga(\"02-01-2006\")")
+	if s, ok := tm.(*object.String); !ok || len(s.Value) != 10 {
+		t.Errorf("Time.panga: got %v", tm)
+	}
+}
+
 func TestTimeModule(t *testing.T) {
 	input := `
 	tumia muda
@@ -1126,6 +1168,35 @@ func TestTimeModule(t *testing.T) {
 	_, err := time.Parse("15:04:05 02-01-2006", muda.TimeValue)
 	if err != nil {
 		t.Errorf("Wrong time value: got=%v", err)
+	}
+}
+
+func TestReModule(t *testing.T) {
+	// Match (newline separates tumia from next stmt so parser doesn't treat ";" as identifier)
+	got := testEval("tumia re\nre.linganisha(\"[0-9]+\", \"sala 123\")")
+	if b, ok := got.(*object.Boolean); !ok || !b.Value {
+		t.Errorf("re.linganisha: want kweli, got %v", got)
+	}
+	// Find
+	got = testEval("tumia re\nre.tafuta(\"[0-9]+\", \"sala 123 zaidi\")")
+	if s, ok := got.(*object.String); !ok || s.Value != "123" {
+		t.Errorf("re.tafuta: want %q, got %v", "123", got)
+	}
+	// Replace
+	got = testEval("tumia re\nre.badilisha(\"[0-9]\", \"a1b2\", \"X\")")
+	if s, ok := got.(*object.String); !ok || s.Value != "aXbX" {
+		t.Errorf("re.badilisha: want %q, got %v", "aXbX", got)
+	}
+	// Split
+	got = testEval("tumia re\nre.gawa(\"\\\\s+\", \"a  b  c\")")
+	arr, ok := got.(*object.Array)
+	if !ok || len(arr.Elements) != 3 {
+		t.Errorf("re.gawa: want 3 elements, got %v", got)
+	}
+	// Invalid pattern returns error, does not crash
+	got = testEval("tumia re\nre.linganisha(\"([invalid\", \"x\")")
+	if !isError(got) {
+		t.Errorf("invalid pattern should return error, got %v", got)
 	}
 }
 
@@ -1238,5 +1309,72 @@ func TestIteratorAndForIn(t *testing.T) {
 		if s.Value != tt.expected {
 			t.Errorf("input %q: want %q, got %q", tt.input, tt.expected, s.Value)
 		}
+	}
+}
+
+func TestSet(t *testing.T) {
+	// seta() empty
+	got := testEval(`seta().idadi()`)
+	testIntegerObject(t, got, 0)
+	// seta(1,2,3) and membership
+	testBooleanObject(t, testEval(`2 ktk seta(1, 2, 3)`), true)
+	testBooleanObject(t, testEval(`5 ktk seta(1, 2, 3)`), false)
+	// seta from array
+	testIntegerObject(t, testEval(`seta([1, 2, 2, 3]).idadi()`), 3)
+	// methods: ongeza, ondoa, ona
+	got = testEval(`s = seta(1, 2); s.ongeza(3); s.idadi()`)
+	testIntegerObject(t, got, 3)
+	testBooleanObject(t, testEval(`s = seta(1, 2); s.ona(1)`), true)
+	testBooleanObject(t, testEval(`s = seta(1, 2); s.ondoa(1); s.ona(1)`), false)
+	// iteration (order is by Inspect(), so "a","b","c" -> "abc")
+	got = testEval(`
+		out = ""
+		kwa _, v ktk seta("a", "b", "c") { out += v }
+		out
+	`)
+	if s, ok := got.(*object.String); !ok || s.Value != "abc" {
+		t.Errorf("set iteration: want \"abc\", got %v", got.Inspect())
+	}
+}
+
+func TestCompiledRegex(t *testing.T) {
+	// re.tayari(pattern) returns compiled regex; methods take (neno) or (neno, badiliko)
+	got := testEval("tumia re\nr = re.tayari(\"[0-9]+\"); r.linganisha(\"x12y\")")
+	testBooleanObject(t, got, true)
+	got = testEval("tumia re\nr = re.tayari(\"[0-9]+\"); r.tafuta(\"x12y\")")
+	if s, ok := got.(*object.String); !ok || s.Value != "12" {
+		t.Errorf("compiled tafuta: want \"12\", got %v", got.Inspect())
+	}
+	got = testEval("tumia re\nr = re.tayari(\"[0-9]\"); r.badilisha(\"a1b2\", \"X\")")
+	if s, ok := got.(*object.String); !ok || s.Value != "aXbX" {
+		t.Errorf("compiled badilisha: want \"aXbX\", got %v", got.Inspect())
+	}
+}
+
+func TestTuple(t *testing.T) {
+	testIntegerObject(t, testEval(`jozi(1, 2, 3).idadi()`), 3)
+	testIntegerObject(t, testEval(`jozi(1, 2)[0]`), 1)
+	testIntegerObject(t, testEval(`jozi(1, 2)[1]`), 2)
+	// immutable: assign to tuple index returns error
+	got := testEval(`j = jozi(1, 2); j[0] = 9`)
+	if _, ok := got.(*object.Error); !ok {
+		t.Errorf("tuple assign should error, got %v", got)
+	}
+	// iteration
+	got = testEval(`out = ""; kwa _, v ktk jozi("a", "b") { out += v }; out`)
+	if s, ok := got.(*object.String); !ok || s.Value != "ab" {
+		t.Errorf("tuple iteration: want \"ab\", got %v", got.Inspect())
+	}
+}
+
+func TestDate(t *testing.T) {
+	// muda.siku(string) and .panga(layout)
+	got := testEval("tumia muda\nd = muda.siku(\"2024-06-15\"); d.panga(\"02-01-2006\")")
+	if s, ok := got.(*object.String); !ok || s.Value != "15-06-2024" {
+		t.Errorf("date panga: want \"15-06-2024\", got %v", got.Inspect())
+	}
+	got = testEval("tumia muda\nmuda.siku(2024, 1, 15)")
+	if got.Inspect() != "2024-01-15" {
+		t.Errorf("date inspect: want 2024-01-15, got %v", got.Inspect())
 	}
 }

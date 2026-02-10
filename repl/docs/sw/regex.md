@@ -18,8 +18,13 @@ tumia re
 | **vikundi** | (pattern, neno) | orodha au tupu | Match ya kwanza pamoja na vikundi (mabano). Index 0 ni match nzima, 1 ni kikundi cha kwanza, n.k. |
 | **badilisha** | (pattern, neno, badiliko) | neno | Badilisha matches zote na neno la badiliko. |
 | **gawa** | (pattern, neno) | orodha | Gawa neno kwa pattern. |
+| **tayari** | (pattern) | re_iliyotayarishwa | Tayarisha pattern mara moja; rudisha kitu chenye mbinu zinazopokea neno tu (tazama chini). |
 
-Kama pattern si sahihi, kila kazi inarudisha kosa (KOSA).
+Kama pattern si sahihi, kila kazi inarudisha kosa (KOSA) na haivunji programu.
+
+### Re iliyotayarishwa (tayari)
+
+Tumia **re.tayari(pattern)** unapotumia pattern ile ile mara nyingi. Inarudisha kitu chenye mbinu: linganisha(neno), tafuta(neno), tafutaZote(neno), vikundi(neno), badilisha(neno, badiliko), gawa(neno).
 
 ## Mifano
 

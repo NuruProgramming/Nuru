@@ -53,5 +53,9 @@ test:
 	@echo -e '\nTesting Evaluator...'
 	@./gotest --format testname ./evaluator/
 
+smoke: build_test
+	@echo 'Running smoke_no_io.nr...'
+	@./nuru examples/smoke_no_io.nr
+
 clean:
 	go clean

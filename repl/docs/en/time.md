@@ -100,3 +100,22 @@ sasa = muda.hasahivi()
 kesho = sasa.ongeza(siku=1)
 mwakani = sasa.ongeza(miaka=1)
 ```
+
+---
+
+### `siku(tarehe)` / `siku(mwaka, mwezi, siku)`
+
+Returns a **tarehe** (date-only) object. One argument: string in `2006-01-02` format. Or three integer arguments: year, month, day. The date object has **panga(muundo)** to format (e.g. `d.panga("02-01-2006")`).
+
+---
+
+### `panga(muundo)`
+
+Formats the `muda` object as a string using the given layout. One argument: a format string (e.g. `"02-01-2006"` for date only, `"15:04:05"` for time only). Uses Go-style layout; see [time package](https://pkg.go.dev/time#Time.Format).
+
+```so
+tumia muda
+sasa = muda.hasahivi()
+sasa.panga("02-01-2006")  // date part only
+sasa.panga("15:04:05")   // time part only
+```

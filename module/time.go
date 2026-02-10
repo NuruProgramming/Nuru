@@ -18,6 +18,41 @@ func init() {
 	TimeFunctions["baada_ya"] = after
 	TimeFunctions["tofauti"] = diff
 	TimeFunctions["ongeza"] = addTime
+	TimeFunctions["siku"] = siku
+}
+
+func siku(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(defs) != 0 {
+		return &object.Error{Message: "siku: hoja named haziruhusiwi"}
+	}
+	if len(args) == 1 {
+		s, ok := args[0].(*object.String)
+		if !ok {
+			return &object.Error{Message: "siku: hoja lazima iwe neno (tarehe kwa muundo 2006-01-02)"}
+		}
+		t, err := time.Parse("2006-01-02", s.Value)
+		if err != nil {
+			return &object.Error{Message: fmt.Sprintf("siku: tarehe si sahihi: %s", err.Error())}
+		}
+		y, m, d := t.Date()
+		return &object.Date{Year: y, Month: int(m), Day: d}
+	}
+	if len(args) == 3 {
+		yi, ok := args[0].(*object.Integer)
+		if !ok {
+			return &object.Error{Message: "siku: mwaka lazima uwe namba"}
+		}
+		mi, ok := args[1].(*object.Integer)
+		if !ok {
+			return &object.Error{Message: "siku: mwezi lazima uwe namba"}
+		}
+		di, ok := args[2].(*object.Integer)
+		if !ok {
+			return &object.Error{Message: "siku: siku lazima iwe namba"}
+		}
+		return &object.Date{Year: int(yi.Value), Month: int(mi.Value), Day: int(di.Value)}
+	}
+	return &object.Error{Message: fmt.Sprintf("siku inahitaji hoja 1 (neno) au 3 (mwaka, mwezi, siku), umeweka %d", len(args))}
 }
 
 func now(args []object.Object, defs map[string]object.Object) object.Object {

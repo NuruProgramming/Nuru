@@ -131,4 +131,15 @@ kucheza mpira
 kuimba
 ```
 
+## Mbinu za kamusi
+
+### funguo()
+Rudisha safu ya funguo zote (zilizopangwa kwa umbo la neno). Haipokei hoja.
+
+### maana()
+Rudisha safu ya thamani zote katika mpangilio sawa na funguo(). Haipokei hoja.
+
+### vikundi()
+Rudisha safu ya jozi [funguo, thamani] (kila jozi ni safu ya vipengele viwili), katika mpangilio sawa na funguo(). Haipokei hoja.
+
 Kwa ufahamu huu, unaweza ukatumia kamusi kikamilifu katika Nuru kutunza na kusimamia jozi za funguo-thamani, na kupata namna nyumbufu ya kupangilia na kupata data katika programu zako.

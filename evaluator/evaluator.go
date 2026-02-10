@@ -193,6 +193,8 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 				} else {
 					return newError("Hauwezi kufanya operesheni hii na %#v", index)
 				}
+			} else if _, ok := obj.(*object.Tuple); ok {
+				return newError("Samahani, jozi haiwezi kubadilika (immutable)")
 			} else if hash, ok := obj.(*object.Dict); ok {
 				key := Eval(ie.Index, env)
 				if isError(key) {

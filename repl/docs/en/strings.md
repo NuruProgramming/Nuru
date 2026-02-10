@@ -145,4 +145,44 @@ fanya b = a.gawa(",")
 andika(b) // ["nuru", "mambo", "habari"]
 ```
 
+### ondoaNafasi()
+
+Removes leading and trailing whitespace. No arguments.
+
+```s
+"  hi  ".ondoaNafasi()  // "hi"
+```
+
+### anzaNa(kiambishi)
+
+Returns kweli if the string starts with the given prefix (one argument, a string).
+
+```s
+"habari".anzaNa("ha")  // kweli
+```
+
+### ishiaNa(kiambishi)
+
+Returns kweli if the string ends with the given suffix (one argument, a string).
+
+```s
+"habari".ishiaNa("ri")  // kweli
+```
+
+### ina(neno)
+
+Returns kweli if the string contains the given substring (one argument).
+
+```s
+"habari".ina("bar")  // kweli
+```
+
+### badilishaNeno(zamani, mpya)
+
+Replaces all occurrences of *zamani* with *mpya* and returns a new string. Two string arguments.
+
+```s
+"a1b2".badilishaNeno("1", "X")  // "aXb2"
+```
+
 By understanding strings and their manipulation in Nuru, you can effectively work with text data in your programs.

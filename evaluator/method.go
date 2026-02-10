@@ -1,6 +1,8 @@
 package evaluator
 
 import (
+	"sort"
+
 	"github.com/NuruProgramming/Nuru/ast"
 	"github.com/NuruProgramming/Nuru/object"
 )
@@ -41,6 +43,14 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object,
 		default:
 			return obj.Method(method.(*ast.Identifier).Value, args)
 		}
+	case *object.Set:
+		return obj.Method(method.(*ast.Identifier).Value, args)
+	case *object.CompiledRegex:
+		return obj.Method(method.(*ast.Identifier).Value, args)
+	case *object.Tuple:
+		return obj.Method(method.(*ast.Identifier).Value, args)
+	case *object.Date:
+		return obj.Method(method.(*ast.Identifier).Value, args)
 	case *object.Dict:
 		methodName := method.(*ast.Identifier).Value
 		hashKey := (&object.String{Value: methodName}).HashKey()
@@ -66,6 +76,12 @@ func applyMethod(obj object.Object, method ast.Expression, args []object.Object,
 				return NULL
 			}
 			return newError("Samahani, hoja sii sahihi")
+		case "funguo":
+			return dictFunguo(obj)
+		case "maana":
+			return dictMaana(obj)
+		case "vikundi":
+			return dictVikundi(obj)
 		}
 		return newError("Samahani, Dict haina method %s", methodName)
 	case *object.Module:
@@ -201,4 +217,53 @@ func punguza(a *object.Array, args []object.Object) object.Object {
 		}
 	}
 	return newArr
+}
+
+func dictFunguo(d *object.Dict) object.Object {
+	keys := make([]string, 0, len(d.Pairs))
+	pairByKey := make(map[string]object.DictPair)
+	for _, pair := range d.Pairs {
+		k := pair.Key.Inspect()
+		keys = append(keys, k)
+		pairByKey[k] = pair
+	}
+	sort.Strings(keys)
+	elems := make([]object.Object, len(keys))
+	for i, k := range keys {
+		elems[i] = pairByKey[k].Key
+	}
+	return &object.Array{Elements: elems}
+}
+
+func dictMaana(d *object.Dict) object.Object {
+	keys := make([]string, 0, len(d.Pairs))
+	pairByKey := make(map[string]object.DictPair)
+	for _, pair := range d.Pairs {
+		k := pair.Key.Inspect()
+		keys = append(keys, k)
+		pairByKey[k] = pair
+	}
+	sort.Strings(keys)
+	elems := make([]object.Object, len(keys))
+	for i, k := range keys {
+		elems[i] = pairByKey[k].Value
+	}
+	return &object.Array{Elements: elems}
+}
+
+func dictVikundi(d *object.Dict) object.Object {
+	keys := make([]string, 0, len(d.Pairs))
+	pairByKey := make(map[string]object.DictPair)
+	for _, pair := range d.Pairs {
+		k := pair.Key.Inspect()
+		keys = append(keys, k)
+		pairByKey[k] = pair
+	}
+	sort.Strings(keys)
+	elems := make([]object.Object, len(keys))
+	for i, k := range keys {
+		pair := pairByKey[k]
+		elems[i] = &object.Array{Elements: []object.Object{pair.Key, pair.Value}}
+	}
+	return &object.Array{Elements: elems}
 }
