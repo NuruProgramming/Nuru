@@ -28,13 +28,14 @@ Below is an example Sarufi package:
 // import modules
 tumia mtandao
 tumia jsoni
+tumia faili
 
 // package body
 pakeji sarufi {
 
         // initialize function
         andaa = unda(file) {
-            config = fungua(file) // read passwords from json file
+            config = faili.fungua(file, "r") // read passwords from json file
             configString = config.soma()
 
             configDict = jsoni.dikodi(configString) // convert it to a dict

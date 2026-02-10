@@ -18,7 +18,7 @@ This documentation is intended for people with some experience in programming. I
     - [The andika() Function](builtins.md#the-andika()-function)
     - [The jaza() Function](builtins.md#the-jaza()-function)
     - [The aina() Function](builtins.md#the-aina()-function)
-    - [The fungua() Function](builtins.md#the-fungua()-function)
+    - [Opening files (faili module)](files.md#opening-a-file)
 - [Comments in Nuru](comments.md#comments-in-nuru)
     - [Single-Line Comments](comments.md#single-line-comments)
     - [Multi-Line Comments](comments.md#multi-line-comments)

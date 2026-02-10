@@ -51,7 +51,6 @@ Nuru also provides several built-in functions that are reserved and cannot be us
     <td>andika</td>
     <td>aina</td>
     <td>jaza</td>
-    <td>fungua</td>
   </tr>
 </tbody>
 </table>

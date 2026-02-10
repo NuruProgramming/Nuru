@@ -18,7 +18,7 @@ Hii nyaraka imeandikwa ikilenga watu wenye uzoefu na kuandika au kupanga program
     - [Kisaidia-kazi andika() ](builtins.md#the-andika()-function)
     - [Kisaidia-kazi jaza()](builtins.md#the-jaza()-function)
     - [Kisaidia-kazi aina()](builtins.md#the-aina()-function)
-    - [Kisaidia-kazi fungua()](builtins.md#the-fungua()-function)
+    - [Kufungua faili (moduli faili)](builtins.md#built-in-functions-in-nuru)
 - [Maoni kwenye Nuru](comments.md#comments-in-nuru)
     - [Maoni ya mstari mmoja](comments.md#single-line-comments)
     - [Maoni ya mistari mingi](comments.md#multi-line-comments)

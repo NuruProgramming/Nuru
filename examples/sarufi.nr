@@ -1,8 +1,9 @@
 tumia mtandao
 tumia jsoni
+tumia faili
 pakeji sarufi {
     andaa = unda(file) {
-        config = fungua(file)
+        config = faili.fungua(file, "r")
         configString = config.soma()
         configDict = jsoni.dikodi(configString)
         clientID = configDict["client_id"]

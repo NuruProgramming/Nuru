@@ -9,6 +9,7 @@ import (
 	"crypto/sha512"
 	"encoding/base64"
 	"encoding/hex"
+	"fmt"
 	"io"
 	"math/big"
 	"os"
@@ -31,6 +32,8 @@ func init() {
 	CryptoFunctions["bahatiNasibu_neno"] = randomString
 	CryptoFunctions["base64_encode"] = base64Encode
 	CryptoFunctions["base64_decode"] = base64Decode
+	CryptoFunctions["kodeBase64"] = cryptoKodeBase64
+	CryptoFunctions["katuaBase64"] = cryptoKatuaBase64
 	CryptoFunctions["hex_encode"] = hexEncode
 	CryptoFunctions["hex_decode"] = hexDecode
 	CryptoFunctions["sha256_faili"] = sha256Faili
@@ -200,6 +203,112 @@ func base64Decode(args []object.Object, defs map[string]object.Object) object.Ob
 	data, err := base64.StdEncoding.DecodeString(str.Value)
 	if err != nil {
 		return newError("base64_decode: %s", err.Error())
+	}
+	return &object.String{Value: string(data)}
+}
+
+// cryptoKodeBase64: Encode string, Byte, or array of bytes to Base64 (full API matching former builtin)
+func cryptoKodeBase64(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) < 1 || len(args) > 2 {
+		return newError("Samahani, kodeBase64 inahitaji hoja 1 au 2, wewe umeweka %d", len(args))
+	}
+	var data []byte
+	var urlSafe bool
+	if len(args) == 2 {
+		if s, ok := args[1].(*object.String); ok && s.Value == "urlsafe" {
+			urlSafe = true
+		} else {
+			return newError("Chaguo la pili lazima liwe 'urlsafe' kama unataka URL-safe encoding")
+		}
+	}
+	switch arg := args[0].(type) {
+	case *object.String:
+		data = []byte(arg.Value)
+	case *object.Byte:
+		data = arg.Value
+	case *object.Array:
+		arr := arg.Elements
+		data = make([]byte, len(arr))
+		for i, v := range arr {
+			switch vv := v.(type) {
+			case *object.Integer:
+				if vv.Value < 0 || vv.Value > 255 {
+					return newError("Thamani ya orodha lazima iwe kati ya 0 na 255 kwa byte encoding")
+				}
+				data[i] = byte(vv.Value)
+			case *object.Byte:
+				if len(vv.Value) != 1 {
+					return newError("Kila Byte kwenye orodha lazima iwe na urefu wa 1")
+				}
+				data[i] = vv.Value[0]
+			default:
+				return newError("Orodha lazima iwe na namba au Byte pekee, imepata %s", v.Type())
+			}
+		}
+	default:
+		return newError("Samahani, kodeBase64 inatumika na Neno, Byte, au Orodha ya namba/Byte tu, umeweka %s", args[0].Type())
+	}
+	var encoded string
+	if urlSafe {
+		encoded = base64.URLEncoding.EncodeToString(data)
+	} else {
+		encoded = base64.StdEncoding.EncodeToString(data)
+	}
+	return &object.String{Value: encoded}
+}
+
+// cryptoKatuaBase64: Decode Base64 string with options urlsafe, byte, array (full API matching former builtin)
+func cryptoKatuaBase64(args []object.Object, defs map[string]object.Object) object.Object {
+	if len(args) < 1 || len(args) > 3 {
+		return newError("Samahani, katuaBase64 inahitaji hoja 1 hadi 3, wewe umeweka %d", len(args))
+	}
+	if args[0].Type() != object.STRING_OBJ {
+		return newError("Samahani, katuaBase64 inatumika na Neno pekee, umeweka %s", args[0].Type())
+	}
+	encoded := args[0].(*object.String).Value
+	var urlSafe bool
+	var asByte bool
+	if len(args) > 1 {
+		for i := 1; i < len(args); i++ {
+			if s, ok := args[i].(*object.String); ok {
+				switch s.Value {
+				case "urlsafe":
+					urlSafe = true
+				case "byte":
+					asByte = true
+				case "array":
+					// handled below
+				default:
+					return newError("Chaguo lisilojulikana: %s. Tumia 'urlsafe', 'byte', au 'array' tu.", s.Value)
+				}
+			} else {
+				return newError("Chaguo la ziada lazima liwe Neno ('urlsafe', 'byte', 'array')")
+			}
+		}
+	}
+	var data []byte
+	var err error
+	if urlSafe {
+		data, err = base64.URLEncoding.DecodeString(encoded)
+	} else {
+		data, err = base64.StdEncoding.DecodeString(encoded)
+	}
+	if err != nil {
+		return &object.Error{Message: fmt.Sprintf("Shida wakati wa kuondoa usimbaji Base64: %s", err.Error())}
+	}
+	if asByte {
+		return &object.Byte{Value: data, String: string(data)}
+	}
+	if len(args) > 1 {
+		for i := 1; i < len(args); i++ {
+			if s, ok := args[i].(*object.String); ok && s.Value == "array" {
+				elements := make([]object.Object, len(data))
+				for j, b := range data {
+					elements[j] = &object.Integer{Value: int64(b)}
+				}
+				return &object.Array{Elements: elements}
+			}
+		}
 	}
 	return &object.String{Value: string(data)}
 }

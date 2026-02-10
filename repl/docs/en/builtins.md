@@ -34,60 +34,8 @@ aina(2) // Output: "NAMBA"
 aina("Nuru") // Output: "NENO"
 ```
 
-## The fungua() Function
+To open a file, use the **faili** module: `tumia faili` then `faili.fungua(path)` or `faili.fungua(path, "r")`. See the [Files](files.md) documentation.
 
-The `fungua()` function is used to open a file. It accepts one argument, which is the path to the file that you want to open. Here's an example:
+## Base64 encoding and decoding
 
-```s
-faili = fungua("data.txt")
-```
-
-In this example, we use the `fungua()` function to open a file named "data.txt". The variable faili will contain a reference to the opened file.
-
-## The kodeBase64() and katuaBase64() Functions
-
-These functions allow you to encode and decode data using Base64, including support for URL-safe encoding, arrays, and byte objects.
-
-### kodeBase64()
-Encodes a string, byte object, or array of bytes/integers to Base64. Optionally, you can specify "urlsafe" as a second argument for URL-safe encoding.
-
-**Examples:**
-```s
-// Encode a string
-encoded = kodeBase64("Nuru Base64!")
-andika(encoded) // Output: "TnVydSBCYXNlNjQh"
-
-// URL-safe encoding
-encoded_url = kodeBase64("Nuru: Base64/URL-safe!", "urlsafe")
-andika(encoded_url)
-
-// Encode an array of bytes (integers)
-arr = [78, 117, 114, 117] // ASCII for 'Nuru'
-andika(kodeBase64(arr)) // Output: "TnVydQ=="
-```
-
-### katuaBase64()
-Decodes a Base64-encoded string. You can specify optional arguments:
-- "urlsafe" for URL-safe decoding
-- "byte" to return a Byte object
-- "array" to return an array of integers (bytes)
-
-**Examples:**
-```s
-// Decode to string
-andika(katuaBase64("TnVydSBCYXNlNjQh")) // Output: "Nuru Base64!"
-
-// URL-safe decoding
-decoded_url = katuaBase64(encoded_url, "urlsafe")
-andika(decoded_url)
-
-// Decode to Byte object
-byte_obj = katuaBase64(encoded, "byte")
-andika(byte_obj)
-
-// Decode to array of bytes
-decoded_arr = katuaBase64("TnVydQ==", "array")
-andika(decoded_arr) // Output: [78, 117, 114, 117]
-```
-
-These functions make it easy to work with Base64 data in Nuru, including binary and URL-safe use cases.
+Use the **crypto** module: `tumia crypto` then `crypto.kodeBase64(...)` and `crypto.katuaBase64(...)`. They support strings, Byte objects, arrays of bytes, URL-safe encoding (second argument `"urlsafe"`), and decode options `"byte"` and `"array"`.

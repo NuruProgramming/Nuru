@@ -414,8 +414,8 @@ andika(s.ongeza(sekunde=3, miaka=10, dakika=4))
 
 // using file:
 
-fail = fungua("sarufi.nr")
-
+tumia faili
+fail = faili.fungua("sarufi.nr", "r")
 andika(fail.soma())
 
 // using net and json:
