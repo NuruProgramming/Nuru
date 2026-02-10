@@ -1,0 +1,130 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build Nuru",
+      "type": "shell",
+      "command": "go build -o nuru .",
+      "group": "build",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Run REPL",
+      "type": "shell",
+      "command": "./nuru",
+      "dependsOn": "Build Nuru",
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": true
+      }
+    },
+    {
+      "label": "Run current Nuru file",
+      "type": "shell",
+      "command": "./nuru ${file}",
+      "dependsOn": "Build Nuru",
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Test: All",
+      "type": "shell",
+      "command": "make test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "Test: Current package",
+      "type": "shell",
+      "command": "go test ./${relativeFileDirname}/... -v",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": ["$go"]
+    },
+    {
+      "label": "Analyze (chambua)",
+      "type": "shell",
+      "command": "./nuru --chambua ${fileDirname}",
+      "dependsOn": "Build Nuru",
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Visualize dependencies (tengeneza)",
+      "type": "shell",
+      "command": "./nuru --tengeneza ${fileDirname}",
+      "dependsOn": "Build Nuru",
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Go mod tidy",
+      "type": "shell",
+      "command": "go mod tidy",
+      "group": "none",
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Show Nuru docs (nyaraka)",
+      "type": "shell",
+      "command": "./nuru --nyaraka",
+      "dependsOn": "Build Nuru",
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean",
+      "type": "shell",
+      "command": "make clean",
+      "group": "none",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Pre-push (tidy, build, test)",
+      "dependsOrder": "sequence",
+      "dependsOn": ["Go mod tidy", "Build Nuru", "Test: All"],
+      "group": {
+        "kind": "test",
+        "isDefault": false
+      },
+      "problemMatcher": []
+    }
+  ]
+}
