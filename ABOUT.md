@@ -26,6 +26,10 @@ Nuru's philosophy is to keep things simple. Everything in Nuru should be consist
 
 Nuru is also community driven. We listen to our community and do our best to implement on the feedback we get from them.
 
+### Standard library design (Policy A)
+
+We organize the standard library into three layers: **global builtins** (a small kernel: print, input, type, convert, range), **modules** (domain and system features such as faili, crypto, hisabati, mfumo), and **methods** (operations on values, e.g. string.upper(), array.push()). This keeps the language discoverable and the global namespace small. The full policy is documented in [docs/POLICY_A.md](docs/POLICY_A.md).
+
 ## Where Not To Use Nuru
 
 Nuru's performance is worse than python. It has been authored by someone with very limited knowledge in programming. Thus, it is advised to never use Nuruin production code where by any kind of mistakes are critical. Nuru is still very immature and should only be used for educational and hobby projects.

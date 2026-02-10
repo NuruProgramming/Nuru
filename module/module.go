@@ -15,4 +15,5 @@ func init() {
 	Mapper["njia"] = &object.Module{Name: "path", Functions: PathFunctions}
 	Mapper["faili"] = &object.Module{Name: "fs", Functions: FSFunctions}
 	Mapper["crypto"] = &object.Module{Name: "crypto", Functions: CryptoFunctions}
+	Mapper["mfumo"] = &object.Module{Name: "mfumo", Functions: MfumoFunctions}
 }

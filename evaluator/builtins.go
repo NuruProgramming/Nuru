@@ -180,68 +180,6 @@ var builtins = map[string]*object.Builtin{
 			return convertToString(value)
 		},
 	},
-
-	// Garbage collection functions
-	"safishaMemori": {
-		Fn: func(args ...object.Object) object.Object {
-			if len(args) != 0 {
-				return newError("Samahani, safishaMemori haihitaji hoja, wewe umeweka %d", len(args))
-			}
-			object.RunGC()
-			return &object.Null{}
-		},
-	},
-	"takwimuMemori": {
-		Fn: func(args ...object.Object) object.Object {
-			if len(args) != 0 {
-				return newError("Samahani, takwimuMemori haihitaji hoja, wewe umeweka %d", len(args))
-			}
-			object.PrintObjectStats()
-			return &object.Integer{Value: int64(object.GetObjectCount())}
-		},
-	},
-	"kumbukumbaDhaifu": {
-		Fn: func(args ...object.Object) object.Object {
-			if len(args) != 1 {
-				return newError("Samahani, kumbukumbaDhaifu inahitaji hoja 1, wewe umeweka %d", len(args))
-			}
-			return object.NewWeakReference(args[0])
-		},
-	},
-	"takwimuMemoriKwa": {
-		Fn: func(args ...object.Object) object.Object {
-			if len(args) != 1 {
-				return newError("Samahani, takwimuMemoriKwa inahitaji hoja 1, wewe umeweka %d", len(args))
-			}
-
-			if args[0].Type() != object.DICT_OBJ {
-				return newError("Samahani, takwimuMemoriKwa inahitaji kamusi")
-			}
-
-			// Create a new dict to hold object stats
-			result := &object.Dict{Pairs: make(map[object.HashKey]object.DictPair)}
-
-			// Get total count
-			totalCount := object.GetObjectCount()
-			totalKey := &object.String{Value: "jumla"}
-			totalValue := &object.Integer{Value: int64(totalCount)}
-			totalHash, _ := totalKey.HashKey(), true
-			result.Pairs[totalHash] = object.DictPair{Key: totalKey, Value: totalValue}
-
-			// Get type counts - use the provided function instead of accessing internal fields
-			stats := getTypeCountStats()
-
-			// Add type counts to result dict
-			for objType, count := range stats {
-				typeKey := &object.String{Value: string(objType)}
-				typeValue := &object.Integer{Value: int64(count)}
-				typeHash, _ := typeKey.HashKey(), true
-				result.Pairs[typeHash] = object.DictPair{Key: typeKey, Value: typeValue}
-			}
-
-			return result
-		},
-	},
 }
 
 func getIntValue(obj object.Object) (int64, error) {
@@ -253,7 +191,3 @@ func getIntValue(obj object.Object) (int64, error) {
 	}
 }
 
-// getTypeCountStats returns a map of object types to their counts
-func getTypeCountStats() map[object.ObjectType]int {
-	return object.GetTypeStats()
-}

@@ -39,3 +39,7 @@ To open a file, use the **faili** module: `tumia faili` then `faili.fungua(path)
 ## Base64 encoding and decoding
 
 Use the **crypto** module: `tumia crypto` then `crypto.kodeBase64(...)` and `crypto.katuaBase64(...)`. They support strings, Byte objects, arrays of bytes, URL-safe encoding (second argument `"urlsafe"`), and decode options `"byte"` and `"array"`.
+
+## Runtime and memory (mfumo module)
+
+For garbage collection and memory introspection, use the **mfumo** module: `tumia mfumo`. Available functions: `mfumo.safishaMemori()` (run GC), `mfumo.takwimuMemori()` (object count), `mfumo.takwimuMemoriKwa(kamusi)` (stats dict), `mfumo.kumbukumbaDhaifu(kitu)` (weak reference).

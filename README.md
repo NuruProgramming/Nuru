@@ -418,9 +418,13 @@ Kindly open an [Issue](https://github.com/NuruProgramming/Nuru/issues) to make s
 
 ## Contributions
 
+### Design policy (Policy A)
+
+Nuru follows **Policy A** for where to put new features: a small set of **global builtins** (I/O, type, convert, range), **modules** for domain and system features (faili, crypto, mfumo, hisabati, etc.), and **methods** for operations on values (strings, arrays, dicts, files). See [docs/POLICY_A.md](docs/POLICY_A.md) for the full guide. When adding new functionality, prefer methods or modules over new builtins.
+
 ### Documentation
 
-There are documentations for two languages, English and Kiswahili, which are both under the `docs` folder. All files are written in markdown. Feel free to contribute by making a pull request.
+There are documentations for two languages, English and Kiswahili, which are both under the `repl/docs` folder. All files are written in markdown. Feel free to contribute by making a pull request.
 
 ### Code
 

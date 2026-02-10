@@ -44,3 +44,5 @@ aina("Nuru") // Output: "NENO"
 ```
 
 Kufungua faili: tumia moduli **faili**: `tumia faili` kisha `faili.fungua(njia)` au `faili.fungua(njia, "r")`.
+
+Kumbukumbu na utendaji: tumia moduli **mfumo**: `tumia mfumo`. Vitendakazi: `mfumo.safishaMemori()`, `mfumo.takwimuMemori()`, `mfumo.takwimuMemoriKwa(kamusi)`, `mfumo.kumbukumbaDhaifu(kitu)`.
