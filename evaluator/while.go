@@ -5,18 +5,10 @@ import (
 	"github.com/NuruProgramming/Nuru/object"
 )
 
-const MAX_ITERATIONS = 1_000_000
-
 func evalWhileExpression(we *ast.WhileExpression, env *object.Environment) object.Object {
 	var evaluated object.Object
-	iterations := 0
 
 	for {
-		iterations++
-		if iterations > MAX_ITERATIONS {
-			return newError("mzunguko usio na mwisho umegunduliwa")
-		}
-
 		condition := Eval(we.Condition, env)
 		if isError(condition) {
 			return condition
@@ -32,9 +24,13 @@ func evalWhileExpression(we *ast.WhileExpression, env *object.Environment) objec
 		}
 
 		if evaluated != nil && evaluated.Type() == object.BREAK_OBJ {
-			return evaluated
+			return NULL
 		}
 	}
 
+	// Don't expose Break/Continue as the loop value (align with for-in)
+	if evaluated != nil && (evaluated.Type() == object.BREAK_OBJ || evaluated.Type() == object.CONTINUE_OBJ) {
+		return NULL
+	}
 	return evaluated
 }

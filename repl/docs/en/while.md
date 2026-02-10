@@ -1,6 +1,6 @@
 # WHILE (WAKATI)
 
-While loops in Nuru are used to execute a block of code repeatedly, as long as a given condition is true. This page covers the basics of while loops, including how to use the break and continue keywords within them.
+While loops in Nuru are used to execute a block of code repeatedly, as long as a given condition is true. The loop runs until the condition becomes false and can run indefinitely; you can stop the program at any time with Ctrl+C (or by killing the process). This page covers the basics of while loops, including how to use the break and continue keywords within them.
 
 ## Basic Syntax
 
