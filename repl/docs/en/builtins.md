@@ -36,6 +36,8 @@ aina("Nuru") // Output: "NENO"
 
 **badilisha**(value, type) supports the type **"NAMBA_KUBWA"** to create or convert to a big integer (for values beyond 64-bit range). See [Numbers](numbers.md#big-integers-namba_kubwa).
 
+For regular expression matching and replacement, use the **re** module: `tumia re` then `re.linganisha(pattern, neno)`, `re.tafuta(pattern, neno)`, `re.badilisha(pattern, neno, badiliko)`, etc. See [Regex](regex.md).
+
 To open a file, use the **faili** module: `tumia faili` then `faili.fungua(path)` or `faili.fungua(path, "r")`. See the [Files](files.md) documentation.
 
 ## Base64 encoding and decoding
