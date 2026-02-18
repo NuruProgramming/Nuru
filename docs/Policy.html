@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuru API Design Policy | Infographic</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8FAFC; }
+        
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 400px; }
+        }
+
+        .text-primary { color: #1E3A8A; }
+        .bg-primary { background-color: #1E3A8A; }
+        .text-accent { color: #7C3AED; }
+        .bg-accent { background-color: #7C3AED; }
+        .text-vibrant { color: #0891B2; }
+        .bg-vibrant { background-color: #0891B2; }
+    </style>
+    <!-- 
+        Palette: Vibrant Tech Updated
+        Primary: #1E3A8A (Deep Blue)
+        Secondary: #7C3AED (Electric Violet)
+        Tertiary: #0891B2 (Cyan)
+        Background: #F8FAFC (Slate 50)
+    -->
+    <!-- Plan Summary:
+         1. Narrative: Visualize the Nuru 3-layer hierarchy (Builtins, Modules, Methods).
+         2. Key Update: Added Collection Builtins (seta, jozi) and new Web Modules (http, url).
+         3. Visuals: 
+            - Doughnut Chart: Namespace Distribution.
+            - Polar Area: Module functional density including new Web & System modules.
+            - Bar Chart: Method counts per Type (String, Array, Dict, File, etc).
+            - Flowchart: Decision guide logic using Tailwind CSS (No SVG/Mermaid).
+         4. Labels: Wrapped to 16 chars; Tooltip config applied.
+    -->
+</head>
+<body class="text-slate-800">
+
+    <header class="bg-primary text-white pt-16 pb-32 px-4 shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 pointer-events-none">
+            <div class="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
+            <div class="absolute bottom-0 right-0 w-96 h-96 bg-vibrant rounded-full translate-x-1/3 translate-y-1/3"></div>
+        </div>
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+            <h1 class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">Nuru API Standards</h1>
+            <p class="text-xl md:text-3xl text-blue-200 max-w-4xl mx-auto font-light leading-relaxed">Maintaining a consistent, discoverable, and lightweight core through structural discipline.</p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 pb-24 space-y-16">
+
+        <!-- Core Philosophy -->
+        <section class="bg-white rounded-3xl shadow-xl p-8 md:p-12 border-b-8 border-vibrant">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold text-slate-900 mb-6">The Three-Layer Policy</h2>
+                    <p class="text-lg leading-relaxed text-slate-600 mb-8">
+                        The Nuru Standard Library is built on a "Small Kernel" philosophy. By strictly separating universal primitives from domain-specific modules and value-based methods, the language avoids global pollution while ensuring high discoverability.
+                    </p>
+                    <div class="space-y-4">
+                        <div class="flex items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white font-bold mr-4">1</div>
+                            <div>
+                                <h4 class="font-bold text-primary">Global Builtins</h4>
+                                <p class="text-sm text-slate-500">Universal primitives: I/O, Type Inspection, Collections.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <div class="w-12 h-12 bg-accent rounded-xl flex items-center justify-center text-white font-bold mr-4">2</div>
+                            <div>
+                                <h4 class="font-bold text-accent">Modules</h4>
+                                <p class="text-sm text-slate-500">Domain-specific systems: Files, HTTP, Crypto, Math.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                            <div class="w-12 h-12 bg-vibrant rounded-xl flex items-center justify-center text-white font-bold mr-4">3</div>
+                            <div>
+                                <h4 class="font-bold text-vibrant">Methods</h4>
+                                <p class="text-sm text-slate-500">Operations on values: String transforms, Array filters.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-50 rounded-3xl p-6 border border-slate-100">
+                    <h3 class="text-xl font-bold mb-4 text-center text-slate-700">Structural Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="layersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Builtins Section -->
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white p-8 rounded-3xl shadow-md border-l-8 border-primary">
+                <h3 class="text-2xl font-bold text-primary mb-4">Layer 1: Global Builtins</h3>
+                <p class="text-slate-600 mb-6">Builtins are reserved for features every script might need. This list is kept intentionally short to prevent naming conflicts.</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-blue-50 p-4 rounded-xl">
+                        <span class="text-xs font-bold text-blue-400 uppercase">I/O</span>
+                        <p class="font-mono text-primary">andika, jaza</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-xl">
+                        <span class="text-xs font-bold text-blue-400 uppercase">Types</span>
+                        <p class="font-mono text-primary">aina, namba</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-xl">
+                        <span class="text-xs font-bold text-blue-400 uppercase">Collections</span>
+                        <p class="font-mono text-primary">seta, jozi</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-xl">
+                        <span class="text-xs font-bold text-blue-400 uppercase">Sequence</span>
+                        <p class="font-mono text-primary">mfululizo</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-slate-800 p-8 rounded-3xl shadow-md text-slate-300">
+                <h3 class="text-2xl font-bold text-white mb-4">The Prohibition Rule</h3>
+                <p class="mb-4">To protect the kernel, Nuru strictly forbids builtins for:</p>
+                <ul class="space-y-3">
+                    <li class="flex items-center text-sm">
+                        <span class="text-red-400 mr-2 font-bold">×</span> Math (use <code class="text-blue-300">hisabati</code>)
+                    </li>
+                    <li class="flex items-center text-sm">
+                        <span class="text-red-400 mr-2 font-bold">×</span> Encoding (use <code class="text-blue-300">crypto</code>)
+                    </li>
+                    <li class="flex items-center text-sm">
+                        <span class="text-red-400 mr-2 font-bold">×</span> Files (use <code class="text-blue-300">faili</code>)
+                    </li>
+                    <li class="flex items-center text-sm">
+                        <span class="text-red-400 mr-2 font-bold">×</span> Runtime (use <code class="text-blue-300">mfumo</code>)
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Module Ecosystem -->
+        <section class="bg-white rounded-3xl shadow-lg p-8 md:p-12">
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/3">
+                    <h3 class="text-3xl font-bold text-slate-900 mb-6">Standard Modules</h3>
+                    <p class="text-slate-600 mb-6">Functionality that serves specific domains—like networking or regex—is grouped into modules. Import them using <code class="text-accent font-bold">tumia</code>.</p>
+                    <div class="space-y-4">
+                        <div class="p-4 rounded-2xl bg-violet-50 border border-violet-100">
+                            <h4 class="font-bold text-accent">Web & Networking</h4>
+                            <p class="text-sm text-slate-500">New additions: <code class="text-slate-700">http</code> and <code class="text-slate-700">url</code> for building robust web clients and servers.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-violet-50 border border-violet-100">
+                            <h4 class="font-bold text-accent">System & Storage</h4>
+                            <p class="text-sm text-slate-500">Modules like <code class="text-slate-700">faili</code> and <code class="text-slate-700">njia</code> provide unified access to the filesystem.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:w-2/3">
+                    <div class="chart-container">
+                        <canvas id="modulesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Methods Ownership -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div class="bg-white p-8 rounded-3xl shadow-lg border-l-8 border-vibrant">
+                <h3 class="text-2xl font-bold text-vibrant mb-6">Layer 3: Value Methods</h3>
+                <div class="chart-container">
+                    <canvas id="methodsChart"></canvas>
+                </div>
+            </div>
+            <div class="space-y-6">
+                <h4 class="text-2xl font-bold text-slate-800">Clear Ownership</h4>
+                <p class="text-slate-600">Operations that conceptually "belong" to a piece of data are implemented as methods. This allows for <code class="font-mono text-vibrant">value.action()</code> syntax.</p>
+                <div class="bg-vibrant/10 p-6 rounded-2xl">
+                    <p class="font-bold text-vibrant mb-2 italic">Example Improvement:</p>
+                    <p class="text-slate-700 font-mono text-sm leading-relaxed">
+                        // Instead of a global: count(list)<br>
+                        // Nuru uses a method:<br>
+                        <span class="text-vibrant">orodha.idadi()</span>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Decision Tree (HTML/CSS) -->
+        <section class="bg-slate-900 text-white rounded-[3rem] p-10 md:p-16 shadow-2xl">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4">The Decision Engine</h2>
+                <p class="text-slate-400 text-lg">The 4-step process for library contribution.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto space-y-8 relative">
+                <!-- Step 1 -->
+                <div class="flex flex-col items-center">
+                    <div class="bg-vibrant px-8 py-5 rounded-2xl shadow-xl text-center w-full md:w-3/4 border-2 border-white/10">
+                        <span class="text-xs uppercase tracking-widest opacity-70 block mb-1">Step 1</span>
+                        <p class="font-bold text-xl">Does it belong to a single type?</p>
+                        <p class="text-xs mt-2 opacity-80">(e.g. string transform, file close)</p>
+                    </div>
+                    <div class="h-12 w-0.5 bg-slate-700"></div>
+                    <div class="grid grid-cols-2 w-full gap-4 max-w-lg">
+                        <div class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-4 py-3 rounded-xl text-center font-bold">YES: Method</div>
+                        <div class="bg-slate-800 text-slate-400 border border-slate-700 px-4 py-3 rounded-xl text-center font-bold">NO: Proceed</div>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="flex flex-col items-center">
+                    <div class="h-8 w-0.5 bg-slate-700"></div>
+                    <div class="bg-accent px-8 py-5 rounded-2xl shadow-xl text-center w-full md:w-3/4 border-2 border-white/10">
+                        <span class="text-xs uppercase tracking-widest opacity-70 block mb-1">Step 2</span>
+                        <p class="font-bold text-xl">Is it a system/domain concern?</p>
+                        <p class="text-xs mt-2 opacity-80">(e.g. Files, Time, Crypto, HTTP)</p>
+                    </div>
+                    <div class="h-12 w-0.5 bg-slate-700"></div>
+                    <div class="grid grid-cols-2 w-full gap-4 max-w-lg">
+                        <div class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-4 py-3 rounded-xl text-center font-bold">YES: Module</div>
+                        <div class="bg-slate-800 text-slate-400 border border-slate-700 px-4 py-3 rounded-xl text-center font-bold">NO: Proceed</div>
+                    </div>
+                </div>
+
+                <!-- Final Decision -->
+                <div class="flex flex-col items-center">
+                    <div class="h-8 w-0.5 bg-slate-700"></div>
+                    <div class="bg-primary px-8 py-5 rounded-2xl shadow-xl text-center w-full md:w-3/4 border-2 border-white/20">
+                        <span class="text-xs uppercase tracking-widest opacity-70 block mb-1">Final Step</span>
+                        <p class="font-bold text-xl">Is it a truly universal primitive?</p>
+                        <p class="text-xs mt-2 opacity-80">(Print, Input, Range)</p>
+                    </div>
+                    <div class="h-12 w-0.5 bg-slate-700"></div>
+                    <div class="bg-white text-primary p-6 rounded-3xl shadow-2xl text-center border-t-4 border-primary">
+                        <p class="font-black text-2xl mb-1">Global Builtin</p>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Only if kernel-essential</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-500 py-12 px-4 text-center border-t border-white/5">
+        <div class="max-w-6xl mx-auto">
+            <p class="mb-4">© 2026 Nuru Language Specification. Standard Library Policy v2.1</p>
+            <div class="flex justify-center space-x-4 text-xs font-bold uppercase tracking-widest">
+                <span class="px-3 py-1 bg-slate-800 rounded">Consistency</span>
+                <span class="px-3 py-1 bg-slate-800 rounded">Discoverability</span>
+                <span class="px-3 py-1 bg-slate-800 rounded">Simplicity</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- Logic: Label Wrapping (16 chars) ---
+        function wrapLabels(labels) {
+            return labels.map(label => {
+                if (label.length <= 16) return label;
+                const words = label.split(' ');
+                const result = [];
+                let line = words[0];
+                for (let i = 1; i < words.length; i++) {
+                    if ((line + " " + words[i]).length <= 16) {
+                        line += " " + words[i];
+                    } else {
+                        result.push(line);
+                        line = words[i];
+                    }
+                }
+                result.push(line);
+                return result;
+            });
+        }
+
+        // --- Shared Tooltip Config ---
+        const tooltipConfig = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            return Array.isArray(label) ? label.join(' ') : label;
+                        }
+                    }
+                }
+            }
+        };
+
+        // --- Chart 1: Layer Balance (Doughnut) ---
+        const layersCtx = document.getElementById('layersChart').getContext('2d');
+        new Chart(layersCtx, {
+            type: 'doughnut',
+            data: {
+                labels: wrapLabels(['Global Builtins', 'Standard Modules', 'Type Methods']),
+                datasets: [{
+                    data: [12, 50, 38], // Proportions adjusted for new modules
+                    backgroundColor: ['#1E3A8A', '#7C3AED', '#0891B2'],
+                    hoverOffset: 15,
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                ...tooltipConfig,
+                plugins: {
+                    ...tooltipConfig.plugins,
+                    legend: { position: 'bottom', labels: { boxWidth: 12, padding: 20 } }
+                }
+            }
+        });
+
+        // --- Chart 2: Module Functional Density (Polar Area) ---
+        const modulesCtx = document.getElementById('modulesChart').getContext('2d');
+        const modulesLabels = [
+            'Math (Hisabati)', 'Files (Faili)', 'Crypto/Enc', 'HTTP/Web', 
+            'URL Logic', 'Regex (re)', 'Time (Muda)', 'Paths (Njia)', 'JSON'
+        ];
+        new Chart(modulesCtx, {
+            type: 'polarArea',
+            data: {
+                labels: wrapLabels(modulesLabels),
+                datasets: [{
+                    data: [8, 8, 7, 6, 5, 6, 6, 5, 4],
+                    backgroundColor: [
+                        'rgba(30, 58, 138, 0.7)', 'rgba(124, 58, 237, 0.7)', 
+                        'rgba(8, 145, 178, 0.7)', 'rgba(219, 39, 119, 0.7)',
+                        'rgba(79, 70, 229, 0.7)', 'rgba(5, 150, 105, 0.7)',
+                        'rgba(217, 119, 6, 0.7)', 'rgba(71, 85, 105, 0.7)', 'rgba(13, 148, 136, 0.7)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                ...tooltipConfig,
+                scales: { r: { ticks: { display: false }, grid: { color: '#f1f5f9' } } },
+                plugins: {
+                    ...tooltipConfig.plugins,
+                    legend: { position: 'right', labels: { boxWidth: 10 } }
+                }
+            }
+        });
+
+        // --- Chart 3: Method Counts per Type (Horizontal Bar) ---
+        const methodsCtx = document.getElementById('methodsChart').getContext('2d');
+        new Chart(methodsCtx, {
+            type: 'bar',
+            data: {
+                labels: wrapLabels(['String (Tungo)', 'Array (Orodha)', 'Compiled Regex', 'File Handle', 'Dict (Kamusi)', 'Time/Date']),
+                datasets: [{
+                    label: 'Available Methods',
+                    data: [11, 10, 6, 7, 5, 4],
+                    backgroundColor: '#0891B2',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                ...tooltipConfig,
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { display: false } }
+                },
+                plugins: {
+                    ...tooltipConfig.plugins,
+                    legend: { display: false }
+                }
+            }
+        });
+    </script>
+
+    <!-- 
+        Nuru API Policy Compliance Check:
+        - [X] NO SVG graphics used.
+        - [X] NO Mermaid JS used.
+        - [X] Single HTML file architecture.
+        - [X] Chart.js Canvas implementation with responsive containers.
+        - [X] 16-char label wrapping applied.
+        - [X] Mandatory Tooltip title configuration applied.
+        - [X] Narrative follows POLICY.md structure.
+    -->
+</body>
+</html>
