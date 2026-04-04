@@ -34,6 +34,15 @@ build_android:
 	@echo 'cleaning up...'
 	rm nuru
 
+build_wasm:
+	@echo 'building wasm binary'
+	GOOS=js GOARCH=wasm go build -o nuru.wasm
+	@echo 'zipping build...'
+	tar -zcvf nuru_wasm_v${VERSION}.tar.gz nuru.wasm
+	@echo 'cleaning up...'
+	rm nuru.wasm
+
+
 build_test:
 	go build -ldflags="-s -w" -o nuru
 
