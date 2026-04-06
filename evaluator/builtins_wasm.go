@@ -1,6 +1,6 @@
 //go:build wasm && js
 
-// Modified version with of the builtins.go file with browser friendly functions.
+// Modified version with of the builtins.go file with browser friendly versions of functions.
 package evaluator
 
 import (
@@ -36,13 +36,6 @@ var builtins = map[string]*object.Builtin{
 				result = jsPromptFunction.Invoke(args[0].Inspect())
 			}
 
-			// fmt.Println("the arguments", args[0].Inspect())
-			// fmt.Println("the result of window.prompt", result.String())
-
-			// buffer := bufio.NewReader(os.Stdin)
-
-			// line, _, err := buffer.ReadLine()
-
 			if result.String() == ""|| result.String() == "null" {
 				return newError("Nimeshindwa kusoma uliyo yajaza")
 			}
@@ -64,9 +57,7 @@ var builtins = map[string]*object.Builtin{
 					arr = append(arr, arg.Inspect())
 				}
 				str := strings.Join(arr, " ")
-				// fmt.Println(str)  // removed Print to console
-				// return &object.String{Value: str} // return the output
-				jsOutputReceiverFunction.Invoke(str)	
+				jsOutputReceiverFunction.Invoke(str) // pipe output to js land
 			}
 			return nil
 		},
