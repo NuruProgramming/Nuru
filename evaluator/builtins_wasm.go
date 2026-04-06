@@ -18,26 +18,23 @@ var builtins = map[string]*object.Builtin{
 				return newError("Samahani, kiendesha hiki kinapokea hoja 0 au 1, wewe umeweka %d", len(args))
 			}
 
-			if len(args) > 0 && args[0].Type() != object.STRING_OBJ {
+			if len(args) == 1 && args[0].Type() != object.STRING_OBJ {
 				return newError(fmt.Sprintf(`Tafadhali tumia alama ya nukuu: "%s"`, args[0].Inspect()))
-			}
-			if len(args) == 1 {
-				// prompt := args[0].(*object.String).Value
-				// prompt += "\n" //add breakline
-				fmt.Println("prompt")
-			} else {
-				fmt.Println("Nooo")
 			}
 
 			// Get the window.prompt function
 			jsPromptFunction := js.Global().Get("prompt")
 			if jsPromptFunction.Type() != js.TypeFunction {
-				// fmt.Print("prompt function not found")
 				return newError("prompt function not found")
 			}
 
 			// invoke it!!
-			result := jsPromptFunction.Invoke(args[0].Inspect())
+			var result js.Value
+			if len(args) == 0 {
+				result = jsPromptFunction.Invoke()
+			} else {
+				result = jsPromptFunction.Invoke(args[0].Inspect())
+			}
 
 			// fmt.Println("the arguments", args[0].Inspect())
 			// fmt.Println("the result of window.prompt", result.String())
