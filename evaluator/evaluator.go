@@ -1,8 +1,6 @@
 package evaluator
 
 import (
-	"fmt"
-
 	"github.com/NuruProgramming/Nuru/ast"
 	"github.com/NuruProgramming/Nuru/object"
 )
@@ -240,10 +238,6 @@ func isTruthy(obj object.Object) bool {
 	default:
 		return true
 	}
-}
-
-func newError(format string, a ...interface{}) *object.Error {
-	return &object.Error{Message: fmt.Sprintf(format, a...)}
 }
 
 func isError(obj object.Object) bool {

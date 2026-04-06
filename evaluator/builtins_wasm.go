@@ -1,15 +1,13 @@
-//go:build !js || !wasm 
+//go:build wasm && js
 
+// Modified version with of the builtins.go file with browser friendly versions of functions.
 package evaluator
 
 import (
-	"bufio"
 	"fmt"
-	"io"
-	"os"
 	"strings"
-
 	"github.com/NuruProgramming/Nuru/object"
+	"syscall/js"
 )
 
 var builtins = map[string]*object.Builtin{
@@ -20,28 +18,36 @@ var builtins = map[string]*object.Builtin{
 				return newError("Samahani, kiendesha hiki kinapokea hoja 0 au 1, wewe umeweka %d", len(args))
 			}
 
-			if len(args) > 0 && args[0].Type() != object.STRING_OBJ {
+			if len(args) == 1 && args[0].Type() != object.STRING_OBJ {
 				return newError(fmt.Sprintf(`Tafadhali tumia alama ya nukuu: "%s"`, args[0].Inspect()))
 			}
-			if len(args) == 1 {
-				prompt := args[0].(*object.String).Value
-				fmt.Fprint(os.Stdout, prompt)
+
+			// Get the window.prompt function
+			jsPromptFunction := js.Global().Get("prompt")
+			if jsPromptFunction.Type() != js.TypeFunction {
+				return newError("prompt function not found")
 			}
 
-			buffer := bufio.NewReader(os.Stdin)
+			// invoke it!!
+			var result js.Value
+			if len(args) == 0 {
+				result = jsPromptFunction.Invoke()
+			} else {
+				result = jsPromptFunction.Invoke(args[0].Inspect())
+			}
 
-			line, _, err := buffer.ReadLine()
-			if err != nil && err != io.EOF {
+			if result.String() == ""|| result.String() == "null" {
 				return newError("Nimeshindwa kusoma uliyo yajaza")
 			}
 
-			return &object.String{Value: string(line)}
+			return &object.String{Value: string(result.String())}
 		},
 	},
 	"andika": {
 		Fn: func(args ...object.Object) object.Object {
+			jsOutputReceiverFunction := js.Global().Get("nuruOutputReceiver")
 			if len(args) == 0 {
-				fmt.Println("")
+				jsOutputReceiverFunction.Invoke("")
 			} else {
 				var arr []string
 				for _, arg := range args {
@@ -51,29 +57,11 @@ var builtins = map[string]*object.Builtin{
 					arr = append(arr, arg.Inspect())
 				}
 				str := strings.Join(arr, " ")
-				fmt.Println(str)
+				jsOutputReceiverFunction.Invoke(str) // pipe output to js land
 			}
 			return nil
 		},
 	},
-	"_andika": {
-		Fn: func(args ...object.Object) object.Object {
-			if len(args) == 0 {
-				return &object.String{Value: "\n"}
-			} else {
-				var arr []string
-				for _, arg := range args {
-					if arg == nil {
-						return newError("Hauwezi kufanya operesheni hii")
-					}
-					arr = append(arr, arg.Inspect())
-				}
-				str := strings.Join(arr, " ")
-				return &object.String{Value: str}
-			}
-		},
-	},
-
 }
 
 func init(){

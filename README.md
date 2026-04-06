@@ -404,7 +404,7 @@ There are documentations for two languages, English and Kiswahili, which are bot
 
 Clone the repo, hack it, make sure all tests are passing then submit a pull request.
 
-> Make sure ALL tests are passing before making a pull request. You can confirm with running `make tests`
+> Make sure ALL tests are passing before making a pull request. You can confirm with running `make test`
 
 ## Community
 
