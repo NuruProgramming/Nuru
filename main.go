@@ -32,6 +32,28 @@ var (
 		styles.HelpStyle.Bold(true).Render("nuru --toleo")))
 )
 
+func hasValidExtension(file string) bool {
+	return strings.HasSuffix(file, ".nr") || strings.HasSuffix(file, ".sw")
+}
+
+func readFile(file string) (string, error) {
+	if !hasValidExtension(file) {
+		return "", fmt.Errorf("'%s' sii faili sahihi. Tumia faili la '.nr' au '.sw'", file)
+	}
+
+	contents, err := os.ReadFile(file)
+	if err != nil {
+		return "", fmt.Errorf("Error: Nuru imeshindwa kusoma faili: %s", file)
+	}
+
+	return string(contents), nil
+}
+
+func printError(err error) {
+	fmt.Println(styles.ErrorStyle.Render(err.Error()))
+	os.Exit(1)
+}
+
 func main() {
 
 	args := os.Args
@@ -53,23 +75,34 @@ func main() {
 			repl.Docs()
 		default:
 			file := args[1]
-
-			if strings.HasSuffix(file, "nr") || strings.HasSuffix(file, ".sw") {
-				contents, err := os.ReadFile(file)
-				if err != nil {
-					fmt.Println(styles.ErrorStyle.Render("Error: Nuru imeshindwa kusoma faili: ", args[1]))
-					os.Exit(1)
-				}
-
-				repl.Read(string(contents))
+			if content, err := readFile(file); err == nil {
+				repl.Read(content)
 			} else {
-				fmt.Println(styles.ErrorStyle.Render("'"+file+"'", "sii faili sahihi. Tumia faili la '.nr' au '.sw'"))
-				os.Exit(1)
+				printError(err)
 			}
 		}
-	} else {
-		fmt.Println(styles.ErrorStyle.Render("Error: Operesheni imeshindikana boss."))
-		fmt.Println(Help)
-		os.Exit(1)
+
+		return
 	}
+
+	if len(args) > 2 {
+		switch args[1] {
+		case "pima":
+			file := args[2]
+			if content, err := readFile(file); err == nil {
+				repl.Test(content)
+			} else {
+				printError(err)
+			}
+		default:
+			printError(fmt.Errorf("Error: Operesheni uliyochagua haijaumdwa"))
+		}
+
+		return
+	}
+
+	fmt.Println(styles.ErrorStyle.Render("Error: Operesheni imeshindikana boss."))
+	fmt.Println(Help)
+	os.Exit(1)
+
 }

@@ -10,4 +10,5 @@ func init() {
 	Mapper["mtandao"] = &object.Module{Name: "net", Functions: NetFunctions}
 	Mapper["jsoni"] = &object.Module{Name: "json", Functions: JsonFunctions}
 	Mapper["hisabati"] = &object.Module{Name: "hisabati", Functions: MathFunctions}
+	Mapper["pima"] = &object.Module{Name: "pima", Functions: TestFunctions}
 }
