@@ -27,6 +27,7 @@ const (
 	BYTE_OBJ         = "BYTE"
 	PACKAGE_OBJ      = "PAKEJI"
 	INSTANCE         = "PAKEJI"
+	POINTER_OBJ      = "POINTER"
 	AT               = "@"
 )
 
