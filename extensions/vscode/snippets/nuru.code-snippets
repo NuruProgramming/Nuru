@@ -1,0 +1,63 @@
+{
+  "Define Function": {
+    "prefix": "unda",
+    "body": [
+      "unda ${1:jina}(${2:vigezo}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Unda kazi mpya (Create a new function)"
+  },
+  "Variable Declaration": {
+    "prefix": "fanya",
+    "body": [
+      "fanya ${1:jina} = ${2:thamani};$0"
+    ],
+    "description": "Tangaza kigezo (Declare a variable)"
+  },
+  "If Statement": {
+    "prefix": "kama",
+    "body": [
+      "kama (${1:sharti}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Kama (If statement)"
+  },
+  "If Else Statement": {
+    "prefix": "kamasivyo",
+    "body": [
+      "kama (${1:sharti}) {",
+      "\t$2",
+      "} sivyo {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Kama / Sivyo (If-Else statement)"
+  },
+  "While Loop": {
+    "prefix": "wakati",
+    "body": [
+      "wakati (${1:sharti}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Kitanzi cha wakati (While loop)"
+  },
+  "For In Loop": {
+    "prefix": "kwa",
+    "body": [
+      "kwa ${1:kipengele} katika ${2:orodha} {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Kitanzi cha kwa (For-in loop)"
+  },
+  "Print Output": {
+    "prefix": "andika",
+    "body": [
+      "andika($1);$0"
+    ],
+    "description": "Andika kwenye skrini (Print output)"
+  }
+}
