@@ -1,24 +1,27 @@
-# Nuru VSCode Extension
+# Nuru Language Support for VS Code
 
-This is a syntax highliting extension for Nuru on vscode. It detects `.nr` and `.sw` files.
+Syntax highlighting, code snippets, and language support for the **Nuru** programming language (`.nr`, `.sw`) in Visual Studio Code[cite: 3].
 
-## Screenshots
-<p align="center">
-<img alt="Nuru Programming Language" src="assets/screenshot.png">
-</p>
+## Features
 
-## How To Install
+* **Syntax Highlighting:** Full colorization for Nuru keywords, data types, operators, strings, numbers, and comments.
+* **Code Snippets:** Fast autocomplete templates for loops, conditionals, functions, and variable declarations.
+* **Language Configuration:** Auto-closing brackets, smart indentation, and comment toggling (`Ctrl + /`).
 
-### Download From Market Place
+## Supported File Extensions
 
-- Simply download the Nuru Extension from VSCode Market Place
+* `.nr`[cite: 3]
+* `.sw`[cite: 3]
 
-### Windows
+## Installation
 
-- Copy the whole [nuru folder](https://github.com/NuruProgramming/Nuru/tree/main/extensions/vscode/nuru) and paste it in the VSCode extensions directory found in `%USERPROFILE%\.vscode\extensions`
-- Restart VSCode
+### From VS Code Marketplace
+1. Open VS Code.
+2. Go to Extensions (`Ctrl + Shift + X`).
+3. Search for **Nuru Programming Language** and click **Install**[cite: 3].
 
-### Linux and MacOS
-
-- Copy the whole [nuru folder](https://github.com/NuruProgramming/Nuru/tree/main/extensions/vscode/nuru) and paste it in the VSCode extensions directory found in `~/.vscode/extensions`
-- Restart VSCode
+### Manual Installation (`.vsix`)
+1. Download the latest `.vsix` file from the [Releases](https://github.com/nidalbenyakhelf/nuru-vscode/releases) page.
+2. Run the following command in your terminal:
+   ```bash
+   code --install-extension nuru-lang-0.1.1.vsix

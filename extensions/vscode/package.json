@@ -1,0 +1,49 @@
+{
+  "name": "nuru-lang",
+  "displayName": "Nuru Programming Language Support",
+  "description": "Syntax highlighting, snippets, and language support for the Nuru programming language (.nr, .sw)",
+  "version": "0.1.2",
+  "publisher": "nidalbenyakhelf",
+  "icon": "icon.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nidalbenyakhelf/nuru-vscode"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "nuru",
+        "aliases": [
+          "Nuru",
+          "nuru"
+        ],
+        "extensions": [
+          ".nr",
+          ".sw"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "nuru",
+        "scopeName": "source.nuru",
+        "path": "./syntaxes/nuru.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "nuru",
+        "path": "./snippets/nuru.code-snippets"
+      }
+    ]
+  }
+}
