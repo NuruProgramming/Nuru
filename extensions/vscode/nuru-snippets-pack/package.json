@@ -1,0 +1,33 @@
+{
+  "name": "nuru-snippets-pack",
+  "displayName": "Nuru Snippets Pack",
+  "description": "Comprehensive and fast code snippets for the Nuru programming language.",
+  "version": "0.1.3",
+  "publisher": "nidalbenyakhelf",
+  "icon": "icon.png",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nidalbenyakhelf/nuru-snippets-pack.git"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Snippets"
+  ],
+  "keywords": [
+    "nuru",
+    "snippets",
+    "swahili",
+    "programming"
+  ],
+  "contributes": {
+    "snippets": [
+      {
+        "language": "nuru",
+        "path": "./snippets/nuru.json"
+      }
+    ]
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "Variable Declaration (fanya)": {
+    "prefix": ["fanya", "var", "let"],
+    "body": ["fanya ${1:jina} = ${2:thamani};"],
+    "description": "Declare a variable in Nuru"
+  },
+  "Print Output (andika)": {
+    "prefix": ["andika", "print", "log"],
+    "body": ["andika(${1:\"Habari, Nuru!\"});"],
+    "description": "Print output to the console"
+  },
+  "User Input (jaza)": {
+    "prefix": ["jaza", "input"],
+    "body": ["fanya ${1:jibu} = jaza(\"${2:Ingiza thamani: }\");"],
+    "description": "Read user input from console"
+  },
+  "Function Declaration (unda)": {
+    "prefix": ["unda", "fn", "func"],
+    "body": [
+      "fanya ${1:kazi} = unda(${2:param}) {",
+      "\t${3:// kodi yako hapa}",
+      "\trudisha ${4:matokeo};",
+      "};"
+    ],
+    "description": "Define a function in Nuru"
+  },
+  "Anonymous Function / Callback": {
+    "prefix": ["undacallback", "cb"],
+    "body": [
+      "unda(${1:item}) {",
+      "\t${2:rudisha item;}",
+      "}"
+    ],
+    "description": "Anonymous function or callback in Nuru"
+  },
+  "If Statement (kama)": {
+    "prefix": ["kama", "if"],
+    "body": [
+      "kama (${1:sharti}) {",
+      "\t${2:// tekeleza}",
+      "}"
+    ],
+    "description": "If conditional block"
+  },
+  "If-Else Statement (kama / sivyo)": {
+    "prefix": ["kamasivyo", "ifelse"],
+    "body": [
+      "kama (${1:sharti}) {",
+      "\t${2:// ikiwa kweli}",
+      "} sivyo {",
+      "\t${3:// ikiwa si kweli}",
+      "}"
+    ],
+    "description": "If-Else conditional block"
+  },
+  "If-Else If-Else": {
+    "prefix": ["aukama", "elseif"],
+    "body": [
+      "kama (${1:sharti1}) {",
+      "\t${2:// chaguo la kwanza}",
+      "} au kama (${3:sharti2}) {",
+      "\t${4:// chaguo la pili}",
+      "} sivyo {",
+      "\t${5:// chaguo la mwisho}",
+      "}"
+    ],
+    "description": "If - Else If - Else conditional block"
+  },
+  "While Loop (wakati)": {
+    "prefix": ["wakati", "while"],
+    "body": [
+      "wakati (${1:sharti}) {",
+      "\t${2:// kodi ya kurudia}",
+      "}"
+    ],
+    "description": "While loop in Nuru"
+  },
+  "For-In Loop (kwa kila)": {
+    "prefix": ["kwakila", "for", "foreach"],
+    "body": [
+      "kwa ${1:kipengele} katika ${2:orodha} {",
+      "\tandika(${1:kipengele});",
+      "}"
+    ],
+    "description": "Iterate over a list or range"
+  },
+  "Switch Statement (badili)": {
+    "prefix": ["badili", "switch"],
+    "body": [
+      "badili (${1:thamani}) {",
+      "\tikiwa ${2:1}:",
+      "\t\t${3:andika(\"Moja\");}",
+      "\tkawaida:",
+      "\t\t${4:andika(\"Nyingine\");}",
+      "}"
+    ],
+    "description": "Switch-case statement in Nuru"
+  },
+  "Array / List (orodha)": {
+    "prefix": ["orodha", "list", "arr"],
+    "body": ["fanya ${1:orodha} = [${2:1, 2, 3}];"],
+    "description": "Create an array/list"
+  },
+  "Dictionary / Object (kamusi)": {
+    "prefix": ["kamusi", "dict", "obj"],
+    "body": [
+      "fanya ${1:kamusi} = {",
+      "\t\"${2:ufunguo}\": \"${3:thamani}\"",
+      "};"
+    ],
+    "description": "Create a dictionary/map"
+  },
+  "Break & Continue": {
+    "prefix": ["acha", "break", "endelea", "continue"],
+    "body": ["acha;"],
+    "description": "Exit loop early with acha"
+  },
+  "Nuru Starter Program": {
+    "prefix": ["nurustarter", "main"],
+    "body": [
+      "andika(\"=== ${1:Programu ya Nuru} ===\");",
+      "",
+      "fanya ${2:jina} = jaza(\"${3:Jina lako ni nani? }\");",
+      "andika(\"Karibu, \" + ${2:jina} + \"!\");"
+    ],
+    "description": "Starter template for a Nuru script"
+  }
+}
